@@ -1,0 +1,49 @@
+{
+  "schema_version": "windowed-cusum-balsa.release-qa.v1",
+  "performed_on": "2026-09-04",
+  "environment": "Windows, Python 3.12 (py312_torch), pdfTeX from TeX Live 2025",
+  "checks": {
+    "unit_tests": {
+      "command": "python -m pytest -q",
+      "passed": 63,
+      "failed": 0
+    },
+    "synthetic_cli_smoke_test": {
+      "command": "windowed-cusum paper data/demo/monthly_s1_synthetic.csv demo_events.csv --config configs/paper_v1.json",
+      "accepted_candidates": 4,
+      "passed": true
+    },
+    "public_workflow_figure_builder": {
+      "command": "python scripts/figures/build_workflow.py workflow.pdf",
+      "output_bytes": 24820,
+      "passed": true
+    },
+    "manuscript_clean_build": {
+      "command": "manuscript/build_latex.ps1 -Clean",
+      "pdf_pages": 26,
+      "pdf_bytes": 16617654,
+      "undefined_citations": 0,
+      "undefined_references": 0,
+      "fatal_errors": 0,
+      "overfull_hbox_warnings": 1,
+      "duplicate_cas_pdf_destinations": 12,
+      "passed": true,
+      "note": "The layout and duplicate-destination messages are non-fatal CAS-template warnings."
+    },
+    "complete_repository_integrity_and_disclosure_audit": {
+      "report": "provenance/PRIVACY_AUDIT.json",
+      "passed": true
+    },
+    "private_frozen_ledger_parity": {
+      "report": "provenance/PRIVATE_INTEGRATION_QA.json",
+      "passed": true
+    }
+  },
+  "publication_ready": false,
+  "remaining_author_or_rights_holder_decisions": [
+    "Select and approve a software license.",
+    "Finalize CITATION.cff, permanent repository URL, and archival DOI.",
+    "Confirm corresponding-author metadata.",
+    "Confirm redistribution or publication permission for third-party-derived figure content."
+  ]
+}

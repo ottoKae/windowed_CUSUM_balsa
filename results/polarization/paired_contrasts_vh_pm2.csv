@@ -1,0 +1,7 @@
+contrast,metric,bootstrap_median,ci95_low,ci95_high,replicates
+paired_difference,median_months,3.0,2.0,5.0,5000
+paired_difference,polygon_weighted_median_months,3.5,2.0,4.5,5000
+paired_difference,proportion_<12,-0.14687954053872085,-0.17212056997409528,-0.12499439199967531,5000
+paired_difference,proportion_12--23,-0.033669519035309126,-0.0445733066914524,-0.02497258427210607,5000
+paired_difference,proportion_24--47,0.14200873802221098,0.10572728746037534,0.1772465284834672,5000
+paired_difference,proportion_>=48,0.038673562049566304,0.008695962952132232,0.0732552450116819,5000

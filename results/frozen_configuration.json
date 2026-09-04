@@ -1,0 +1,27 @@
+{
+  "schema_version": "windowed-cusum-balsa.frozen-configuration.v1",
+  "primary_band": "VV_dB",
+  "primary_route": "polygon_first",
+  "stand_summary": "monthly median of valid polygon-interior cells, track-specific",
+  "window_length_months": 48,
+  "window_step_months": 12,
+  "central_decision_months": 24,
+  "minimum_finite_observations": 12,
+  "permutation_p_max": 0.025,
+  "initial_permutations": 3999,
+  "near_threshold_p_range": [0.015, 0.035],
+  "near_threshold_permutations": 19999,
+  "candidate_seed": 20260820,
+  "context_calendar": ["2016-01", "2026-06"],
+  "decision_calendar": ["2017-01", "2025-12"],
+  "validation_event_tolerance_months": 2,
+  "spatial_bootstrap_replicates": 5000,
+  "spatial_bootstrap_seed": 20260829,
+  "event_matcher": "optimal_one_to_one_v2",
+  "change_boundary_semantics": {
+    "reported_month": "first observation in the post-change segment",
+    "pre_slice": "window_start:change_index",
+    "post_slice": "change_index:window_end"
+  },
+  "missing_observation_policy": "Preserve as NaN/null; never replace with physical 0 dB."
+}

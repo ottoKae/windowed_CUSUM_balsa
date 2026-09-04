@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/windowed-cusum-balsa/monthly-s1.schema.json",
+  "title": "Monthly Sentinel-1 long-table record",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["ID", "time", "VV_dB"],
+  "properties": {
+    "ID": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Stable point, pixel, or polygon identifier."
+    },
+    "time": {
+      "type": "string",
+      "format": "date",
+      "description": "Calendar month represented as its first day."
+    },
+    "VV_dB": {
+      "type": ["number", "null"],
+      "description": "Monthly VV backscatter in dB; null means unobserved."
+    },
+    "VH_dB": {
+      "type": ["number", "null"],
+      "description": "Monthly VH backscatter in dB; null means unobserved."
+    }
+  }
+}
+

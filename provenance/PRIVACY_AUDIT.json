@@ -1,0 +1,63 @@
+{
+  "schema_version": "windowed-cusum-balsa.public-package-audit.v2",
+  "scope": [
+    "complete repository release, excluding generated build and QA files"
+  ],
+  "file_count_scanned": 110,
+  "checks": {
+    "annual_sum_is_6658": true,
+    "polygon_distribution_sum_is_3498": true,
+    "weighted_polygon_event_sum_is_6658": true,
+    "interval_histogram_sum_is_3509": true,
+    "polygon_first_plus_pixel_first_is_12899": true,
+    "formal_primary_confusion_counts_match": true,
+    "vh_supported_count_is_4061": true,
+    "vh_supported_interval_count_is_1385": true,
+    "all_aggregate_copies_match_frozen_source_hashes": true,
+    "demo_contains_only_synthetic_ids": true,
+    "public_frozen_configuration_matches_paper_v1": true
+  },
+  "aggregate_copy_hash_checks": {
+    "results/formal_validation/nested_spatial_oof_metrics.csv": true,
+    "results/formal_validation/window_configuration_metrics.csv": true,
+    "results/formal_validation/stand_representation_metrics.csv": true,
+    "results/formal_validation/method_comparison_metrics.csv": true,
+    "results/component_ablation/stage_metrics_spatial_bootstrap.csv": true,
+    "results/component_ablation/paired_contrasts_spatial_bootstrap.csv": true,
+    "results/configuration/window_length_step_metrics.csv": true,
+    "results/configuration/temporal_truncation_available_support.csv": true,
+    "results/configuration/temporal_truncation_common_support.csv": true,
+    "results/configuration/first_detection_delay_summary.csv": true,
+    "results/polarization/interval_summary_vh_pm2.csv": true,
+    "results/polarization/cohort_counts_vh_pm2.csv": true,
+    "results/polarization/paired_contrasts_vh_pm2.csv": true,
+    "results/polarization/spatial_block_bootstrap_vh_pm2.csv": true,
+    "results/polarization/strategy_metrics.csv": true,
+    "results/polarization/strategy_spatial_bootstrap.csv": true,
+    "results/national/annual_polygon_first_vv_events_2017_2025.csv": true,
+    "results/national/polygon_event_count_distribution.csv": true,
+    "results/national/adjacent_interval_distribution_6month_bins.csv": true
+  },
+  "forbidden_file_types": [],
+  "sensitive_tabular_headers": {},
+  "csv_parse_errors": {},
+  "private_pattern_hits": {},
+  "cjk_text_hits": [],
+  "high_confidence_secret_hits": {},
+  "json_parse_errors": {},
+  "manuscript_checks": {
+    "all_input_sections_exist": true,
+    "active_manuscript_references_eight_figures": true,
+    "all_active_figure_assets_exist": true,
+    "compiled_manuscript_pdf_exists": true
+  },
+  "note": "Synthetic DEMO_STAND identifiers are invented and contain no source mapping.",
+  "technical_passed": true,
+  "publication_gates": {
+    "software_license_selected": false,
+    "citation_metadata_finalized": false,
+    "repository_url_and_archive_doi_finalized": false,
+    "third_party_figure_permissions_confirmed": false
+  },
+  "passed": true
+}

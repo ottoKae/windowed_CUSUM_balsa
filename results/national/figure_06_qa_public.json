@@ -1,0 +1,37 @@
+{
+  "schema_version": "windowed-cusum-balsa.figure-06-public-qa.v1",
+  "validated_polygons": 3498,
+  "polygon_first_vv_events": 6658,
+  "event_bearing_polygons": 3149,
+  "adjacent_intervals": 3509,
+  "polygons_with_at_least_two_events": 2194,
+  "adjacent_interval_median_months": 36,
+  "hex_grid": {
+    "crs": "EPSG:6933",
+    "orientation": "pointy-top",
+    "flat_to_flat_width_km": 10.0,
+    "area_km2": 86.60254037844386,
+    "mainland_cells": 3066,
+    "occupied_cells": 287,
+    "assignment": "one polygon-interior representative point; one polygon contributes to exactly one cell",
+    "map_statistic": "median polygon detected-event count including zero-event polygons"
+  },
+  "annual_event_counts": {
+    "2017": 600,
+    "2018": 659,
+    "2019": 696,
+    "2020": 705,
+    "2021": 932,
+    "2022": 1026,
+    "2023": 308,
+    "2024": 825,
+    "2025": 907
+  },
+  "checks": {
+    "annual_sum_equals_polygon_first_events": true,
+    "event_count_distribution_sums_to_validated_polygons": true,
+    "contains_exact_coordinates": false,
+    "contains_private_identifiers": false
+  }
+}
+

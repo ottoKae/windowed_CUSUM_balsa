@@ -1,0 +1,8 @@
+name,family,protocol,variant,role,tolerance_months,tp,fp,fn,precision,recall,f1,temporal_mae_months,median_signed_error_months,reference_events,detected_events,objects
+frozen_median,spatial_strategy,frozen_lr,median,all,2,899,281,194,0.761864407,0.822506862,0.791025077,0.776418242,-1.000000000,1093,1180,462
+frozen_mean,spatial_strategy,frozen_lr,mean,all,2,892,297,201,0.750210261,0.816102470,0.781770377,0.784753363,-1.000000000,1093,1189,462
+frozen_mode,spatial_strategy,frozen_lr,mode,all,2,637,255,456,0.714125561,0.582799634,0.641813602,0.880690738,-1.000000000,1093,892,462
+frozen_center,spatial_strategy,frozen_lr,center,all,2,597,311,496,0.657488987,0.546203111,0.596701649,0.901172529,-1.000000000,1093,908,462
+connected_r0.2,spatial_strategy,frozen_lr,fixed_support,all,2,865,253,228,0.773703041,0.791399817,0.782451379,0.817341040,-1.000000000,1093,1118,462
+temporal_dbscan_r0.4,spatial_strategy,frozen_lr,fixed_support,all,2,765,60,328,0.927272727,0.699908509,0.797705944,0.728104575,-1.000000000,1093,825,462
+space_time_dbscan_r0.4,spatial_strategy,frozen_lr,fixed_support,all,2,361,33,732,0.916243655,0.330283623,0.485541358,0.778393352,-1.000000000,1093,394,462

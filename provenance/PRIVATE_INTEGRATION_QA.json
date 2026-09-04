@@ -1,0 +1,31 @@
+{
+  "schema_version": "windowed-cusum-balsa.private-integration-qa.v1",
+  "performed_on": "2026-09-04",
+  "purpose": "Verify the public N1 candidate detector against frozen private manuscript ledgers without publishing identifiers or source trajectories.",
+  "comparison": "Candidate IDs and finite-sample-corrected p-values after calendar, validity, central-window, negative-change, and N1 permutation gates.",
+  "configuration": {
+    "window_length_months": 48,
+    "window_step_months": 12,
+    "alpha": 0.025,
+    "initial_permutations": 3999,
+    "near_threshold_permutations": 19999
+  },
+  "bands": {
+    "VV_dB": {
+      "private_series_tested": 9,
+      "accepted_candidates_compared": 19,
+      "accepted_near_threshold_candidates": 2,
+      "candidate_ids_match": true,
+      "p_value_max_absolute_error": 0.0
+    },
+    "VH_dB": {
+      "private_series_tested": 10,
+      "accepted_candidates_compared": 29,
+      "accepted_near_threshold_candidates": 9,
+      "candidate_ids_match": true,
+      "p_value_max_absolute_error": 0.0
+    }
+  },
+  "private_identifiers_or_values_included": false,
+  "passed": true
+}

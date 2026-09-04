@@ -1,0 +1,88 @@
+{
+  "schema_version": "windowed-cusum-balsa.public-count-ledger.v1",
+  "frozen_on": "2026-09-04",
+  "study_scope": {
+    "official_all_plantation_polygons": 26206,
+    "official_balsa_polygons": 3890,
+    "validated_balsa_polygons": 3498,
+    "pending_excluded_balsa_polygons": 392,
+    "spatial_roles": {
+      "train": 1918,
+      "validation": 672,
+      "guard": 454,
+      "test": 454
+    },
+    "polygon_tracks": 4001,
+    "polygon_pixel_associations": 176935,
+    "temporal_context": "2016-01/2026-06",
+    "event_decision_calendar": "2017-01/2025-12"
+  },
+  "reference_evidence": {
+    "exact_reference_events": 1093,
+    "reference_polygons": 462,
+    "full_context_events": 970,
+    "right_edge_limited_events": 123,
+    "terminal_limited_events": 28,
+    "note": "Reference-silent polygons are audit-only and are not verified negatives."
+  },
+  "nested_spatial_benchmark_endpoint": {
+    "route": "polygon_first",
+    "band": "VV_dB",
+    "protocol": "nested_5fold_spatial_oof",
+    "matching": "one-to-one within +/-2 calendar months",
+    "tp": 880,
+    "fp": 238,
+    "fn": 213,
+    "precision": 0.7871198568872988,
+    "recall": 0.8051235132662397,
+    "f1": 0.7960199004975125,
+    "temporal_mae_months": 0.7784090909090909
+  },
+  "national_route_accounting": {
+    "polygon_first_vv_events": {
+      "count": 6658,
+      "status": "formal national chronology used in the manuscript"
+    },
+    "pixel_first_vv_events": {
+      "count": 6241,
+      "status": "alternative representation route used for sensitivity analysis"
+    },
+    "route_concatenated_vv_rows": {
+      "count": 12899,
+      "identity": "6658 + 6241",
+      "status": "not de-duplicated; not a biological event count; not the manuscript chronology"
+    },
+    "polygon_first_vv_event_polygons": 3149,
+    "validated_polygons_with_zero_polygon_first_vv_events": 349
+  },
+  "recurrent_intervals": {
+    "adjacent_intervals": 3509,
+    "polygons_with_at_least_two_events": 2194,
+    "overall_median_months": 36,
+    "median_of_polygon_specific_medians_months": 37
+  },
+  "vh_support_sensitivity": {
+    "matching": "each polygon-first VV event matched one-to-one to a VH event within +/-2 months",
+    "vv_events_with_vh_support": 4061,
+    "vh_supported_adjacent_intervals_without_bridging": 1385,
+    "polygons_with_vh_supported_intervals": 1081,
+    "supported_interval_median_months": 40,
+    "status": "sensitivity subset; not a replacement for the primary VV chronology"
+  },
+  "paper_n1_operational_detector": {
+    "window_months": 48,
+    "step_months": 12,
+    "permutation_p_max": 0.025,
+    "initial_permutations": 3999,
+    "near_threshold_range": [0.015, 0.035],
+    "near_threshold_permutations": 19999,
+    "candidate_seed": 20260820,
+    "spatial_bootstrap_replicates": 5000,
+    "spatial_bootstrap_seed": 20260829
+  },
+  "archived_l0_detector_note": {
+    "confidence": 0.975,
+    "bootstrap_iterations": 800,
+    "status": "legacy formal-release implementation metadata; not the paper N1 operational permutation configuration"
+  }
+}

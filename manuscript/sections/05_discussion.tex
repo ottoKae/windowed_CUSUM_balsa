@@ -1,0 +1,36 @@
+% !TeX root = ../main.tex
+\section{Discussion}\label{sec:discussion}
+
+
+\subsection{Local reference solves recurrent-event sensitivity}
+Recurrent balsa disturbances were expressed more consistently as temporal departures from each stand's recent state than as fixed backscatter levels. Absolute VV and VH distributions overlapped substantially, whereas reference-dated disturbances showed repeatable negative within-stand responses. This supports a local-reference formulation. After one disturbance and subsequent recovery, a renewed decline can be evaluated relative to the updated stand state rather than against a fixed national threshold. Previous Sentinel-1 CUSUM approaches have demonstrated the value of cumulative temporal departures for tropical forest-disturbance monitoring~\citep{Ygorra2021CuSum,Aquino2022RadarDisturbance}, while ReCuSum extended this principle through recursive segmentation~\citep{Ygorra2023ReCuSum}. Windowed CUSUM instead repeatedly establishes overlapping local contexts without permanently partitioning the trajectory.
+
+The component analyses showed that local-reference windowing was the main source of recurrent-event sensitivity, whereas central-interval admission and permutation screening primarily recovered precision. This mechanism is also consistent with the benchmark comparison, in which the proposed method's advantage arose mainly from higher event recall. Polygon-first median aggregation provided a complementary benefit. It represented the plantation management unit directly, required few additional parameters, and achieved performance comparable to more complex spatial representations. Detection nevertheless required post-disturbance temporal context, indicating that the method is better suited to recurrent-event reconstruction and delayed monitoring than to immediate change alerting.
+
+
+
+
+
+
+\subsection{Observed balsa turnover has a dominant 3-year timescale}
+
+The median 36-month interval between consecutive detected disturbances represents the principal plantation-level finding. This interval should be interpreted as an observed recurrence timescale rather than a direct planting-to-harvest age, but it is consistent with the rapid growth and commercial management of balsa in Ecuador. Producer surveys in Los R\'ios report harvesting or purchasing commonly around three to four years~\citep{GonzalezOsorio2010Balsa}, while Ecuadorian growth studies show rapid early development and strong site-dependent productivity~\citep{CanadasLopez2019BalsaGrowth}. Age-related wood-property measurements from approximately 30--40-month-old stands provide additional biological context~\citep{Moya2025BalsaProperties}. The observed 36-month central tendency therefore falls within a plausible commercial development period.
+
+Cross-polarization analysis supported the persistence of this approximately three-year pattern, although requiring VH evidence at both bounding events shifted the median from 36 to 40 months. Because VH agreement preferentially retained longer intervals, the latter should not be interpreted as a corrected rotation estimate. Rotation length is also unlikely to be universal: balsa systems in Papua New Guinea commonly operate on longer, approximately five- to six-year cycles~\citep{Jenkin2019BalsaValueChain,Midgley2010Balsa}. Site productivity, management, and market conditions can therefore alter the relationship between disturbance recurrence and biological rotation.
+
+The distinction is important because planting dates were unavailable, the first and last cycles were censored by the observation period, and not every negative disturbance could be independently attributed to clear-cut harvesting. Very short intervals may instead reflect partial clearing, multi-stage disturbance, or unresolved event structure. The 36-month estimate is therefore best interpreted as a rotation-relevant timescale of recurrent stand turnover within the monitored inventory rather than a direct estimate of biological rotation age.
+
+
+
+
+
+\subsection{Robustness, limitations, and transferability}
+
+Spatially blocked evaluation reduced the optimistic bias that can arise when geographically related observations are divided between parameter selection and evaluation~\citep{Roberts2017SpatialCV}, but it does not replace external geographic validation. Performance may differ under other rainfall regimes, terrain, acquisition geometries, stand structures, or management systems. The temporal-null analysis further showed that permutation screening depends on how temporal dependence is represented: dependence-preserving nulls increased selectivity but substantially reduced recall. The retained independent-value permutation should therefore be viewed as an operational precision--recall choice under the evaluated threshold rather than evidence that monthly Sentinel-1 observations are temporally exchangeable.
+
+Disturbance attribution remains another limitation. Negative Sentinel-1 transitions can be associated with harvesting but may also reflect partial canopy removal, flooding, wind damage, or observation effects, and forest-disturbance accuracy depends strongly on reference design and disturbance definition~\citep{RodriguezPaulino2024Review}. The candidate-conditioned 2026 review therefore informs prospective candidate precision but cannot estimate missed disturbances or population recall. Accordingly, detected-event counts should not be interpreted directly as verified harvested area.
+
+The transferable contribution is the combination of track-specific SAR time series, stand-level representation, recurrent local-reference detection, and spatially structured evaluation while maintaining a clear distinction between observed disturbance recurrence and biological rotation. Future work should focus on reducing detection latency and developing dependence-aware statistical screening that preserves realistic temporal structure without the large recall losses observed here.
+
+
+

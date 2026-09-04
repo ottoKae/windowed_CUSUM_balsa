@@ -1,0 +1,108 @@
+\documentclass[a4paper,fleqn]{cas-sc}
+
+\usepackage[authoryear]{natbib}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{threeparttable}
+\usepackage{graphicx}
+\usepackage{multirow}
+\usepackage{lineno}
+\usepackage[section]{placeins}
+\usepackage{xcolor}
+\usepackage{setspace}
+\usepackage{float}
+
+\ExplSyntaxOn
+\cs_new_eq:NN \lr_cusum_original_make_tbl_caption:nn \__make_tbl_caption:nn
+\cs_set:Npn \__make_tbl_caption:nn #1#2
+  {
+    \group_begin:
+      \skip_set:Nn \l_tbl_abovecap_skip {3pt}
+      \setstretch{1.5}
+      \lr_cusum_original_make_tbl_caption:nn {#1} {#2}
+    \group_end:
+  }
+\cs_new_eq:NN \lr_cusum_original_make_fig_caption:nn \__make_fig_caption:nn
+\cs_set:Npn \__make_fig_caption:nn #1#2
+  {
+    \group_begin:
+      \skip_set:Nn \l_fig_abovecap_skip {3pt}
+      \setstretch{1.5}
+      \lr_cusum_original_make_fig_caption:nn {#1} {#2}
+    \group_end:
+  }
+\ExplSyntaxOff
+
+\begin{document}
+\linenumbers
+
+\let\WriteBookmarks\relax
+\def\floatpagepagefraction{1}
+\def\textpagefraction{.001}
+
+\shorttitle{Windowed CUSUM analysis of near-decadal Sentinel-1 SAR time series}
+\shortauthors{Rao et al.}
+
+% TODO(author): Confirm corresponding-author marks and email assignments before submission.
+\author[1]{Keyi Rao}[orcid=0000-0001-8443-9819]\cormark[1]
+\credit{Conceptualization, Methodology, Software, Data curation, Formal analysis, Project administration, Writing -- original draft, Visualization}
+
+\author[1]{Shixin Dong}[orcid=0009-0005-7299-5312]\cormark[1]
+\credit{Software, Visualization, Validation, Writing -- review and editing}
+
+\author[2]{Zhongwen Hu}[orcid=0000-0003-2689-3196]
+\credit{Supervision, Validation, Funding acquisition}
+
+\author[3,4]{Cesar Ivan Alvarez}[orcid=0000-0001-5629-0893]
+\credit{Conceptualization, Methodology, Writing -- review and editing}
+
+\author[1]{Zhaocong Wu}[orcid=0000-0003-2435-5538]
+\ead{zcwoo@whu.edu.cn}
+\credit{Conceptualization, Supervision, Funding acquisition}
+
+\affiliation[1]{organization={School of Remote Sensing and Information Engineering, Wuhan University},
+  addressline={No. 299 Bayi Road, Wuchang District}, city={Wuhan}, postcode={430072},
+  state={Hubei}, country={China}}
+\affiliation[2]{organization={School of Architecture and Urban Planning and MNR Key Laboratory for Geo-Environmental Monitoring of Great Bay Area, Shenzhen University},
+  addressline={No. 3688 Nanhai Avenue, Nanshan District}, city={Shenzhen},
+  postcode={518060}, state={Guangdong}, country={China}}
+\affiliation[3]{organization={Institute of Geography, Faculty of Applied Informatics, University of Augsburg},
+  addressline={Universit\"atsstra\ss e 12}, city={Augsburg}, postcode={86159}, country={Germany}}
+\affiliation[4]{organization={Maestr\'ia en Sistemas de Informaci\'on Geogr\'afica, Topograf\'ia Automatizada y Fotogrametr\'ia Digital, Universidad Cat\'olica de Santiago de Guayaquil},
+  city={Guayaquil}, country={Ecuador}}
+\cortext[cor1]{Corresponding author}
+
+\title[mode=title]{Windowed CUSUM analysis of near-decadal Sentinel-1 SAR time series for monitoring recurrent stand disturbances in Ecuadorian balsa plantations}
+
+\begin{abstract}
+Short-rotation balsa \textit{Ochroma pyramidale} plantations require temporally explicit disturbance histories rather than a single forest-loss label, yet persistent cloud cover limits optical continuity in tropical regions. We developed Windowed CUSUM, a local-reference framework that combines overlapping temporal windows, central-interval admission, directional screening, permutation-based statistical support, and event consolidation to reconstruct recurrent stand disturbances from near-decadal Sentinel-1 time series. The framework was evaluated against 1,093 month-resolved reference events from 462 plantation polygons grouped into 57 spatial blocks and then applied to 3,498 validated polygons across Ecuador. Historical disturbances showed consistent within-stand declines despite substantial overlap in absolute backscatter, with median post-minus-pre-event changes of about $-1.5$ dB in both VV and VH. Under nested five-fold spatial out-of-fold evaluation, Windowed CUSUM achieved a precision of 0.787, recall of 0.805, F1 of 0.796, and temporal mean absolute error of 0.778 months. The strongest benchmark, decrease-filtered ReCuSum, achieved an F1 of 0.675; the gain arose mainly from higher recall. Component analyses identified local-reference windowing as the main source of recurrent-event sensitivity, while central-interval admission and permutation screening mainly improved precision. Temporal truncation showed recall of 0.790 after six post-disturbance months, with 96.8\% of those detections remaining within two months of their 12-month dates. Across the validated inventory, the locked VV-only detector identified 6,658 disturbances during 2017--2025 and 3,509 consecutive inter-disturbance intervals, with a median recurrence of 36 months. Proposed Windowed CUSUM therefore extends near-decadal SAR monitoring from individual disturbance detection toward reconstruction of recurrent plantation disturbance histories.
+\end{abstract}
+
+\begin{highlights}
+\item Recurrent balsa disturbances show consistent within-stand Sentinel-1 declines
+\item Windowed CUSUM reconstructs recurrent disturbances from near-decadal SAR records
+\item Local-reference windowing is the main source of recurrent-event sensitivity
+\item Windowed CUSUM reaches 0.805 recall versus 0.591 for the strongest benchmark
+\item Median observed inter-disturbance recurrence is 36 months
+\end{highlights}
+
+\begin{keywords}
+Balsa plantation \sep Sentinel-1 \sep CUSUM \sep forest disturbance \sep spatial validation \sep short-rotation forestry
+\end{keywords}
+
+\maketitle
+\doublespacing
+
+\input{sections/01_introduction}
+\input{sections/02_materials}
+\input{sections/03_methods}
+\input{sections/04_results}
+\input{sections/05_discussion}
+\input{sections/06_conclusion}
+\input{sections/07_declarations}
+
+\printcredits
+\bibliographystyle{cas-model2-names}
+\bibliography{references}
+
+\end{document}

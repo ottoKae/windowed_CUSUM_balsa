@@ -1,0 +1,4 @@
+cohort,events,polygons,intervals,median_months,q10_months,q25_months,q75_months,q90_months,polygon_weighted_median_months,proportion_<12,proportion_12--23,proportion_24--47,proportion_>=48
+All qualified Polygon-first VV,6658,2194,3509.0,36.0,4.0,22.0,46.0,54.0,37.0,0.2043317184383015,0.05272157309774864,0.530350527215731,0.21259618124821886
+Adjacent VV endpoints both VH-supported,4061,1081,1385.0,40.0,27.0,34.0,48.0,54.0,40.0,0.05776173285198556,0.018772563176895306,0.6729241877256318,0.2505415162454874
+Polygon-first VH-only diagnostic,2083,1578,,,,,,,,,,,

@@ -1,0 +1,87 @@
+{
+  "schema_version": "windowed-cusum-balsa.private-source-provenance.v1",
+  "source_repository": "LR-CuSum_v100 private analysis workspace",
+  "note": "Paths are relative logical locators in the private source repository; no local absolute path is recorded.",
+  "sources": [
+    {
+      "path": "outputs/forestry_sample_rebuild/20260825_balsa_validated_40tiles_v1/phase_b_summary.json",
+      "bytes": 1210,
+      "sha256": "ed25bc334bfeba00f6d6b87ab51ad85f379ebf76d1b2a5565f58742e33e6c7b2",
+      "use": "inventory and spatial-role counts",
+      "included_verbatim": false
+    },
+    {
+      "path": "outputs/forestry_sample_rebuild/20260825_balsa_validated_40tiles_v1_phase_c_coverage_smoke_v3/phase_c_summary.json",
+      "bytes": 3907,
+      "sha256": "d1d998f84c9683de7d4dcf62c296ae02a830d24a23e089ee961ae17c8a9d6a85",
+      "use": "resolver coverage and bit-exact extraction audit",
+      "included_verbatim": false
+    },
+    {
+      "path": "outputs/forestry_sample_rebuild/20260825_balsa_validated_40tiles_v1_phase_d_full_cache_v1/phase_d_cache_report.json",
+      "bytes": 934,
+      "sha256": "86d3eecbf21fd03099d032a553d17814fa4e0a83d524dc6742cd7a56901accb2",
+      "use": "full-cache dimensions and missing-data semantics",
+      "included_verbatim": false
+    },
+    {
+      "path": "outputs/forestry_sample_rebuild/20260825_balsa_validated_40tiles_v1_phase_e_reference_v1/reference_ground_events_exact.parquet",
+      "bytes": 127291,
+      "sha256": "868e0542de279d466f1d4fafa6464f2d8685ccc3438035623fd7514986495474",
+      "use": "authoritative exact reference-event ledger",
+      "included_verbatim": false,
+      "reason": "contains linkable identifiers, locations, source rows, administrative fields, and evidence provenance"
+    },
+    {
+      "path": "outputs/formal_historical_release_40tiles_v9_boundary/release_counts.json",
+      "bytes": 870,
+      "sha256": "d901aab7a7cf0e3895bbdd88f39af87c770882e7125222d843f565589d0963d5",
+      "use": "formal release cohort and configuration counts",
+      "included_verbatim": false
+    },
+    {
+      "path": "outputs/formal_historical_release_40tiles_v9_boundary/tables/nested_oof_metrics.csv",
+      "bytes": 560,
+      "sha256": "b37be4a3d31747e5b8d72aac6b1f9662f2e5d037e3abb958a87a3b7fd007b5d0",
+      "use": "formal nested spatial OOF endpoint",
+      "public_copy": "results/formal_validation/nested_spatial_oof_metrics.csv"
+    },
+    {
+      "path": "outputs/windowed_cusum_n1_full_40tile_v1/national/events/VV_dB.ground.parquet",
+      "bytes": 150481,
+      "sha256": "d22a13007507890e22746303cf6b9cf03dfa8eb9203c2706a8952ea81086da83",
+      "use": "authoritative 6,658-event polygon-first VV chronology",
+      "included_verbatim": false,
+      "reason": "row-level identifiers and dates are not required for the GitHub result package"
+    },
+    {
+      "path": "outputs/windowed_cusum_n1_full_40tile_v1/run_manifest.json",
+      "bytes": 542,
+      "sha256": "cd234bb1fb40b44b1e7c08c13a46738e33518447431897e46546cf1a07d2ba5b",
+      "use": "paper N1 permutation and spatial-bootstrap configuration",
+      "included_verbatim": false
+    },
+    {
+      "path": "outputs/windowed_cusum_n1_full_40tile_v1/national/national_counts.json",
+      "bytes": 258,
+      "sha256": "40a94689f6591fb69247309e8d8edf3b5f3ed17a38ac538edebd13f3d05cd5c6",
+      "use": "route accounting: 6,658 polygon-first, 6,241 pixel-first, 12,899 concatenated rows",
+      "included_verbatim": false
+    },
+    {
+      "path": "outputs/windowed_cusum_n1_polarization_interval_sensitivity_40tile_v2_vh_pm2/metrics/cohort_counts.csv",
+      "bytes": 270,
+      "sha256": "83c1bd4e63f0e91c6a3b7a4740e221ea17f7d2a7452d4b83a3ad942bee0bd03f",
+      "use": "revised one-to-one +/-2-month VH-support counts",
+      "public_copy": "results/polarization/cohort_counts_vh_pm2.csv"
+    },
+    {
+      "path": "outputs/jag_codex_20260904/figure6_recurrence_10km_v21_ylabels_aligned/figure_manifest.json",
+      "bytes": 11164,
+      "sha256": "1d8369ff9e055277c4669feeaebfdc0b752263039f13e1385a39317725b2b77e",
+      "use": "current national-figure counts, hashes, and layout QA",
+      "included_verbatim": false,
+      "reason": "private manifest contains local paths; a scrubbed QA summary is published instead"
+    }
+  ]
+}

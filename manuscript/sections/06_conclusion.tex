@@ -1,0 +1,14 @@
+% !TeX root = ../main.tex
+\section{Conclusion}
+\label{sec:conclusion}
+
+This study establishes Windowed CUSUM as a local-reference framework for reconstructing recurrent stand disturbances from near-decadal Sentinel-1 SAR time series. This is the first study to use a near-decadal Sentinel-1 record to reconstruct multiple stand-level disturbance events and derive rotation-relevant temporal dynamics in a short-rotation plantation system. Rather than relying on a single historical baseline or recursively partitioning the time series after each detected change, Windowed CUSUM repeatedly evaluates overlapping local temporal contexts and separates the statistical estimation domain from the central interval in which events are admitted. This design accommodates evolving harvest--regrowth trajectories while retaining month-level event timing. Under nested five-fold spatial out-of-fold evaluation, the method achieved a precision of 0.787, recall of 0.805, and F1 of 0.796, outperforming the strongest benchmark primarily through improved recall. Component analyses further identified local-reference windowing as the principal source of this gain.
+
+
+
+The methodological advance is therefore not limited to improved disturbance-detection accuracy. Windowed CUSUM converts a continuous, cloud-independent SAR record into temporally explicit histories of repeated stand turnover, extending Sentinel-1 monitoring from individual forest-loss events toward reconstruction of multi-cycle plantation dynamics. Across the validated BALSA inventory, these histories yielded a median interval of 36 months between consecutive disturbances, consistent with the rapid growth and short management cycles reported for balsa in Ecuador and providing an independent plausibility check on the reconstructed rotation. More broadly, the framework demonstrates the value of dense SAR archives for reconstructing short-rotation plantation dynamics in cloud-prone regions where optical observations lack sufficient temporal continuity.
+
+
+
+
+
