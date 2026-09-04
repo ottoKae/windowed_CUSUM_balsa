@@ -54,6 +54,12 @@ def included(path: Path) -> bool:
     if not path.is_file() or path.resolve() in EXCLUDED:
         return False
     relative = path.relative_to(ROOT)
+    if (
+        relative.parts[:2] == ("data", "local")
+        or relative.parts[:1] == ("runs",)
+        or relative.as_posix() == "configs/data.local.json"
+    ):
+        return False
     if any(part in EXCLUDED_DIRS or part.endswith(".egg-info") for part in relative.parts):
         return False
     name = path.name.lower()

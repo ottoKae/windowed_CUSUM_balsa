@@ -45,7 +45,12 @@ SECRET_PATTERNS = {
 
 def included(path: Path) -> bool:
     relative = path.relative_to(ROOT)
-    return path.is_file() and not any(
+    local_only = (
+        relative.parts[:2] == ("data", "local")
+        or relative.parts[:1] == ("runs",)
+        or relative.as_posix() == "configs/data.local.json"
+    )
+    return path.is_file() and not local_only and not any(
         part in EXCLUDED_DIRS or part.endswith(".egg-info") for part in relative.parts
     )
 

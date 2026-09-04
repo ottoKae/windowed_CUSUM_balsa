@@ -9,7 +9,7 @@ workspace; they are not public repository paths or runnable public commands.
 
 | Printed figure | Asset | Role | Public rebuild status or private source provenance |
 |---:|---|---|---|
-| 1 | `fig01_national_recurrence.pdf` | National recurrence map and distributions | Frozen PDF; private source: `analysis/workflows/build_figure6_recurrence_10km.py` (not included) |
+| 1 | `fig01_national_recurrence.pdf` | National recurrence map and distributions | Frozen publication PDF; an authorized-data rebuild is available at `scripts/figures/build_national_recurrence.py` |
 | 2 | `fig02_study_area.pdf` | Study area and official BALSA inventory | Frozen PDF; private sources: `scripts/build_study_area_green_yellow.py` and `scripts/build_study_area_figure.py` (not included) |
 | 3 | `fig03_workflow.pdf` | End-to-end methodological workflow | Public builder: `scripts/figures/build_workflow.py` |
 | 4 | `fig04_windowed_cusum_concept.pdf` | Windowed CUSUM concept and event-admission semantics | Frozen PDF; private source: `analysis/workflows/build_windowed_cusum_concept.py` (not included) |

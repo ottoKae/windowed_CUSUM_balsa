@@ -1,7 +1,7 @@
 # Data package
 
-This repository intentionally does **not** redistribute the source geospatial
-data used in the Ecuador analysis. The public GitHub package contains only:
+This repository intentionally does **not** track the source geospatial data
+used in the Ecuador analysis. The public GitHub package contains only:
 
 - a fully synthetic, non-geographic monthly Sentinel-1 example in `demo/`;
 - machine-readable schemas in `schemas/`;
@@ -47,3 +47,23 @@ one stable object identifier across the monthly sequence. The frozen study used
 within 2017-01 through 2025-12. These dates describe the published experiment;
 they are not hard-coded requirements of the core detector.
 
+On an authorized workstation, `scripts/reproduce.py prepare` assembles the
+ignored `data/local/paper_v1` package. Its canonical files are:
+
+| Path | Unit |
+|---|---|
+| `inventory/balsa_validated.parquet` | one row and geometry per validated polygon |
+| `splits/polygon_roles.parquet` | one immutable spatial role per polygon |
+| `splits/spatial_blocks.parquet` | spatial-block geometry |
+| `polygon_pixels/pixel_associations.parquet` | polygon-to-native-pixel membership |
+| `polygon_pixels/cache/*.npz` | VV, VH, validity, n_obs, and calendar by native pixel-track |
+| `references/reference_ground_events.parquet` | one row per dated ground event |
+| `references/reference_track_events.parquet` | reference events expanded to observed tracks |
+| `s1grits/catalog.parquet` | orbit-aware source catalog |
+| `frozen_results/` | candidates, events, F0--F4, spatial bootstrap, and national summaries |
+| `admin/`, `basemap/` | local map context; Esri cache must not be redistributed |
+
+`MANIFEST.json` hashes every local file. `AUDIT.json` verifies the
+study-defining counts. The Zarr stores remain in their original archive and are
+resolved using `s1grits/SOURCE.local.json`; copying them would add terabytes
+without improving reproducibility.

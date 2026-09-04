@@ -3,8 +3,9 @@ import pandas as pd
 from affine import Affine
 from shapely.geometry import box
 
+from lr_cusum.paper import PaperDetectionConfig
 from lr_cusum.polygon_workflow import (
-    _geometry_pixels, _largest_component, annotate_vv_with_vh, fuse_tracks,
+    _geometry_pixels, _largest_component, _series_events, annotate_vv_with_vh, fuse_tracks,
     match_sample_events,
 )
 
@@ -21,6 +22,25 @@ def test_geometry_pixels_uses_pixel_centres_and_falls_back_for_tiny_polygon():
 
 def test_largest_component_uses_eight_neighbour_connectivity():
     assert _largest_component({(0, 0), (1, 1), (5, 5)}) == 2
+
+
+def test_polygon_routes_accept_the_paper_n1_detector():
+    calendar = pd.period_range("2017-01", "2021-12", freq="M")
+    signal = np.r_[np.full(30, -8.0), np.full(30, -14.0)]
+    values = np.vstack([signal, signal - 6.0])
+    config = PaperDetectionConfig(
+        permutations=19,
+        refined_permutations=39,
+        refine_low=0.0,
+        refine_high=0.0,
+        alpha=0.5,
+        start_year=2017,
+        end_year=2021,
+    )
+    events = _series_events("stand", values, config, calendar)
+    assert events
+    assert all("null_p_value" in event for event in events)
+    assert all(event["selection_score"] == 1.0 - event["null_p_value"] for event in events)
 
 
 def test_track_fusion_and_sample_event_matching_are_one_to_one():

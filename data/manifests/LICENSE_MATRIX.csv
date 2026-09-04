@@ -1,0 +1,9 @@
+component,local_use,git_release,reason
+BALSA polygon geometry,yes,pending,MAG redistribution terms and location disclosure require confirmation
+Polygon-interior Sentinel-1 cache,yes,pending,Derived geospatial records retain exact locations
+S1-GRiTS catalog,yes,pending,Release together with S1-GRiTS metadata and provenance
+S1-GRiTS Zarr stores,external,no,Large source cubes remain in the data archive
+Reference events and spatial blocks,yes,pending,Exact dated locations and interpretation records are sensitive
+Candidate events and bootstrap replicates,yes,pending,Derived row-level records can reveal exact study objects
+Natural Earth boundaries,yes,yes,Public-domain Natural Earth data with attribution
+Esri basemap cache,yes,no,Use locally under provider terms; do not redistribute cached tiles

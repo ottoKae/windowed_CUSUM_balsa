@@ -3,7 +3,7 @@
   "scope": [
     "complete repository release, excluding generated build and QA files"
   ],
-  "file_count_scanned": 110,
+  "file_count_scanned": 128,
   "checks": {
     "annual_sum_is_6658": true,
     "polygon_distribution_sum_is_3498": true,

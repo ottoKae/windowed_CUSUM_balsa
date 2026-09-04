@@ -21,12 +21,19 @@ cause from SAR alone.
 | `src/lr_cusum/` | Core detector, N1 paper protocol, aggregation, validation, ablation, and optional data adapters |
 | `configs/paper_v1.json` | Frozen detector, consolidation, and validation semantics |
 | `data/demo/` | Synthetic, non-geographic monthly example |
-| `data/schemas/` | Machine-readable input contracts |
+| `data/schemas/`, `data/manifests/` | Input contracts and real-data release rules |
 | `results/` | Compact aggregate tables and count ledger; no exact locations |
 | `scripts/figures/` | Public builder for the methodological workflow figure |
 | `manuscript/` | Portable LaTeX source and the eight active figures |
 | `tests/` | Unit tests for algorithmic and evaluation semantics |
 | `provenance/` | Source inventory, redistribution boundaries, and hashes |
+
+The authorized workstation also has an ignored package at
+`data/local/paper_v1/`. It contains the 3,498 validated geometries, frozen
+polygon roles and spatial blocks, 1,093 dated reference events, complete
+polygon-interior pixel caches, the S1-GRiTS catalog, local administrative and
+basemap assets, and row-level frozen outputs. The multi-terabyte Zarr archive is
+mounted in place rather than copied into Git.
 
 Historical notebooks, private review workbooks, raw geospatial data, caches,
 intermediate candidates, and versioned figure wrappers are intentionally absent.
@@ -97,6 +104,35 @@ locations, workstation paths, non-English code text, and common secret formats:
 ```bash
 python provenance/audit_public_package.py
 python provenance/build_release_manifest.py
+```
+
+## Authorized full replay
+
+Copy `configs/data.example.json` to the ignored `configs/data.local.json`, set
+the source paths, then run:
+
+```bash
+python scripts/reproduce.py prepare --config configs/data.local.json
+python scripts/reproduce.py audit --config configs/data.local.json
+python scripts/reproduce.py extract --track SAMPLE_TRACK
+python scripts/reproduce.py detect --route polygon-first
+python scripts/reproduce.py detect --route pixel-first
+python scripts/reproduce.py evaluate
+python scripts/reproduce.py summarize
+```
+
+Detection writes one atomic Parquet file per track under `runs/`, so an
+interrupted national run resumes without recomputing completed tracks. Use
+`--track TILE_DIRECTION_TKNN` for a small integration test. The frozen paper
+chronology is polygon-first VV; pixel-first is an explicit sensitivity route,
+not a replacement for the published count ledger. See
+`docs/FULL_REPRODUCTION.md` for data lineage, stages, and publication gates.
+
+Legacy 9×9 S1-GRiTS sample shards can be converted to long Parquet tables with
+the same runner:
+
+```bash
+python scripts/reproduce.py convert-shards PATH/TO/COHORT OUTPUT --cohort balsa
 ```
 
 The detector was also compared with the frozen private N1 ledgers on sampled

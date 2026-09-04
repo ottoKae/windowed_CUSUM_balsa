@@ -8,8 +8,8 @@
     "provenance/RELEASE_MANIFEST.json",
     "provenance/CHECKSUMS.sha256"
   ],
-  "file_count": 108,
-  "total_bytes": 33394280,
+  "file_count": 120,
+  "total_bytes": 33435863,
   "files": [
     {
       "path": ".gitattributes",
@@ -18,8 +18,28 @@
     },
     {
       "path": ".gitignore",
-      "bytes": 696,
-      "sha256": "cb867c6e4bd60acc5efdeabce5e3b396361c218c5e544b8d2ed943d179504ae1"
+      "bytes": 738,
+      "sha256": "8f6950cdf6e0df52cd30cfca979d4140afc2a39210dd5036664510d43623efbb"
+    },
+    {
+      "path": ".pytest_final/test_nested_protocol_json_load0/protocol.json",
+      "bytes": 55,
+      "sha256": "d0ca074acafd2814b6f298d9fcdcab520f527ff261937be084d9886ad0071abc"
+    },
+    {
+      "path": ".pytest_tmp2/test_nested_protocol_json_load0/protocol.json",
+      "bytes": 55,
+      "sha256": "d0ca074acafd2814b6f298d9fcdcab520f527ff261937be084d9886ad0071abc"
+    },
+    {
+      "path": ".pytest_tmp3/test_nested_protocol_json_load0/protocol.json",
+      "bytes": 55,
+      "sha256": "d0ca074acafd2814b6f298d9fcdcab520f527ff261937be084d9886ad0071abc"
+    },
+    {
+      "path": "configs/data.example.json",
+      "bytes": 1131,
+      "sha256": "2c275c07f2256323f02aa290a7fa4e75aa11e9e972f127dbac792c765872d20c"
     },
     {
       "path": "configs/paper_v1.json",
@@ -52,9 +72,19 @@
       "sha256": "92e4e5a758da8d7baef8e22ffaabd9f0e051acd10f37f9fcd6fa3f5e05959637"
     },
     {
+      "path": "data/manifests/LICENSE_MATRIX.csv",
+      "bytes": 801,
+      "sha256": "bfb994838ab8445b0c7e75e01caf672d08ad590c7c82f6299fb1e3a046ac99c7"
+    },
+    {
+      "path": "data/manifests/README.md",
+      "bytes": 870,
+      "sha256": "f72010213c3477574db3bc0db9d39d9a299738642a90e24a64a9cb9bf490f1fd"
+    },
+    {
       "path": "data/README.md",
-      "bytes": 2224,
-      "sha256": "36a75d911ad599fe125ac48be13f3e1a15f4e9e80d35a956d6f9cba0745660dd"
+      "bytes": 3458,
+      "sha256": "15230e43b9cf7af9fa0b485cc15fbf8f9e119fb7b66a6380249ed4224b2240c3"
     },
     {
       "path": "data/schemas/detected_event.schema.json",
@@ -65,6 +95,11 @@
       "path": "data/schemas/monthly_s1.schema.json",
       "bytes": 838,
       "sha256": "7a17da805b628c35082376a9cb647ee356ae7feed32b00a899090a55ff785952"
+    },
+    {
+      "path": "docs/FULL_REPRODUCTION.md",
+      "bytes": 6908,
+      "sha256": "dc24f8f446a62427908b82fde1057ec6752f34e18c6464c44c39602cd9afbc5d"
     },
     {
       "path": "docs/METHOD_SEMANTICS.md",
@@ -148,8 +183,8 @@
     },
     {
       "path": "manuscript/figures/FIGURE_MANIFEST.md",
-      "bytes": 2814,
-      "sha256": "2d678f694b1609cc27dee4488a7fce2565f9beaf237ce60aa8ae719bdd38fe34"
+      "bytes": 2831,
+      "sha256": "e5ac9705ba77f0273473751803fac7c13cd9c17d8adc6233e5665c336d128119"
     },
     {
       "path": "manuscript/figures/SHA256SUMS.txt",
@@ -178,8 +213,8 @@
     },
     {
       "path": "manuscript/sections/01_introduction.tex",
-      "bytes": 6536,
-      "sha256": "0e00165cc1a80dfb0723481e90922d39667c9f5cafcf92a4be8e9d464f134bf2"
+      "bytes": 6513,
+      "sha256": "7207b49022050e773e06d7891afa2344d1b252f56aef1b6f456336ec9a21debc"
     },
     {
       "path": "manuscript/sections/02_materials.tex",
@@ -188,8 +223,8 @@
     },
     {
       "path": "manuscript/sections/03_methods.tex",
-      "bytes": 19761,
-      "sha256": "f53a395b798fc9c02eac48e695d300fde8ee415e0a10307eb9255061b9fe283d"
+      "bytes": 19532,
+      "sha256": "b7a7bb1ef20f93a149ac4272c65a56f8df8a40077fb418627e2d2d011c8941db"
     },
     {
       "path": "manuscript/sections/04_results.tex",
@@ -218,13 +253,13 @@
     },
     {
       "path": "provenance/audit_public_package.py",
-      "bytes": 10914,
-      "sha256": "732a5e1df899d57f0dc6029ba8ce94ac1b6ec4768d76e7732b5f82494fa9ee8d"
+      "bytes": 11109,
+      "sha256": "05afd1258caa2c7b0deb9d6969928a442963d73b2f50ec56a6da9e81a1275800"
     },
     {
       "path": "provenance/build_release_manifest.py",
-      "bytes": 2547,
-      "sha256": "2d77c5f24b53567f399b76c8aa165f5d4e8df16360b04251f07da678a36002e7"
+      "bytes": 2735,
+      "sha256": "47e0eb6c3f4c57b51f289a1594cbf79fe3ec26e7a5cf4874afaa7b47e2b04399"
     },
     {
       "path": "provenance/DATA_SOURCES.md",
@@ -237,9 +272,14 @@
       "sha256": "bea37efbe46007addeff9565458ab843412c5019e160acfae21db214baa18843"
     },
     {
+      "path": "provenance/LOCAL_FULL_DATA_QA.json",
+      "bytes": 1530,
+      "sha256": "9a8f10cc7d194735b23e1da1ea7c3e9cd8938d7e8d6abcdce8709f79ee840146"
+    },
+    {
       "path": "provenance/PRIVACY_AUDIT.json",
       "bytes": 2930,
-      "sha256": "f253f2ca14fb7503be81f236115540a87ba5dacea24051be18c9ceebd31e714f"
+      "sha256": "8dc06e58c4c07a61938575e1d654d4d5a1acd830866f43516b430a0df5aec2b2"
     },
     {
       "path": "provenance/PRIVATE_INTEGRATION_QA.json",
@@ -273,13 +313,13 @@
     },
     {
       "path": "pyproject.toml",
-      "bytes": 994,
-      "sha256": "d46e24eb7b16bff3ef63ca12130cbdf7849044981dd4039579fd74fe5fb72dc3"
+      "bytes": 943,
+      "sha256": "60c35fe336a4e937eb0041c42351ed2ff5d10629b864b8ec7ac2f8a4fdd81289"
     },
     {
       "path": "README.md",
-      "bytes": 5301,
-      "sha256": "c91c45ca2af63585111b6022e39cfc5c5e76d07bec0db83f9546e58220f30b5c"
+      "bytes": 6896,
+      "sha256": "6cb403470d828403833b85800f7a4d3be81d407daffdbb2a36c5ce16245051e5"
     },
     {
       "path": "results/component_ablation/paired_contrasts_spatial_bootstrap.csv",
@@ -397,9 +437,19 @@
       "sha256": "74006024cec8a0f20cd0e725cf35f13224ca456c738fb7ecb5c14db864302f8d"
     },
     {
+      "path": "scripts/figures/build_national_recurrence.py",
+      "bytes": 6105,
+      "sha256": "6339467e790be3ae4fcdafb218390cf8e83189dd4c701df7ba7cef265a995b97"
+    },
+    {
       "path": "scripts/figures/build_workflow.py",
       "bytes": 2482,
       "sha256": "65038ec26072edfa633797f92c1e8c421db8061d64c51226dd43e8fd8777836c"
+    },
+    {
+      "path": "scripts/reproduce.py",
+      "bytes": 18511,
+      "sha256": "8c0cbd832ded4b84403e79e2adb3497881dbd3d3fdb63572b96a84443bb48ac1"
     },
     {
       "path": "src/lr_cusum/__init__.py",
@@ -415,6 +465,11 @@
       "path": "src/lr_cusum/aggregation.py",
       "bytes": 1188,
       "sha256": "43a7eaf8e92d87cb65e31515cfaad34720ce6c298f9c851ba6690e3deecfb936"
+    },
+    {
+      "path": "src/lr_cusum/baselines.py",
+      "bytes": 8832,
+      "sha256": "343c079daf33c8bc089b10090d17c3ccd41d8cd0fa9827899f9451704e0f6251"
     },
     {
       "path": "src/lr_cusum/cli.py",
@@ -453,13 +508,13 @@
     },
     {
       "path": "src/lr_cusum/notebook_baselines.py",
-      "bytes": 8832,
-      "sha256": "343c079daf33c8bc089b10090d17c3ccd41d8cd0fa9827899f9451704e0f6251"
+      "bytes": 339,
+      "sha256": "cffca4cbdf8fcf28232e8bd20f52318cd3aa373c09aabddae01933e50936adc0"
     },
     {
       "path": "src/lr_cusum/notebook_spatial.py",
-      "bytes": 5025,
-      "sha256": "add0cdd2c42236d8b12d7363f14259111fea98c083c75e73cec4297388671986"
+      "bytes": 227,
+      "sha256": "48911a14d8b6af9217c267bf5b81593920106270b80e12f8c7f6d806b89877cb"
     },
     {
       "path": "src/lr_cusum/paper.py",
@@ -468,8 +523,8 @@
     },
     {
       "path": "src/lr_cusum/polygon_workflow.py",
-      "bytes": 26344,
-      "sha256": "514cde20e67dfec6d8fe8c854fdb8486b643fae6133d0ada81db815e5b6f5087"
+      "bytes": 27379,
+      "sha256": "a29d8490a4082f95503ae8f6e23bc70f3715669585ed64cb9868bce7584b28ae"
     },
     {
       "path": "src/lr_cusum/reference_matching.py",
@@ -485,6 +540,11 @@
       "path": "src/lr_cusum/s1grits_shards.py",
       "bytes": 7856,
       "sha256": "5b431ab46e61e57f4cfe3457e16cf04ffc73db4b8a25a392177e12736e4357b3"
+    },
+    {
+      "path": "src/lr_cusum/spatial_fusion.py",
+      "bytes": 5025,
+      "sha256": "add0cdd2c42236d8b12d7363f14259111fea98c083c75e73cec4297388671986"
     },
     {
       "path": "src/lr_cusum/temporal_nulls.py",
@@ -518,8 +578,8 @@
     },
     {
       "path": "tests/test_notebook_comparison.py",
-      "bytes": 1845,
-      "sha256": "e3d4932e4f7d07a2c060cfb5225b722634ec6d2484b653ed4d491a29ab1eb684"
+      "bytes": 2100,
+      "sha256": "482bdc9e4064912b1a609af9035610f216b8c679ea6dc7eccffcf53e2e8f6981"
     },
     {
       "path": "tests/test_optimal_event_matching.py",
@@ -538,8 +598,8 @@
     },
     {
       "path": "tests/test_polygon_workflow.py",
-      "bytes": 2037,
-      "sha256": "5d7430db501cf134d2dd520d0eb99ebf59a6e473e80bd0797d9873a342643047"
+      "bytes": 2775,
+      "sha256": "3bdc7234d55f389b40b9aa37488f5225e95c2d04b483d2bc13ac0018766bc374"
     },
     {
       "path": "tests/test_temporal_nulls.py",

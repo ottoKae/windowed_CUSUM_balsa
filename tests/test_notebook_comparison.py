@@ -1,16 +1,20 @@
 import numpy as np
 import pandas as pd
 
-from lr_cusum.notebook_baselines import (
+from lr_cusum.baselines import (
     bfast_detect_seasonal,
     fpol_bocd_detect,
     is_decrease,
     recusum_detect,
 )
-from lr_cusum.notebook_spatial import temporal_dbscan_fusion
+from lr_cusum.spatial_fusion import temporal_dbscan_fusion
+from lr_cusum.notebook_baselines import is_decrease as legacy_is_decrease
+from lr_cusum.notebook_spatial import temporal_dbscan_fusion as legacy_temporal_dbscan
 
 
 def test_direction_filter_recognizes_downward_state_change():
+    assert legacy_is_decrease is is_decrease
+    assert legacy_temporal_dbscan is temporal_dbscan_fusion
     values = np.r_[np.zeros(24), np.full(24, -4.0)]
     assert is_decrease(values, 24)
     assert not is_decrease(-values, 24)

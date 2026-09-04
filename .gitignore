@@ -25,6 +25,7 @@ Thumbs.db
 .env.*
 credentials*.json
 token*.json
+configs/data.local.json
 
 # Large or machine-local data products
 outputs/
@@ -33,6 +34,8 @@ data/raw/
 data/interim/
 data/external/
 data/cache/
+data/local/
+runs/
 results/**/candidates/
 results/**/replicates/
 

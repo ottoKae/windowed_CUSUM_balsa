@@ -1,0 +1,29 @@
+{
+  "dataset_id": "windowed_cusum_balsa_paper_v1",
+  "destination": "data/local/paper_v1",
+  "sources": {
+    "sample_release": "PATH/TO/20260825_balsa_validated_40tiles_v1",
+    "pixel_cache": "PATH/TO/20260825_balsa_validated_40tiles_v1_phase_d_full_cache_v1",
+    "references": "PATH/TO/20260825_balsa_validated_40tiles_v1_phase_e_reference_v1",
+    "frozen_results": "PATH/TO/windowed_cusum_n1_full_40tile_v1",
+    "component_candidates": "PATH/TO/windowed_cusum_component_ablation_40tile_v1",
+    "s1grits_root": "PATH/TO/S1-GRiTS_Ecuador_40tiles_201601_202606_v3",
+    "natural_earth_root": "PATH/TO/natural_earth",
+    "esri_cache": "PATH/TO/study_area_basemap"
+  },
+  "expected": {
+    "validated_polygons": 3498,
+    "reference_events": 1093,
+    "reference_polygons": 462,
+    "reference_spatial_blocks": 57,
+    "polygon_tracks": 4001,
+    "pixel_associations": 176935,
+    "unique_track_pixels": 176907,
+    "s1grits_tiles": 40,
+    "s1grits_track_groups": 56,
+    "national_vv_events": 6658,
+    "polygons_with_vv_events": 3149,
+    "polygons_with_two_or_more_events": 2194,
+    "adjacent_event_intervals": 3509
+  }
+}

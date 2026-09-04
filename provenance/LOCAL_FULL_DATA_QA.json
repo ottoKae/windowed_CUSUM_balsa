@@ -1,0 +1,47 @@
+{
+  "schema_version": "windowed-cusum-balsa.local-full-data-qa.v1",
+  "date": "2026-09-04",
+  "contains_private_paths": false,
+  "local_package": {
+    "files": 533,
+    "bytes": 240814229,
+    "audit_passed": true
+  },
+  "study_counts": {
+    "validated_polygons": 3498,
+    "reference_events": 1093,
+    "reference_polygons": 462,
+    "reference_spatial_blocks": 57,
+    "polygon_tracks": 4001,
+    "pixel_associations": 176935,
+    "unique_track_pixels": 176907,
+    "s1grits_tiles": 40,
+    "s1grits_track_groups": 56,
+    "polygon_first_vv_events": 6658,
+    "polygons_with_events": 3149,
+    "polygons_with_two_or_more_events": 2194,
+    "adjacent_event_intervals": 3509
+  },
+  "real_data_checks": {
+    "raw_zarr_extraction_scope": "one 23-pixel track",
+    "raw_zarr_extraction_arrays_bit_exact": [
+      "values",
+      "valid",
+      "n_obs",
+      "calendar"
+    ],
+    "n1_detection_scope": "one single-polygon track",
+    "n1_candidate_identity_and_p_value_match_frozen": true,
+    "f0_f4_stage_metric_rows": 27,
+    "f0_f4_confusion_counts_match_frozen": true,
+    "f0_f4_max_absolute_float_difference": 5.551115123125783e-17,
+    "spatial_block_bootstrap_replicates": 5000
+  },
+  "software_checks": {
+    "pytest_passed": 64,
+    "python_compileall_passed": true,
+    "manuscript_compiled": true,
+    "public_package_audit_passed": true
+  },
+  "scope_note": "The receipt proves the authorized local package and replay paths on the study workstation; it does not authorize redistribution of exact row-level data."
+}

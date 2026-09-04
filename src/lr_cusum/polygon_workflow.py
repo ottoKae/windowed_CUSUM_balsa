@@ -14,6 +14,7 @@ import pandas as pd
 
 from .core import lr_cusum
 from .detection import DetectionConfig, stable_seed
+from .paper import PaperDetectionConfig, detect_series_n1
 
 
 CALENDAR = pd.period_range("2017-01", "2025-12", freq="M")
@@ -262,13 +263,25 @@ def _cache_calendar(arrays: dict) -> pd.PeriodIndex:
 def _series_events(
     identifier,
     values,
-    config: DetectionConfig,
+    config: DetectionConfig | PaperDetectionConfig,
     calendar: pd.PeriodIndex = CALENDAR,
 ):
     if values.shape[-1] != len(calendar):
         raise ValueError("series length and cache calendar differ")
     dates = calendar.to_timestamp().to_numpy(); rows = []
     for band_index, band in enumerate(config.bands):
+        if isinstance(config, PaperDetectionConfig):
+            detected = detect_series_n1(
+                values[band_index],
+                dates,
+                identifier=identifier,
+                band=band,
+                config=config,
+            )
+            for record in detected.to_dict("records"):
+                record["selection_score"] = 1.0 - float(record["null_p_value"])
+                rows.append(record)
+            continue
         for event in lr_cusum(
             values[band_index], dates, window_length=config.window_length,
             step=config.step, confidence_threshold=config.confidence_threshold,
@@ -277,8 +290,19 @@ def _series_events(
             start_year=config.start_year, end_year=config.end_year,
             minimum_observations=config.minimum_observations,
         ):
-            rows.append({"Band": band, **event.as_dict()})
+            record = {"Band": band, **event.as_dict()}
+            record["selection_score"] = float(record["bootstrap_confidence"])
+            rows.append(record)
     return rows
+
+
+def _score_column(frame: pd.DataFrame) -> str:
+    """Return the common ranking field for N1 and legacy candidate tables."""
+    if "selection_score" in frame:
+        return "selection_score"
+    if "bootstrap_confidence" in frame:
+        return "bootstrap_confidence"
+    raise KeyError("candidate table requires selection_score or bootstrap_confidence")
 
 
 def detect_polygon_first(associations, polygon_tracks, cache_dir, config):
@@ -306,7 +330,7 @@ def detect_polygon_first(associations, polygon_tracks, cache_dir, config):
                 })
     result = pd.DataFrame(rows)
     if len(result):
-        result = result.sort_values("bootstrap_confidence", ascending=False).drop_duplicates(
+        result = result.sort_values(_score_column(result), ascending=False).drop_duplicates(
             ["polygon_track_id", "Band", "change_time"]
         ).sort_values(["polygon_track_id", "Band", "change_time"])
     return result.reset_index(drop=True)
@@ -330,7 +354,7 @@ def detect_pixels(associations, cache_dir, config):
                 })
     result = pd.DataFrame(rows)
     if len(result):
-        result = result.sort_values("bootstrap_confidence", ascending=False).drop_duplicates(
+        result = result.sort_values(_score_column(result), ascending=False).drop_duplicates(
             ["pixel_track_id", "Band", "change_time"]
         ).sort_values(["pixel_track_id", "Band", "change_time"])
     return result.reset_index(drop=True)
@@ -393,7 +417,8 @@ def fuse_pixel_events(
         ].nunique()
         for cluster in _month_clusters(local.month_number.to_numpy(), temporal_tolerance):
             selected = local.loc[local.month_number.isin(cluster)].copy()
-            support = selected.sort_values("bootstrap_confidence", ascending=False).drop_duplicates(
+            score_column = _score_column(selected)
+            support = selected.sort_values(score_column, ascending=False).drop_duplicates(
                 "pixel_track_id"
             )
             points = set(zip(support.native_row.astype(int), support.native_col.astype(int)))
@@ -411,7 +436,7 @@ def fuse_pixel_events(
                 "interior_pixels": int(polygon_pixels),
                 "support_fraction": float(len(points) / max(1, polygon_pixels)),
                 "connected_support_fraction": float(largest / max(1, polygon_pixels)),
-                "median_confidence": float(support.bootstrap_confidence.median()),
+                "median_confidence": float(support[score_column].median()),
                 "median_amplitude": float(support.cusum_amplitude.median()),
             })
     return pd.DataFrame(rows).sort_values(
