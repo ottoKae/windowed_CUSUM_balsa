@@ -1,0 +1,18 @@
+{
+  "python": "3.12.13",
+  "platform": "Windows AMD64",
+  "scope": "B/C offline packaging and replay; not a minimum-version or clean-environment matrix",
+  "packages": {
+    "numpy": "2.4.3",
+    "pandas": "2.3.3",
+    "pyarrow": "23.0.1",
+    "numba": "0.66.0",
+    "scipy": "1.17.1",
+    "scikit-learn": "1.8.0",
+    "pytest": "9.0.3",
+    "earthengine-api": "1.7.22",
+    "requests": "2.32.5"
+  },
+  "grits_resolver_required_for_B_C": false,
+  "new_cloud_execution_performed": false
+}

@@ -1,0 +1,63 @@
+{
+  "schema_version": "search-protocol-1.0",
+  "project": "near_decadal_S1_recurrence_novelty_20260905",
+  "created_utc": "2026-09-05",
+  "providers": [
+    "web search via web.run; primary publisher and institutional records"
+  ],
+  "queries": [
+    {
+      "id": "q01",
+      "expression": "\"Sentinel-1\" forest disturbance \"2015\" \"2024\""
+    },
+    {
+      "id": "q02",
+      "expression": "\"Sentinel-1\" forest \"decade\" disturbance"
+    },
+    {
+      "id": "q03",
+      "expression": "\"Sentinel-1\" plantation harvesting rotation time series"
+    },
+    {
+      "id": "q04",
+      "expression": "\"Sentinel-1\" recurrent disturbances long time series CUSUM"
+    },
+    {
+      "id": "q05",
+      "expression": "\"Sentinel-1\" \"2016\" \"2025\" forest disturbance"
+    },
+    {
+      "id": "q06",
+      "expression": "\"Sentinel-1\" clearcut monitoring long-term monthly"
+    },
+    {
+      "id": "q07",
+      "expression": "\"Sentinel-1\" balsa harvesting Ecuador"
+    },
+    {
+      "id": "q08",
+      "expression": "\"Sentinel-1\" forest disturbance time series data cube OPERA RTC"
+    }
+  ],
+  "date_range": {
+    "from": "2014-01-01",
+    "to": "2026-09-05"
+  },
+  "languages": [
+    "en",
+    "zh"
+  ],
+  "document_types": [
+    "article",
+    "preprint",
+    "dataset",
+    "official technical documentation"
+  ],
+  "pagination": {
+    "mode": "bounded search engine results plus targeted citation/title follow-up",
+    "page_size": 10
+  },
+  "scope": "Focused novelty audit, not exhaustive systematic review; broad search then manually inspect primary records; preprints labeled; items after cutoff excluded.",
+  "fulltext_policy": "Serial lawful OA/repository downloads only; per-domain delay; no access-control bypass.",
+  "followup_policy": "Exact-title, DOI, cited/citing and year-specific follow-up queries logged before each batch."
+}

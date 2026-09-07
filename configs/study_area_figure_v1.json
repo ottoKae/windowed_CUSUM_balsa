@@ -1,0 +1,209 @@
+{
+  "schema_version": "study-area-figure-config/1.0",
+  "data": {
+    "inventory_shp": "shp/balsa_polygons/FC001_PLANTACION_FORESTAL_2025_A_BALSA/FC001_PLANTACION_FORESTAL_2025_A_BALSA_ID.shp",
+    "reference_events": "outputs/balsa_validation_closure_v2/reference_events.parquet",
+    "ecuador_boundary": "shp/Ecuador_0_without_islands/Ecuador_0_without_islands.shp",
+    "amazonia_boundary": "shp/amazonia_boundary_Amazonia _sensuStricto/amazonia_boundary_Amazonia _sensuStricto.shp"
+  },
+  "outputs": {
+    "canonical_dir": "outputs/manuscript_figures/study_area_v8",
+    "manuscript_pdf": "manuscript/JAG_Codex_20260821/figures/study_area.pdf",
+    "basemap_cache": "data/cache/study_area_basemap"
+  },
+  "expected": {
+    "inventory_polygons": 3890,
+    "reference_polygons": 400,
+    "metric_epsg": 32717,
+    "area_field": "sce",
+    "area_absolute_tolerance_ha": 0.001,
+    "panel_intersection_counts": {
+      "b": 206,
+      "c": 217,
+      "d": 83
+    },
+    "panel_reference_counts": {
+      "b": 3,
+      "c": 33,
+      "d": 0
+    }
+  },
+  "figure": {
+    "width_mm": 180.0,
+    "height_mm": 107.0,
+    "raster_dpi": 600,
+    "layout": {
+      "main_width_ratios": [1.238, 1.0],
+      "main_wspace": 0.055,
+      "right_height_ratios": [1.0, 0.19, 1.0, 0.19, 1.0, 0.05, 0.10],
+      "right_axes_rows": {"b": 0, "c": 2, "d": 4, "legend": 6},
+      "right_hspace": 0.0,
+      "alignment_tolerance_mm": 0.8
+    },
+    "margins": {
+      "left": 0.035,
+      "right": 0.968,
+      "bottom": 0.018,
+      "top": 0.948,
+      "wspace": 0.035,
+      "hspace": 0.14
+    },
+    "fonts": ["Arial", "Liberation Sans", "DejaVu Sans"],
+    "body_font_size_pt": 8.0,
+    "panel_label_size_pt": 11.0,
+    "panel_label_positions": {
+      "a": [0.012, 0.978],
+      "b": [0.040, 0.900],
+      "c": [0.040, 0.900],
+      "d": [0.040, 0.900]
+    },
+    "colors": {
+      "inventory": "#5F67C5",
+      "reference": "#D64B1A",
+      "boundary": "#4D4D4D",
+      "ocean": "#DCEEF7",
+      "land": "#F4F2EC",
+      "amazonia": "#DCEFD2",
+      "context_text": "#4F5660",
+      "grid": "#9A9A9A"
+    },
+    "marker_area_pt2": {
+      "minimum": 2.5,
+      "maximum": 20.0,
+      "lower_quantile": 0.05,
+      "upper_quantile": 0.95,
+      "inventory_alpha": 0.56,
+      "inventory_edge_width": 0.12,
+      "reference_scale": 1.60,
+      "reference_minimum": 7.0,
+      "reference_edge_width": 0.90
+    },
+    "detail_polygon_style": {
+      "inventory_fill": "#5F67C5",
+      "inventory_edge": "#F1F2FF",
+      "inventory_edge_width": 0.14,
+      "inventory_alpha": 0.86,
+      "reference_edge_width": 0.24,
+      "reference_alpha": 0.80
+    }
+  },
+  "national_panel": {
+    "margin_fraction": 0.02,
+    "longitude_tick_step": 1.0,
+    "latitude_tick_step": 1.0,
+    "locator_extent": [-92.0, -30.0, -57.0, 15.0],
+    "locator_axes": [0.765, 0.018, 0.220, 0.270],
+    "area_key_axes": [0.570, 0.035, 0.180, 0.230],
+    "inset_boundary_clearance_fraction": 0.008,
+    "locator_basemap_alpha": 0.25,
+    "regional_labels": [
+      {"text": "PACIFIC\nOCEAN", "longitude": -80.65, "latitude": 0.17, "rotation": 0.0, "color": "#526B80"},
+      {"text": "ANDES", "longitude": -78.45, "latitude": -2.15, "rotation": 67.0, "color": "#4F5660"},
+      {"text": "AMAZONIA", "longitude": -76.35, "latitude": -1.45, "rotation": 0.0, "color": "#4F5660"}
+    ]
+  },
+  "detail_panels": {
+    "b": {
+      "name": "northern",
+      "extent": [-80.0693587, -79.8213013, 0.5824664, 0.6797438],
+      "national_callout": {"longitude": -80.200, "latitude": 0.750, "horizontal_alignment": "right"},
+      "longitude_ticks": [-80.00, -79.90],
+      "latitude_ticks": [0.63],
+      "show_north_arrow": false,
+      "show_scale_bar": true
+    },
+    "c": {
+      "name": "central",
+      "extent": [-79.5416733, -79.1472222, -0.5628417, -0.4081549],
+      "national_callout": {"longitude": -79.670, "latitude": -0.370, "horizontal_alignment": "right"},
+      "longitude_ticks": [-79.45, -79.25],
+      "latitude_ticks": [-0.50],
+      "show_north_arrow": false,
+      "show_scale_bar": true
+    },
+    "d": {
+      "name": "eastern_inventory_only",
+      "extent": [-77.1554890, -76.6945110, -0.3153880, -0.1346120],
+      "national_callout": {"longitude": -77.175, "latitude": -0.225, "horizontal_alignment": "right"},
+      "longitude_ticks": [-77.05, -76.80],
+      "latitude_ticks": [-0.23],
+      "show_north_arrow": false,
+      "show_scale_bar": true
+    }
+  },
+  "detail_map_decorations": {
+    "scale_bar_length_km": 2.0,
+    "scale_bar_corner": "lower_right",
+    "scale_bar_x_margin_fraction": 0.035,
+    "scale_bar_y_candidates": [0.055, 0.090, 0.125, 0.160, 0.195, 0.230],
+    "scale_bar_collision_padding_fraction": 0.012
+  },
+  "v7_layout_targets": {
+    "v6_detail_width_mm": 69.145,
+    "detail_width_increase_fraction_min": 0.035,
+    "detail_width_increase_fraction_max": 0.045,
+    "canvas_top_clearance_mm_min": 1.2,
+    "canvas_top_clearance_mm_target": [1.5, 2.2],
+    "canvas_bottom_clearance_mm_target": [1.5, 1.9],
+    "v6_raster_bottom_clearance_mm": 3.471,
+    "bottom_clearance_ratio_target": [0.40, 0.60],
+    "panel_label_left_spread_mm_max": 0.15,
+    "legend_left_alignment_error_mm_max": 0.15,
+    "legend_right_overflow_mm_max": 0.15,
+    "locator_area_separation_mm_min": 1.0
+  },
+  "v8_layout_targets": {
+    "map_gap_mm_target": [5.1, 5.8],
+    "map_gap_spread_mm_max": 0.2,
+    "d_legend_gap_mm_target": [1.0, 1.8],
+    "eastern_panel_minimum_complete_polygons": 70,
+    "eastern_panel_reference_polygons": 0,
+    "reference_boundary_width_pt_max": 0.42,
+    "readability_minimum_fill_pixels": 25,
+    "readability_minimum_visible_interior_fraction": 0.10,
+    "readability_minimum_passing_polygon_fraction": 0.75
+  },
+  "palette_candidates": [
+    {
+      "name": "Boundary-only conservative",
+      "inventory_fill": "#5F67C5",
+      "inventory_alpha": 0.86,
+      "reference_edge": "#D64B1A",
+      "reference_edge_width": 0.42,
+      "reference_alpha": 0.90
+    },
+    {
+      "name": "Boundary-only balanced",
+      "inventory_fill": "#5F67C5",
+      "inventory_alpha": 0.86,
+      "reference_edge": "#D64B1A",
+      "reference_edge_width": 0.30,
+      "reference_alpha": 0.84
+    },
+    {
+      "name": "Boundary-only minimum emphasis (selected)",
+      "inventory_fill": "#5F67C5",
+      "inventory_alpha": 0.86,
+      "reference_edge": "#D64B1A",
+      "reference_edge_width": 0.24,
+      "reference_alpha": 0.80
+    }
+  ],
+  "selected_palette": "Boundary-only minimum emphasis (selected)",
+  "basemap": {
+    "mode": "cache",
+    "service_name": "esri_world_hillshade",
+    "url_template": "https://server.arcgisonline.com/ArcGIS/rest/services/Elevation/World_Hillshade/MapServer/tile/{z}/{y}/{x}",
+    "attribution": "Esri World Hillshade; boundaries from Natural Earth",
+    "national_zoom": 8,
+    "detail_zoom": 13,
+    "locator_zoom": 4,
+    "alpha": 0.54,
+    "timeout_seconds": 30,
+    "retries": 5
+  }
+}
+
+
+
+

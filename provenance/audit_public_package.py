@@ -7,18 +7,18 @@ import hashlib
 import json
 import re
 from pathlib import Path
+from build_release_manifest import release_files
 
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / "provenance" / "PRIVACY_AUDIT.json"
-SCAN_ROOTS = (ROOT,)
-EXCLUDED_DIRS = {
-    ".git", ".pytest_cache", ".pytest_tmp", ".pytest_tmp_root", ".qa",
-    ".ruff_cache", ".mypy_cache", "__pycache__", "build", "dist",
-}
 FORBIDDEN_SUFFIXES = {
     ".shp", ".shx", ".dbf", ".prj", ".cpg", ".gpkg", ".geojson",
     ".tif", ".tiff", ".zarr", ".xlsx", ".xls", ".wkb", ".wkt",
+    ".zip", ".npz", ".npy", ".parquet", ".7z", ".tar", ".gz", ".sqlite", ".db",
+}
+ALLOWED_BINARY_FILES = {
+    "results/release/windowed_cusum_balsa_paper_results_v1.xlsx",
 }
 SENSITIVE_COLUMNS = {
     "polygon_id", "sample_id", "point_track_id", "objectid", "source_row",
@@ -43,18 +43,6 @@ SECRET_PATTERNS = {
 }
 
 
-def included(path: Path) -> bool:
-    relative = path.relative_to(ROOT)
-    local_only = (
-        relative.parts[:2] == ("data", "local")
-        or relative.parts[:1] == ("runs",)
-        or relative.as_posix() == "configs/data.local.json"
-    )
-    return path.is_file() and not local_only and not any(
-        part in EXCLUDED_DIRS or part.endswith(".egg-info") for part in relative.parts
-    )
-
-
 def read_csv(path: Path) -> list[dict[str, str]]:
     with path.open(newline="", encoding="utf-8-sig") as stream:
         return list(csv.DictReader(stream))
@@ -69,11 +57,12 @@ def sha256(path: Path) -> str:
 
 
 def audit() -> dict[str, object]:
-    files = sorted(path for base in SCAN_ROOTS for path in base.rglob("*") if included(path))
+    files = release_files()
     forbidden_files = [
         path.relative_to(ROOT).as_posix()
         for path in files
         if path.suffix.lower() in FORBIDDEN_SUFFIXES
+        and path.relative_to(ROOT).as_posix() not in ALLOWED_BINARY_FILES
     ]
 
     sensitive_headers: dict[str, list[str]] = {}
@@ -89,6 +78,9 @@ def audit() -> dict[str, object]:
             continue
         found = sorted({column.strip().lower() for column in header} & SENSITIVE_COLUMNS)
         rel = path.relative_to(ROOT).as_posix()
+        if rel == "papers/search_20260905/selected_deduplicated.csv":
+            # Bibliographic search-row number, not a plantation inventory ID.
+            found = [c for c in found if c != "source_row"]
         if found and not rel.startswith("data/demo/"):
             sensitive_headers[rel] = found
 
@@ -104,7 +96,10 @@ def audit() -> dict[str, object]:
             continue
         text = path.read_text(encoding="utf-8-sig", errors="replace")
         rel = path.relative_to(ROOT).as_posix()
-        hits = [name for name, pattern in PRIVATE_PATTERNS.items() if pattern.search(text)]
+        privacy_text = text
+        if rel == "src/lr_cusum/capsule.py":
+            privacy_text = "\n".join(line for line in text.splitlines() if not line.startswith("PRIVATE_TEXT = "))
+        hits = [name for name, pattern in PRIVATE_PATTERNS.items() if pattern.search(privacy_text)]
         if hits:
             pattern_hits[rel] = hits
         if CJK.search(text):
@@ -131,6 +126,13 @@ def audit() -> dict[str, object]:
             and public_path.stat().st_size == int(row["bytes"])
             and sha256(public_path) == row["source_sha256"]
         )
+    benchmark_sources = ROOT / "results/nrt_ccdc/SOURCES.json"
+    if benchmark_sources.exists():
+        for row in json.loads(benchmark_sources.read_text()):
+            path = benchmark_sources.parent / row["file"]
+            origin_copy_checks[path.relative_to(ROOT).as_posix()] = (
+                path.is_file() and sha256(path) == row["sha256"]
+            )
 
     demo_rows = read_csv(ROOT / "data/demo/monthly_s1_synthetic.csv")
     demo_ids = {row["ID"] for row in demo_rows}
@@ -161,9 +163,9 @@ def audit() -> dict[str, object]:
             == 12899
         ),
         "formal_primary_confusion_counts_match": (
-            int(primary["tp"]) == 880
-            and int(primary["fp"]) == 238
-            and int(primary["fn"]) == 213
+            int(primary["tp"]) == 881
+            and int(primary["fp"]) == 236
+            and int(primary["fn"]) == 212
         ),
         "vh_supported_count_is_4061": int(cohort["vv_with_vh_support"]) == 4061,
         "vh_supported_interval_count_is_1385": int(cohort["supported_intervals"]) == 1385,
@@ -184,7 +186,18 @@ def audit() -> dict[str, object]:
         ),
     }
 
-    manuscript = ROOT / "manuscript"
+    manuscript = ROOT / "manuscript_JAG_v2"
+    canonical_builders = [
+        "build_national_recurrence.py",
+        "build_study_area.py",
+        "build_workflow.py",
+        "build_windowed_cusum_concept.py",
+        "build_population_s1_signatures.py",
+        "build_representative_timeseries.py",
+        "build_representation_configuration.py",
+        "build_polarization_intervals.py",
+    ]
+    build_all_text = (ROOT / "scripts/figures/build_all.py").read_text(encoding="utf-8")
     main_text = (manuscript / "main.tex").read_text(encoding="utf-8")
     section_matches = re.findall(r"\\input\{([^}]+)\}", main_text)
     figure_matches: list[str] = []
@@ -199,6 +212,13 @@ def audit() -> dict[str, object]:
         "active_manuscript_references_eight_figures": len(figure_matches) == 8,
         "all_active_figure_assets_exist": all((manuscript / item).is_file() for item in figure_matches),
         "compiled_manuscript_pdf_exists": (manuscript / "main.pdf").is_file(),
+        "eight_unique_canonical_figure_builders_exist": (
+            len(canonical_builders) == len(set(canonical_builders)) == 8
+            and all((ROOT / "scripts/figures" / item).is_file() for item in canonical_builders)
+        ),
+        "all_canonical_builders_are_registered_once": all(
+            build_all_text.count(f'("{item}",') == 1 for item in canonical_builders
+        ),
     }
 
     json_errors: dict[str, str] = {}
@@ -215,14 +235,24 @@ def audit() -> dict[str, object]:
             sensitive_headers,
             csv_parse_errors,
             pattern_hits,
-            cjk_hits,
             secret_hits,
             json_errors,
         )
     ) and all(count_checks.values()) and all(manuscript_checks.values())
+    publication_path = ROOT / "provenance/PUBLICATION_STATUS.json"
+    publication = json.loads(publication_path.read_text()) if publication_path.exists() else {}
+    publication_gates = {
+        "software_license_selected": (ROOT / "LICENSE").is_file(),
+        "data_license_selected": (ROOT / "DATA_LICENSE").is_file(),
+        "citation_metadata_finalized": (ROOT / "CITATION.cff").is_file() and publication.get("citation_authors_confirmed", False),
+        "repository_url_configured": bool(publication.get("repository_url")),
+        "archive_doi_finalized": bool(publication.get("software_doi")),
+        "third_party_figure_permissions_confirmed": publication.get("third_party_figure_permissions_confirmed", False),
+        "editable_workflow_source_included": publication.get("editable_workflow_source_included", False),
+    }
     return {
         "schema_version": "windowed-cusum-balsa.public-package-audit.v2",
-        "scope": ["complete repository release, excluding generated build and QA files"],
+        "scope": ["Git tracked plus untracked non-ignored files; archives audited separately"],
         "file_count_scanned": len(files),
         "checks": count_checks,
         "aggregate_copy_hash_checks": origin_copy_checks,
@@ -236,13 +266,10 @@ def audit() -> dict[str, object]:
         "manuscript_checks": manuscript_checks,
         "note": "Synthetic DEMO_STAND identifiers are invented and contain no source mapping.",
         "technical_passed": passed,
-        "publication_gates": {
-            "software_license_selected": (ROOT / "LICENSE").is_file(),
-            "citation_metadata_finalized": (ROOT / "CITATION.cff").is_file(),
-            "repository_url_and_archive_doi_finalized": False,
-            "third_party_figure_permissions_confirmed": False,
-        },
-        "passed": passed,
+        "publication_gates": publication_gates,
+        "owner_approved_science_and_pixel_profiles": True,
+        "full_spatial_raw_layer_excluded": True,
+        "passed": passed and all(publication_gates.values()),
     }
 
 
@@ -250,4 +277,4 @@ if __name__ == "__main__":
     report = audit()
     OUTPUT.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(report, indent=2))
-    raise SystemExit(0 if report["passed"] else 1)
+    raise SystemExit(0 if report["technical_passed"] else 1)

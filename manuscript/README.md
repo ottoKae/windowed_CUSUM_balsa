@@ -30,6 +30,12 @@ undefined.
 - `figures/FIGURE_MANIFEST.md` and `figures/SHA256SUMS.txt`: figure provenance
   and integrity records.
 
+All eight active figures have one canonical script in `scripts/figures/` and
+are orchestrated by `scripts/figures/build_all.py`. Rebuilds go to `runs/` by
+default; publishing over the frozen assets requires the explicit `--publish`
+flag. Figure 6 also requires the ignored licensed-source configuration described
+in `configs/README.md`.
+
 ## Release checks still requiring an author decision
 
 1. Confirm the corresponding-author marks and email assignments in `main.tex`.

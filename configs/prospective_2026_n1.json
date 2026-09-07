@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "protocol_id": "windowed_cusum_balsa_2026_n1",
+  "paper_config": "configs/paper_v1.json",
+  "cutoffs": ["2026-01", "2026-02", "2026-03", "2026-04", "2026-05", "2026-06"],
+  "reporting_year": 2026,
+  "same_band_track_fusion_tolerance_months": 1,
+  "vv_vh_support_tolerance_months": 2,
+  "history_link_tolerance_months": 2,
+  "stable_event_month_tolerance_months": 1,
+  "minimum_consecutive_snapshots": 2
+}

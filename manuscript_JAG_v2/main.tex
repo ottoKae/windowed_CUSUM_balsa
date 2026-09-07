@@ -1,0 +1,132 @@
+% Load float before the class loads hyperref, avoiding duplicate float anchors.
+\RequirePackage{float}
+\documentclass[a4paper,fleqn]{cas-sc}
+
+\usepackage[authoryear]{natbib}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{threeparttable}
+\usepackage{graphicx}
+\usepackage{multirow}
+\usepackage{lineno}
+\usepackage[section]{placeins}
+\usepackage{xcolor}
+\usepackage{setspace}
+
+\ExplSyntaxOn
+\cs_new_eq:NN \lr_cusum_original_make_tbl_caption:nn \__make_tbl_caption:nn
+\cs_set:Npn \__make_tbl_caption:nn #1#2
+  {
+    \group_begin:
+      \skip_set:Nn \l_tbl_abovecap_skip {3pt}
+      \setstretch{1.5}
+      \lr_cusum_original_make_tbl_caption:nn {#1} {#2}
+    \group_end:
+  }
+\cs_new_eq:NN \lr_cusum_original_make_fig_caption:nn \__make_fig_caption:nn
+\cs_set:Npn \__make_fig_caption:nn #1#2
+  {
+    \group_begin:
+      \skip_set:Nn \l_fig_abovecap_skip {3pt}
+      \setstretch{1.5}
+      \lr_cusum_original_make_fig_caption:nn {#1} {#2}
+    \group_end:
+  }
+\ExplSyntaxOff
+
+\begin{document}
+\linenumbers
+
+\let\WriteBookmarks\relax
+\def\floatpagepagefraction{1}
+\def\textpagefraction{.001}
+
+\shorttitle{Windowed CUSUM analysis of near-decadal Sentinel-1 SAR time serie}
+\shortauthors{Rao et al.}
+
+% TODO(author): Confirm corresponding-author marks and email assignments before submission.
+\author[1]{Keyi Rao}[orcid=0000-0001-8443-9819]\cormark[1]
+\credit{Conceptualization, Methodology, Software, Visualization, Data curation, Formal analysis, Project administration, Writing -- original draft}
+
+\author[1]{Shixin Dong}[orcid=0009-0005-7299-5312]\cormark[1]
+\credit{Methodology, Software, Visualization, Validation, Writing -- original draft}
+
+\author[2]{Zhongwen Hu}[orcid=0000-0003-2689-3196]
+\credit{Validation, Funding acquisition, Writing -- review and editing}
+
+\author[3]{Yuanyong Dian}[orcid=0000-0002-4957-3681]
+\credit{Validation, Writing -- review \& editing}
+
+\author[4,5]{Cesar Ivan Alvarez}[orcid=0000-0001-5629-0893]
+\credit{Conceptualization, Methodology, Writing -- review and editing}
+
+\author[1]{Zhaocong Wu}[orcid=0000-0003-2435-5538]
+\ead{zcwoo@whu.edu.cn}
+\credit{Conceptualization, Supervision, Funding acquisition}
+
+\affiliation[1]{organization={School of Remote Sensing and Information Engineering, Wuhan University},
+  addressline={No. 299 Bayi Road, Wuchang District}, city={Wuhan}, postcode={430072},
+  state={Hubei}, country={China}}
+\affiliation[2]{organization={School of Architecture and Urban Planning and MNR Key Laboratory for Geo-Environmental Monitoring of Great Bay Area, Shenzhen University},
+  addressline={No. 3688 Nanhai Avenue, Nanshan District}, city={Shenzhen},
+  postcode={518060}, state={Guangdong}, country={China}}
+\affiliation[3]{
+    organization={College of Horticulture \& Forestry Sciences, 
+    Huazhong Agricultural University},
+    addressline={No. 1 Shizishan Street, Hongshan District},
+    city={Wuhan},
+    postcode={430070},
+    state={Hubei},
+    country={China}
+}
+\affiliation[4]{organization={Institute of Geography, Faculty of Applied Informatics, University of Augsburg},
+  addressline={Universit\"atsstra\ss e 12}, city={Augsburg}, postcode={86159}, country={Germany}}
+\affiliation[5]{organization={Maestr\'ia en Sistemas de Informaci\'on Geogr\'afica, Topograf\'ia Automatizada y Fotogrametr\'ia Digital, Universidad Cat\'olica de Santiago de Guayaquil},
+  city={Guayaquil}, country={Ecuador}}
+  
+\cortext[cor1]{Corresponding author}
+
+\title[mode=title]{Windowed CUSUM analysis of near-decadal Sentinel-1 SAR time series for monitoring recurrent stand disturbances in Ecuadorian balsa plantations}
+
+% \begin{abstract}
+% Balsa plantations supply lightweight timber, including material for wind-energy infrastructure, but their rapid turnover is difficult to reconstruct under persistent tropical cloud cover. The expanding Sentinel-1 archive offers repeated observations of disturbance and recovery within the same stands. We developed Windowed CUSUM to connect near-decadal, track-specific radar trajectories to recurrent stand-disturbance histories. The framework renews the temporal reference within overlapping windows, separates candidate estimation from central-interval admission, and consolidates directionally and statistically screened detections. Evaluation used 1,093 dated reference events from 462 polygons in 57 spatial blocks. Spatial out-of-fold precision, recall and F1 were 0.789, 0.806 and 0.797, respectively. F1 exceeded the evaluated decrease-filtered ReCuSum implementation by 0.122 (95\% spatial-block bootstrap interval: 0.094--0.149). Component removal identified local-reference windowing as the largest contributor to performance. Temporal truncation nevertheless showed that reliable retrospective dating did not imply immediate detection: recall reached 0.790 with six months of subsequent observations. Application to 3,498 inventory polygons yielded 6,658 detections during 2017--2025 and 3,509 inter-disturbance intervals, with a median of 36 months. Restricting this frozen catalogue to its final five years retained only 1,349 intervals, illustrating the additional historical information available from the longer record rather than an accuracy gain. The framework supports auditable reconstruction of recurrent plantation disturbances, while observation boundaries, incomplete reference histories and uncertain disturbance causes limit interpretation as biological rotation ages.
+% \end{abstract}
+
+% Balsa plantations have rapid management turnover, but persistent tropical cloud cover limits optical reconstruction of repeated stand disturbances. 
+\begin{abstract}
+  Short-rotation balsa (\textit{Ochroma pyramidale}) plantations undergo repeated management disturbances that are difficult to reconstruct from optical imagery under persistent tropical cloud cover. We developed Windowed CUSUM to reconstruct recurrent stand-disturbance histories from near-decadal Sentinel-1 time series. Track-specific trajectories were retained to provide an internally comparable signal background for each stand. Windowed CUSUM then adapts at two levels: overlapping windows repeatedly renew the local temporal reference, while a window-specific permutation null evaluates each CUSUM amplitude relative to the variability of the same local context. Evaluation used 1,093 reference events with month-level timing from 462 polygons grouped into 57 spatial blocks. Historical disturbances showed consistent within-stand VV and VH declines despite substantial overlap in absolute backscatter states. Under five-fold spatial out-of-fold evaluation, Windowed CUSUM achieved precision 0.789, recall 0.806, and F1 0.797, compared with F1 0.680 for CCDC VV and 0.675 for decrease-filtered ReCuSum. The paired F1 advantage over ReCuSum was $+0.122$ (95\% CI: 0.094--0.149), driven mainly by higher recurrent-event recall. Component analysis identified local-reference renewal as the main source of recurrent-event sensitivity, while central event admission and local statistical calibration recovered precision. Applied to 3,498 validated balsa polygons, the framework reconstructed 6,658 disturbances and 3,509 consecutive inter-disturbance intervals during 2017--2025, with a median recurrence of 36 months, consistent with short-rotation balsa management. More broadly, the study demonstrates that dense Sentinel-1 time series can resolve recurrent stand-scale structural disturbances despite heterogeneous backscatter backgrounds.
+\end{abstract}
+
+\begin{highlights}
+\item Track-specific Sentinel-1 trajectories provide a comparable signal background for each stand
+\item Windowed CUSUM renews local baselines and adapts to local backscatter variability
+\item Renewing the local reference was the main source of improved recurrent-event recall
+\item Windowed CUSUM achieved F1 0.797 and recall 0.806 under spatial validation
+\item 6,658 detections revealed a 36-month recurrence consistent with balsa rotation
+\end{highlights}
+
+\begin{keywords}
+Balsa plantation \sep
+Sentinel-1 SAR \sep
+forest disturbance monitoring \sep
+time-series change detection \sep
+CUSUM \sep
+plantation rotation
+\end{keywords}
+
+\maketitle
+\doublespacing
+
+\input{sections/01_introduction}
+\input{sections/02_materials}
+\input{sections/03_methods}
+\input{sections/04_results}
+\input{sections/05_discussion}
+\input{sections/06_conclusion}
+\input{sections/07_declarations}
+
+\printcredits
+\bibliographystyle{cas-model2-names}
+\bibliography{references}
+
+\end{document}

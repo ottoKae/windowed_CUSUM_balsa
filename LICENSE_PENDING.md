@@ -1,9 +1,10 @@
-# License selection pending
+# License selection resolved
 
-The authors must select and approve a software license before this repository
-is made public. Until a `LICENSE` file is added, no open-source permissions are
-granted by this repository snapshot.
+On 2026-09-05 the rights holder approved the proposed release plan: MIT for
+original software (LICENSE), and CC BY 4.0 for the owner-authorized B/C processed
+data and study-generated aggregate tables (DATA_LICENSE). This file is retained
+to resolve older links; it is not the governing license.
 
-The software license does not automatically cover third-party satellite data,
-official plantation inventories, basemaps, or commercial imagery. Their terms
-must be documented separately in the Data Availability statement.
+Neither grant covers third-party source imagery, inventories or basemaps.
+The full spatial/raw D layer remains excluded. Public deposition is a separate
+step and must not be inferred from the presence of license files.

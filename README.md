@@ -1,167 +1,142 @@
-# Windowed CUSUM for recurrent stand disturbances
+# Windowed CUSUM
 
-This repository contains the manuscript-facing implementation and compact
-evidence package for detecting recurrent stand disturbances in Ecuadorian balsa
-plantations from near-decadal monthly Sentinel-1 SAR time series.
+Windowed CUSUM detects recurrent negative shifts in stand-level Sentinel-1
+backscatter using overlapping local temporal windows. This repository provides
+the detector, controlled comparisons, and real-data reproducibility packages
+for Ecuadorian balsa plantations. Detections indicate **stand disturbances**, not
+independently verified harvesting causes or biological rotation ages.
 
-The method evaluates overlapping local temporal contexts instead of comparing
-every date with one permanent global baseline. The frozen paper protocol uses
-48-month windows displaced by 12 months, admits candidates only inside the
-central 24-month decision interval, retains negative shifts, and screens them
-with a finite-sample-corrected IID permutation p-value.
+**Release status:** preparation for version 1.0.0. Public repository and archival
+DOI links will be added after deposition; local packages are not yet published.
 
-National detections are interpreted as **stand disturbances**. They are not all
-independently verified harvests, and the software does not infer disturbance
-cause from SAR alone.
+## Algorithm
 
-## Repository contents
+1. Aggregate polygon-interior observations into monthly, track-specific medians.
+2. Compute CUSUM candidates within overlapping local windows.
+3. Admit candidates inside the central decision interval and retain negative shifts.
+4. Apply the finite-sample-corrected permutation screen (N1).
+5. Consolidate overlapping-window and same-band track detections, then annotate
+   the VV chronology with one-to-one VH support.
+
+The frozen national configuration uses a **48-month window**, **12-month step**,
+central **24-month decision interval**, and `p_perm <= 0.025`. Reference matching
+and VV--VH support use a tolerance of **two months**. Missing observations remain
+missing; they are not replaced with zero. See [configuration](configs/paper_v1.json)
+and [exact index/calendar semantics](docs/METHOD_SEMANTICS.md).
+
+Fixed-configuration ablations and spatially selected benchmark configurations
+are different experiments. Do not substitute one for the other; see
+[result boundaries](docs/RELEASE_SOURCE_AND_RESULT_BOUNDARIES.md).
+
+## Data sources and reproducibility packages
+
+The study combines Sentinel-1 VV/VH observations organized through S1-GRiTS,
+the official Ecuadorian BALSA plantation inventory, and visually dated historical
+disturbance references. The full official inventory and the validated analysis
+cohort are different populations. [Source inventory](provenance/DATA_SOURCES.md)
+records their provenance.
+
+| Package | Contents | Purpose |
+|---|---|---|
+| `science.zip` (B) | 3,498 opaque polygon identities; 4,001 polygon-track stand series; 1,093 reference events in 462 polygons; 57 evaluation blocks and five folds; event ledgers and bootstrap evidence | Stand-level detection and evaluation |
+| `pixels.zip` (C) | 176,907 unique pixel-track series; 176,935 polygon-pixel memberships; local pixel adjacency | Pixel-first detection and comparison with stand medians |
+
+Inputs cover **January 2016--June 2026**; national events are reported for
+**2017--2025**. Pixel arrays have shape `[pixel, 2, 126]`, ordered VV then VH in dB.
+NaNs, validity masks, observation counts and source-month flags are preserved.
+
+Both packages omit exact geometry, absolute coordinates, original catalog/Zarr,
+static rasters, source imagery, administrative vectors and basemap caches (D).
+Opaque IDs and local adjacency reduce direct geolocation disclosure but do not
+guarantee anonymity. Public packages reproduce signal-to-event calculations and
+statistics, **not original satellite extraction or all georeferenced maps**.
+
+See [extraction and replay instructions](docs/REAL_CAPSULES.md).
+Data archives are distributed separately from Git history.
+
+## Installation and quick start
+
+Use Python **3.12** for the tested workflow (package minimum: 3.10).
+From a source checkout, create a fresh environment and activate it:
+
+```text
+python -m venv .venv
+```
+
+Windows PowerShell: `.venv\Scripts\Activate.ps1`.
+Linux/macOS: `source .venv/bin/activate`.
+
+```text
+python -m pip install -e ".[io,validation,replay]" -c configs/requirements-replay-20260905.txt
+windowed-cusum paper data/demo/monthly_s1_synthetic.csv demo_events.csv --config configs/paper_v1.json
+python provenance/audit_public_package.py
+```
+
+The example needs no private data or Earth Engine account. Its output contains
+accepted **window candidates**, not a fully consolidated national event table.
+Input columns are `ID`, `time`, and `VV_dB` and/or `VH_dB`. Keep a row for every
+calendar month and use NaN for unavailable observations.
+
+## Reproduce the real-data experiments
+
+Extract the archives so `data/capsules/science/` and `data/capsules/pixels/`
+contain their manifests. Recipients do **not** need to run the author's exporter.
+
+```text
+python scripts/replay_capsule.py verify --capsules data/capsules
+python scripts/replay_capsule.py parity --capsules data/capsules
+python scripts/replay_capsule.py detect --capsules data/capsules --output runs/smoke --limit 4
+python scripts/replay_capsule.py evaluate --capsules data/capsules --output runs/evaluation
+```
+
+`--limit 4` is a small integration test. Use `--limit 0` for all polygon tracks.
+`evaluate` replays frozen predictions; fresh F0--F4 signal-to-event recomputation
+requires `detect --components` followed by `evaluate --candidate-source`.
+[Full commands](docs/REAL_CAPSULES.md) also cover Pixel-first, seven stand
+representations, CuSum NRT and cached official CCDC responses.
+
+Cached CCDC replay is offline; it does **not** execute Earth Engine again.
+A new official cloud run requires your own account and explicit opt-in.
+See [NRT/CCDC reproduction](docs/NRT_CCDC_REPRODUCTION.md).
+
+## Outputs and verification
+
+The frozen national VV chronology contains **6,658 events**, **3,509 adjacent
+intervals**, and an overall interval median of **36 months**. These describe
+detected disturbance recurrence, not independently verified harvest rotations.
+Legacy L0 and current N1 sensitivity results must remain separately labelled.
+
+[The B/C validation report](docs/20260905_BC_REAL_REPRODUCIBILITY_RELEASE_REPORT.md)
+documents the full replay checks. Archives include per-file hashes and SHA-256
+sidecars. [Release checklist](docs/RELEASE_CAPSULE_CHECKLIST_20260905.md) distinguishes
+technical verification from public deposition.
+
+## Repository structure
 
 | Path | Purpose |
 |---|---|
-| `src/lr_cusum/` | Core detector, N1 paper protocol, aggregation, validation, ablation, and optional data adapters |
-| `configs/paper_v1.json` | Frozen detector, consolidation, and validation semantics |
-| `data/demo/` | Synthetic, non-geographic monthly example |
-| `data/schemas/`, `data/manifests/` | Input contracts and real-data release rules |
-| `results/` | Compact aggregate tables and count ledger; no exact locations |
-| `scripts/figures/` | Public builder for the methodological workflow figure |
-| `manuscript/` | Portable LaTeX source and the eight active figures |
-| `tests/` | Unit tests for algorithmic and evaluation semantics |
-| `provenance/` | Source inventory, redistribution boundaries, and hashes |
+| `src/lr_cusum/` | Detection, aggregation, fusion, evaluation and adapters |
+| `configs/` | Frozen protocols and environment constraints |
+| `data/demo/`, `data/schemas/` | Synthetic example and input contracts |
+| `scripts/replay_capsule.py` | Public real-data replay entry point |
+| `scripts/figures/` | Figure builders; some need excluded spatial/imagery inputs |
+| `results/` | Small aggregate tables, not raw data |
+| `provenance/audit_public_package.py` | Release-integrity, privacy, and manuscript consistency audit |
+| `docs/`, `provenance/` | Instructions, source/rights boundaries and verification |
 
-The authorized workstation also has an ignored package at
-`data/local/paper_v1/`. It contains the 3,498 validated geometries, frozen
-polygon roles and spatial blocks, 1,093 dated reference events, complete
-polygon-interior pixel caches, the S1-GRiTS catalog, local administrative and
-basemap assets, and row-level frozen outputs. The multi-terabyte Zarr archive is
-mounted in place rather than copied into Git.
+The author's full raw-to-map workflow is documented separately in
+[Full reproduction](docs/FULL_REPRODUCTION.md). Manuscripts and third-party
+figure assets in a local working copy are not automatically part of the public
+software release. Installing geospatial dependencies alone does not supply D.
 
-Historical notebooks, private review workbooks, raw geospatial data, caches,
-intermediate candidates, and versioned figure wrappers are intentionally absent.
+## Citation and licenses
 
-## Install
+Use [CITATION.cff](CITATION.cff) for software attribution; archival identifiers
+will be supplied only after they exist. The accompanying data have their own
+[citation metadata](data/CITATION.cff).
 
-Python 3.10 or newer is required.
-
-```bash
-python -m pip install -e .
-```
-
-Parquet input, validation baselines, geospatial adapters, figures, and tests are
-optional:
-
-```bash
-python -m pip install -e ".[io,validation,geo,figures,test]"
-```
-
-No software license has yet been selected. See `LICENSE_PENDING.md`; the authors
-must add an approved `LICENSE` before public release.
-
-## Run the frozen paper detector
-
-The input is a long table with one row per object and calendar month. At minimum
-it contains `ID`, `time`, and one or both of `VV_dB` and `VH_dB`. Calendar months
-must not be omitted: retain a row and store an unavailable observation as NaN.
-
-```bash
-windowed-cusum paper \
-  data/demo/monthly_s1_synthetic.csv \
-  demo_events.csv \
-  --config configs/paper_v1.json
-```
-
-The output contains accepted **window candidates**. Overlapping-window and
-multi-track consolidation is deliberately explicit: the paper subsequently
-fuses same-band detections within one month, treats VV as the primary chronology,
-and matches VH support one-to-one within two months. This separation prevents a
-candidate score from being confused with a final national event.
-
-The archived empirical-confidence implementation is available only for
-historical comparisons:
-
-```bash
-windowed-cusum legacy input.csv legacy_candidates.csv
-```
-
-Do not use `legacy` to claim reproduction of the final N1 manuscript protocol.
-
-## Verify
-
-```bash
-python -m pytest
-python scripts/figures/build_workflow.py workflow.pdf
-```
-
-Aggregate manuscript values can be checked directly against `results/`; a full
-raw-to-paper replay additionally requires the authorized plantation inventory,
-reference-event records, S1-GRiTS Zarr stores, and GRiTS-Resolver. These external
-inputs are not redistributed here. See `docs/REPRODUCIBILITY.md` and
-`data/README.md`.
-
-The release-candidate audit covers the complete repository, verifies all
-aggregate source hashes and manuscript figure references, and scans for exact
-locations, workstation paths, non-English code text, and common secret formats:
-
-```bash
-python provenance/audit_public_package.py
-python provenance/build_release_manifest.py
-```
-
-## Authorized full replay
-
-Copy `configs/data.example.json` to the ignored `configs/data.local.json`, set
-the source paths, then run:
-
-```bash
-python scripts/reproduce.py prepare --config configs/data.local.json
-python scripts/reproduce.py audit --config configs/data.local.json
-python scripts/reproduce.py extract --track SAMPLE_TRACK
-python scripts/reproduce.py detect --route polygon-first
-python scripts/reproduce.py detect --route pixel-first
-python scripts/reproduce.py evaluate
-python scripts/reproduce.py summarize
-```
-
-Detection writes one atomic Parquet file per track under `runs/`, so an
-interrupted national run resumes without recomputing completed tracks. Use
-`--track TILE_DIRECTION_TKNN` for a small integration test. The frozen paper
-chronology is polygon-first VV; pixel-first is an explicit sensitivity route,
-not a replacement for the published count ledger. See
-`docs/FULL_REPRODUCTION.md` for data lineage, stages, and publication gates.
-
-Legacy 9×9 S1-GRiTS sample shards can be converted to long Parquet tables with
-the same runner:
-
-```bash
-python scripts/reproduce.py convert-shards PATH/TO/COHORT OUTPUT --cohort balsa
-```
-
-The detector was also compared with the frozen private N1 ledgers on sampled
-VV and VH trajectories, including candidates that triggered the 19,999-draw
-near-threshold refinement. Candidate identities and p-values matched exactly;
-the non-identifying receipt is `provenance/PRIVATE_INTEGRATION_QA.json`.
-
-## Frozen method in brief
-
-- Temporal context: January 2016--June 2026.
-- Event reporting interval: January 2017--December 2025.
-- Stand representation: polygon-first monthly median.
-- Window length / displacement: 48 / 12 months.
-- Minimum finite observations per window: 12.
-- N1 screen: 3,999 IID permutations and finite-sample correction.
-- Near-threshold refinement: 19,999 permutations for
-  `0.015 <= p_perm <= 0.035`.
-- Admission: `p_perm <= 0.025`.
-- Same-band track/event consolidation: within one month.
-- Reference matching and VV--VH support: one-to-one within two months.
-- Uncertainty: resampling complete spatial blocks, not individual events.
-
-The authoritative machine-readable specification is
-`configs/paper_v1.json`. Detailed boundary and index semantics are documented in
-`docs/METHOD_SEMANTICS.md`.
-
-## Citation and data availability
-
-A permanent repository URL, archival DOI, and `CITATION.cff` should be added
-after the release owner and software license are confirmed. Third-party data and
-imagery retain their original licenses and are not covered by the future code
-license.
+Original software is licensed under [MIT](LICENSE). Owner-authorized processed
+B/C data and study-generated aggregate tables are licensed under
+[CC BY 4.0](DATA_LICENSE). Third-party code retains its original notices, including
+[CuSum NRT](docs/third_party/CuSum_NRT_LICENSE.txt). Neither license grants rights
+to excluded raw data, basemaps, commercial imagery or third-party manuscripts.

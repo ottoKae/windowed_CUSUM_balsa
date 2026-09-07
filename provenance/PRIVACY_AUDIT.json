@@ -1,9 +1,9 @@
 {
   "schema_version": "windowed-cusum-balsa.public-package-audit.v2",
   "scope": [
-    "complete repository release, excluding generated build and QA files"
+    "Git tracked plus untracked non-ignored files; archives audited separately"
   ],
-  "file_count_scanned": 128,
+  "file_count_scanned": 276,
   "checks": {
     "annual_sum_is_6658": true,
     "polygon_distribution_sum_is_3498": true,
@@ -36,28 +36,45 @@
     "results/polarization/strategy_spatial_bootstrap.csv": true,
     "results/national/annual_polygon_first_vv_events_2017_2025.csv": true,
     "results/national/polygon_event_count_distribution.csv": true,
-    "results/national/adjacent_interval_distribution_6month_bins.csv": true
+    "results/national/adjacent_interval_distribution_6month_bins.csv": true,
+    "results/nrt_ccdc/method_metrics.csv": true,
+    "results/nrt_ccdc/paired_contrasts.csv": true,
+    "results/nrt_ccdc/direction_control_metrics.csv": true,
+    "results/nrt_ccdc/direction_control_contrasts.csv": true
   },
   "forbidden_file_types": [],
   "sensitive_tabular_headers": {},
   "csv_parse_errors": {},
   "private_pattern_hits": {},
-  "cjk_text_hits": [],
+  "cjk_text_hits": [
+    "manuscript/sections/01_introduction.tex",
+    "manuscript_JAG_v2/sections/01_introduction.tex",
+    "manuscript_JAG_v2/sections/02_materials.tex",
+    "manuscript_JAG_v2/sections/03_methods.tex",
+    "manuscript_JAG_v2/sections/04_results.tex"
+  ],
   "high_confidence_secret_hits": {},
   "json_parse_errors": {},
   "manuscript_checks": {
     "all_input_sections_exist": true,
     "active_manuscript_references_eight_figures": true,
     "all_active_figure_assets_exist": true,
-    "compiled_manuscript_pdf_exists": true
+    "compiled_manuscript_pdf_exists": true,
+    "eight_unique_canonical_figure_builders_exist": true,
+    "all_canonical_builders_are_registered_once": true
   },
   "note": "Synthetic DEMO_STAND identifiers are invented and contain no source mapping.",
   "technical_passed": true,
   "publication_gates": {
-    "software_license_selected": false,
-    "citation_metadata_finalized": false,
-    "repository_url_and_archive_doi_finalized": false,
-    "third_party_figure_permissions_confirmed": false
+    "software_license_selected": true,
+    "data_license_selected": true,
+    "citation_metadata_finalized": true,
+    "repository_url_configured": true,
+    "archive_doi_finalized": false,
+    "third_party_figure_permissions_confirmed": true,
+    "editable_workflow_source_included": true
   },
-  "passed": true
+  "owner_approved_science_and_pixel_profiles": true,
+  "full_spatial_raw_layer_excluded": true,
+  "passed": false
 }

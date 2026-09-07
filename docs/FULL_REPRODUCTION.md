@@ -85,7 +85,7 @@ pixels, then run N1 Windowed CUSUM once on the stand trajectory. This is the
 frozen primary analysis.
 
 ```powershell
-python scripts/reproduce.py detect --route polygon-first
+python scripts/reproduce.py detect --route polygon-first --components
 ```
 
 ### Pixel-first
@@ -94,7 +94,7 @@ Run N1 independently for each polygon-interior native pixel, form temporal and
 eight-neighbour spatial support, then fuse the resulting polygon-track events.
 
 ```powershell
-python scripts/reproduce.py detect --route pixel-first
+python scripts/reproduce.py detect --route pixel-first --workers 16
 ```
 
 Both commands write one file per track to `runs/`. Completed files are skipped
@@ -109,6 +109,18 @@ python scripts/reproduce.py detect --route polygon-first --track SAMPLE_TRACK
 The current paper's pixel-first comparison is a frozen sensitivity route from
 the historical experiment. A new all-pixel N1 replay is a new analysis version
 and must not silently replace manuscript counts.
+
+After the all-pixel run completes, apply the connected-support cutoff selected
+independently in every outer spatial fold (`r=0.20`) before cross-track fusion:
+
+```powershell
+python scripts/finalize_pixel_first_n1.py
+```
+
+This preserves the unscreened polygon-track candidates and writes the formal
+N1 Pixel-first chronology, validation metrics, paired spatial-block bootstrap,
+and comparisons with Polygon-first N1 and the historical Pixel-first L0 route
+under `runs/windowed_cusum_balsa_paper_v1/pixel-first/formal_n1_connected_r0.20/`.
 
 ## Evaluation and F0--F4
 
@@ -126,33 +138,41 @@ The local `frozen_results/` package contains the complete accepted analysis:
   counts, and adjacent-event intervals.
 
 The public modules implement those algorithms independently of private paths.
-The checked-in compact tables under `results/` are the non-identifying report
-layer. The ignored row-level package is the audit and full-replay layer.
+With `--components`, detection writes per-track global and sliding candidate
+ledgers under `runs/<dataset>/component_ablation/candidates/by_track/` and
+atomically combines them after all tracks finish. These raw detector outputs,
+including their N1 permutation scores, are the direct input to F0--F4. The
+checked-in compact tables under `results/` are the non-identifying report layer.
+The ignored row-level package remains the audit and frozen-comparison layer.
 
 Recompute spatially independent F0--F4 metrics and the shared-index 5,000-draw
 paired block bootstrap, then rebuild national event-count and interval tables:
 
 ```powershell
-python scripts/reproduce.py evaluate
+python scripts/reproduce.py evaluate --source recomputed
 python scripts/reproduce.py summarize
 ```
 
+Use `--source frozen` only to audit the archived manuscript ledgers. The
+default `auto` mode prefers recomputed ledgers when they are complete and falls
+back to the frozen package otherwise. Every run records the selected source in
+`evaluation_receipt.json`.
+
 ## Figures
 
-The methodological workflow can be rebuilt publicly. The other manuscript
-figures are frozen PDFs because their reconstruction uses exact locations,
-licensed imagery, or local geospatial context. On the authorized workstation,
-the new local package supplies the polygon geometry, aggregate outputs,
-Natural Earth boundary files, and Esri cache needed for the national maps.
-The representative optical/SAR panel remains dependent on its separately
-licensed source imagery and is therefore not included in the proposed dataset.
-
-The national recurrence map and its three support distributions can be rebuilt
-from the prepared local package without the licensed optical panel:
+Each active manuscript figure has one canonical builder. Build all figures to
+an isolated review directory (the default behavior) with:
 
 ```powershell
-python scripts/figures/build_national_recurrence.py runs/national_recurrence.pdf
+python scripts/figures/build_all.py --output-dir runs/figures/rebuilt
 ```
+
+Pass `--figure N` for a single figure. `--publish` is deliberately explicit and
+is the only mode that overwrites `manuscript/figures/`. Figures 1--5, 7, and 8
+use repository results or the authorized local package. Figure 6 also needs
+separately licensed optical scenes configured in the ignored
+`configs/figure_sources.local.json`; the repository includes only an example
+configuration and never redistributes those source images.
 
 ## Release gates
 

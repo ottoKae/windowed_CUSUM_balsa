@@ -1,0 +1,8 @@
+path,sha256,bytes,access,source,redistribution_status
+inventory/balsa_validated.parquet,,,restricted,official plantation inventory,pending rights review
+splits/outer_folds.csv,,,restricted,frozen study protocol,author generated
+references/reference_ground_events.parquet,,,restricted,visual interpretation,pending location review
+polygon_pixels/cache/*.npz,,,restricted,S1-GRiTS derived data,pending upstream terms
+frozen_protocol/oof_predictions/*.parquet,,,restricted,author generated,pending location review
+raw_to_result/component_ablation/*.parquet,,,restricted,author generated,pending location review
+

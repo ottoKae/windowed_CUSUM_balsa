@@ -31,6 +31,7 @@ from lr_cusum.polygon_workflow import (  # noqa: E402
     annotate_vv_with_vh,
     detect_pixels,
     detect_polygon_first,
+    detect_polygon_first_components,
     extract_track_cache,
     fuse_pixel_events,
     fuse_tracks,
@@ -96,6 +97,7 @@ def prepare(config: dict) -> None:
         sample / "roles/balsa_polygon_roles.parquet": out / "splits/polygon_roles.parquet",
         src["references"] / "reference_ground_events_exact.parquet": out / "references/reference_ground_events.parquet",
         src["references"] / "reference_track_events_exact.parquet": out / "references/reference_track_events.parquet",
+        src["benchmark_closure"] / "locked_outer_spatial_folds.csv": out / "splits/outer_folds.csv",
         src["s1grits_root"] / "catalog.parquet": out / "s1grits/catalog.parquet",
     }
     for source, destination in files.items():
@@ -119,6 +121,8 @@ def prepare(config: dict) -> None:
             out / "frozen_results/component_ablation/candidate_audit" / name,
         )
 
+    freeze_benchmark_protocol(src, out)
+
     # Public-domain administrative context is copied; cached Esri imagery is local only.
     natural_earth = src["natural_earth_root"]
     for relative in (
@@ -140,6 +144,67 @@ def prepare(config: dict) -> None:
     )
     build_manifest(config)
     print(f"prepared={out}")
+
+
+def freeze_benchmark_protocol(src: dict[str, Path], out: Path) -> None:
+    """Localize the exact fold selections and OOF event sources used by the paper."""
+
+    destination = out / "frozen_protocol"
+    comparison = src["benchmark_comparison"]
+    closure = src["benchmark_closure"]
+    sources = {
+        "windowed_cusum": (
+            out / "frozen_results/geometry/nested_selections.csv",
+            out / "frozen_results/geometry/nested_oof_events.parquet",
+        ),
+        "recusum_decrease": (
+            comparison / "recusum_decrease.nested_selections.csv",
+            comparison / "recusum_decrease.nested_oof_events.parquet",
+        ),
+        "recusum_raw": (
+            comparison / "recusum_raw.nested_selections.csv",
+            comparison / "recusum_raw.nested_oof_events.parquet",
+        ),
+        "fpol_bocd_decrease": (
+            comparison / "fpol_bocd_decrease.nested_selections.csv",
+            comparison / "fpol_bocd_decrease.nested_oof_events.parquet",
+        ),
+        "bfast_decrease": (
+            comparison / "bfast_decrease.nested_selections.csv",
+            comparison / "bfast_decrease.nested_oof_events.parquet",
+        ),
+        "maximum_monthly_drop": (
+            closure / "maximum_drop.nested_selections.csv",
+            closure / "maximum_drop.nested_oof_events.parquet",
+        ),
+        "classical_lower_cusum": (
+            closure / "classical_cusum.nested_selections.csv",
+            closure / "classical_cusum.nested_oof_events.parquet",
+        ),
+    }
+    rows = []
+    for method, (selection, predictions) in sources.items():
+        selection_out = destination / "selections" / f"{method}.csv"
+        predictions_out = destination / "oof_predictions" / f"{method}.parquet"
+        copy_file(selection, selection_out)
+        copy_file(predictions, predictions_out)
+        frame = pd.read_parquet(predictions_out)
+        rows.append(
+            {
+                "method": method,
+                "selection_path": selection_out.relative_to(out).as_posix(),
+                "selection_sha256": sha256(selection_out),
+                "oof_prediction_path": predictions_out.relative_to(out).as_posix(),
+                "oof_prediction_sha256": sha256(predictions_out),
+                "oof_rows": len(frame),
+                "outer_folds": frame["outer_fold"].nunique(),
+            }
+        )
+    atomic_csv(pd.DataFrame(rows), destination / "oof_source_ledger.csv")
+
+    review = src.get("prospective_review")
+    if review is not None and review.is_file():
+        copy_file(review, out / "prospective_2026/prior_blinded_review_unblinded.csv")
 
 
 def build_manifest(config: dict) -> None:
@@ -177,6 +242,7 @@ def audit(config: dict) -> None:
     polygon_tracks = pd.read_parquet(root / "polygon_pixels/polygon_tracks.parquet")
     associations = pd.read_parquet(root / "polygon_pixels/pixel_associations.parquet")
     catalog = pd.read_parquet(root / "s1grits/catalog.parquet")
+    outer_folds = pd.read_csv(root / "splits/outer_folds.csv")
     events = pd.read_parquet(root / "frozen_results/national/ground_polygon_vv_primary.parquet")
     events = events.loc[events.route.eq("polygon_first")].copy()
     intervals = events.assign(month=pd.to_datetime(events["change_time"]).dt.to_period("M"))
@@ -191,6 +257,8 @@ def audit(config: dict) -> None:
         check("reference_events", len(references), expected["reference_events"]),
         check("reference_polygons", references.sample_id.nunique(), expected["reference_polygons"]),
         check("reference_spatial_blocks", references.frozen_spatial_block_id.nunique(), expected["reference_spatial_blocks"]),
+        check("outer_fold_spatial_blocks", outer_folds.spatial_block_id.nunique(), expected["reference_spatial_blocks"]),
+        check("outer_folds", outer_folds.outer_fold.nunique(), 5),
         check("polygon_tracks", len(polygon_tracks), expected["polygon_tracks"]),
         check("pixel_associations", len(associations), expected["pixel_associations"]),
         check("unique_track_pixels", associations.pixel_track_id.nunique(), expected["unique_track_pixels"]),
@@ -217,37 +285,110 @@ def atomic_parquet(frame: pd.DataFrame, path: Path) -> None:
     os.replace(temporary, path)
 
 
-def detect(config: dict, route: str, track: str | None) -> None:
+def atomic_csv(frame: pd.DataFrame, path: Path) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_name(path.name + ".tmp")
+    frame.to_csv(temporary, index=False)
+    os.replace(temporary, path)
+
+
+def evaluation_references(root: Path) -> pd.DataFrame:
+    references = pd.read_parquet(root / "references/reference_ground_events.parquet").copy()
+    references["spatial_block_id"] = references["frozen_spatial_block_id"]
+    folds = pd.read_csv(root / "splits/outer_folds.csv")
+    if folds.duplicated("spatial_block_id").any():
+        raise ValueError("outer-fold map contains duplicate spatial blocks")
+    references = references.drop(columns=["outer_fold"], errors="ignore").merge(
+        folds[["spatial_block_id", "outer_fold"]],
+        on="spatial_block_id",
+        how="left",
+        validate="many_to_one",
+    )
+    if references["outer_fold"].isna().any():
+        raise ValueError("outer-fold map does not cover every reference spatial block")
+    if references["spatial_block_id"].nunique() != 57 or references["outer_fold"].nunique() != 5:
+        raise ValueError("expected the frozen 57-block, five-fold evaluation protocol")
+    return references
+
+
+def detection_cache(root: Path, run_root: Path, tracks: list[str]) -> tuple[Path, str]:
+    rebuilt = run_root / "polygon_pixels"
+    required = [rebuilt / f"{key}.npz" for key in tracks]
+    required += [rebuilt / f"{key}.pixels.parquet" for key in tracks]
+    if all(path.is_file() for path in required):
+        return rebuilt, "rebuilt_from_s1grits_zarr"
+    return root / "polygon_pixels/cache", "prepared_frozen_pixel_cache"
+
+
+def detect(
+    config: dict,
+    route: str,
+    track: str | None,
+    components: bool = False,
+    workers: int = 1,
+) -> None:
     root = config["destination"]
     index_root = root / "polygon_pixels"
     cache = index_root / "cache"
     associations = pd.read_parquet(index_root / "pixel_associations.parquet")
     polygon_tracks = pd.read_parquet(index_root / "polygon_tracks.parquet")
-    tracks = [track] if track else sorted(associations.track_key.unique())
+    all_tracks = sorted(associations.track_key.astype(str).unique())
+    tracks = [track] if track else all_tracks
+    run_root = ROOT / "runs" / config["dataset_id"]
+    cache, cache_source = detection_cache(root, run_root, tracks)
     detector = load_paper_config(ROOT / "configs/paper_v1.json")
-    output = ROOT / "runs" / config["dataset_id"] / route
+    output = run_root / route
     output.mkdir(parents=True, exist_ok=True)
+    component_output = ROOT / "runs" / config["dataset_id"] / "component_ablation/candidates"
+    if components and route != "polygon-first":
+        raise ValueError("component ledgers are defined for polygon-first detection only")
 
     for key in tracks:
         path = output / "by_track" / f"{key}.parquet"
-        if path.exists():
+        global_path = component_output / "by_track" / f"{key}.global.parquet"
+        sliding_path = component_output / "by_track" / f"{key}.sliding.parquet"
+        complete = path.exists() and (
+            not components or (global_path.exists() and sliding_path.exists())
+        )
+        if complete:
             print(f"skip={key}")
             continue
         local = associations.loc[associations.track_key.eq(key)].copy()
         if local.empty:
             raise ValueError(f"unknown track: {key}")
         local_tracks = polygon_tracks.loc[polygon_tracks.track_key.eq(key)].copy()
-        if route == "polygon-first":
+        if components:
+            global_candidates, sliding_candidates = detect_polygon_first_components(
+                local, local_tracks, cache, detector
+            )
+            atomic_parquet(global_candidates, global_path)
+            atomic_parquet(sliding_candidates, sliding_path)
+            events = derive_variant_events(
+                global_candidates,
+                sliding_candidates,
+                "F4",
+                reporting_only=True,
+            )
+            if len(events):
+                events["selection_score"] = 1.0 - events["null_p_value"].astype(float)
+                events = (
+                    events.sort_values("selection_score", ascending=False)
+                    .drop_duplicates(["polygon_track_id", "Band", "change_time"])
+                    .sort_values(["polygon_track_id", "Band", "change_time"])
+                    .reset_index(drop=True)
+                )
+        elif route == "polygon-first":
             events = detect_polygon_first(local, local_tracks, cache, detector)
         else:
-            pixels = detect_pixels(local, cache, detector)
+            pixels = detect_pixels(local, cache, detector, workers=workers)
             events = fuse_pixel_events(pixels, local, local_tracks, cache)
         atomic_parquet(events, path)
         print(f"track={key} events={len(events)}")
 
-    parts = sorted((output / "by_track").glob("*.parquet"))
-    if len(parts) != len(associations.track_key.unique()):
-        print(f"partial={len(parts)}/{associations.track_key.nunique()}; rerun without --track to finish")
+    parts = [output / "by_track" / f"{key}.parquet" for key in all_tracks]
+    completed = [path for path in parts if path.is_file()]
+    if len(completed) != len(all_tracks):
+        print(f"partial={len(completed)}/{len(all_tracks)}; rerun without --track to finish")
         return
     track_events = pd.concat((pd.read_parquet(path) for path in parts), ignore_index=True)
     atomic_parquet(track_events, output / "track_events.parquet")
@@ -256,6 +397,37 @@ def detect(config: dict, route: str, track: str | None) -> None:
     primary, supported = annotate_vv_with_vh(ground, tolerance_months=2)
     atomic_parquet(primary, output / "vv_primary.parquet")
     atomic_parquet(supported, output / "vv_vh_supported.parquet")
+    if components:
+        global_parts = [
+            component_output / "by_track" / f"{key}.global.parquet" for key in all_tracks
+        ]
+        sliding_parts = [
+            component_output / "by_track" / f"{key}.sliding.parquet" for key in all_tracks
+        ]
+        if not all(path.is_file() for path in global_parts + sliding_parts):
+            raise RuntimeError("component candidate ledgers are incomplete")
+        atomic_parquet(
+            pd.concat((pd.read_parquet(item) for item in global_parts), ignore_index=True),
+            component_output / "global_candidates.parquet",
+        )
+        atomic_parquet(
+            pd.concat((pd.read_parquet(item) for item in sliding_parts), ignore_index=True),
+            component_output / "sliding_candidates.parquet",
+        )
+    write_json(
+        {
+            "route": route,
+            "cache_source": cache_source,
+            "cache_path": str(cache.resolve()),
+            "tracks": len(all_tracks),
+            "track_events": len(track_events),
+            "ground_events": len(ground),
+            "vv_primary_events": len(primary),
+            "vv_vh_supported_events": len(supported),
+            "components": bool(components),
+        },
+        output / "COMPLETE.json",
+    )
     print(f"complete route={route} track_events={len(track_events)} ground_events={len(ground)}")
 
 
@@ -271,6 +443,21 @@ def extract(config: dict, track: str | None) -> None:
             raise ValueError(f"unknown track: {key}")
         report = extract_track_cache(local, output, calendar=calendar)
         print(f"track={key} native_pixels={report['native_pixels']}")
+    if track is None:
+        reports = [output / f"{key}.json" for key in sorted(associations.track_key.unique())]
+        if not all(path.is_file() for path in reports):
+            raise RuntimeError("one or more track cache receipts are missing")
+        write_json(
+            {
+                "status": "complete",
+                "source": "S1-GRiTS catalog and Zarr",
+                "calendar": "2016-01/2026-06",
+                "tracks": len(reports),
+                "associations": len(associations),
+                "unique_track_pixels": associations.pixel_track_id.nunique(),
+            },
+            output / "COMPLETE.json",
+        )
 
 
 def convert_shards(cohort_root: Path, output: Path, cohort: str) -> None:
@@ -282,20 +469,38 @@ def convert_shards(cohort_root: Path, output: Path, cohort: str) -> None:
     print(f"converted_stores={len(records)} output={output.resolve()}")
 
 
-def evaluate(config: dict) -> None:
+def evaluate(config: dict, source: str = "auto") -> None:
     root = config["destination"]
-    component = root / "frozen_results/component_ablation"
-    references = pd.read_parquet(root / "references/reference_ground_events.parquet").copy()
-    references["spatial_block_id"] = references["frozen_spatial_block_id"]
-    references["outer_fold"] = references["spatial_fold"]
-    reference_ids = set(references.sample_id.astype(str))
-    global_candidates = pd.read_parquet(component / "candidate_audit/global_candidates.parquet")
-    sliding_candidates = pd.read_parquet(component / "candidate_audit/sliding_candidates.parquet")
-    for name, candidates in (("global", global_candidates), ("sliding", sliding_candidates)):
-        scores = pd.read_parquet(component / f"scores/{name}_n1.parquet")
-        candidates["passes_permutation"] = candidates.candidate_id.astype(str).isin(
-            set(scores.loc[scores.admitted, "candidate_id"].astype(str))
+    recomputed = ROOT / "runs" / config["dataset_id"] / "component_ablation/candidates"
+    recomputed_files = (
+        recomputed / "global_candidates.parquet",
+        recomputed / "sliding_candidates.parquet",
+    )
+    if source == "auto":
+        source = "recomputed" if all(path.is_file() for path in recomputed_files) else "frozen"
+    if source == "recomputed" and not all(path.is_file() for path in recomputed_files):
+        missing = [str(path) for path in recomputed_files if not path.is_file()]
+        raise FileNotFoundError(
+            "recomputed component ledgers are incomplete; run polygon-first "
+            f"detection with --components first: {missing}"
         )
+    component = (
+        recomputed if source == "recomputed"
+        else root / "frozen_results/component_ablation"
+    )
+    references = evaluation_references(root)
+    reference_ids = set(references.sample_id.astype(str))
+    if source == "recomputed":
+        global_candidates = pd.read_parquet(component / "global_candidates.parquet")
+        sliding_candidates = pd.read_parquet(component / "sliding_candidates.parquet")
+    else:
+        global_candidates = pd.read_parquet(component / "candidate_audit/global_candidates.parquet")
+        sliding_candidates = pd.read_parquet(component / "candidate_audit/sliding_candidates.parquet")
+        for name, candidates in (("global", global_candidates), ("sliding", sliding_candidates)):
+            scores = pd.read_parquet(component / f"scores/{name}_n1.parquet")
+            candidates["passes_permutation"] = candidates.candidate_id.astype(str).isin(
+                set(scores.loc[scores.admitted, "candidate_id"].astype(str))
+            )
     stages = {}
     for stage in ("F0", "F1", "F2", "F3", "F4", "R0", "R1", "R2", "R3"):
         track_events = derive_variant_events(
@@ -342,15 +547,33 @@ def evaluate(config: dict) -> None:
     atomic_parquet(bootstrap.contrast_replicates, output / "bootstrap_contrast_replicates.parquet")
     atomic_parquet(bootstrap.stage_summary, output / "bootstrap_stage_summary.parquet")
     atomic_parquet(bootstrap.contrast_summary, output / "bootstrap_contrast_summary.parquet")
-    print(f"component_ablation={output}")
+    write_json(
+        {
+            "candidate_source": source,
+            "global_candidates": len(global_candidates),
+            "sliding_candidates": len(sliding_candidates),
+            "reference_events": len(references),
+            "bootstrap_replicates": 5_000,
+            "bootstrap_seed": 20260829,
+        },
+        output / "evaluation_receipt.json",
+    )
+    print(f"component_ablation={output} source={source}")
 
 
 def summarize(config: dict) -> None:
     root = config["destination"]
     inventory = pd.read_parquet(root / "inventory/balsa_validated.parquet")
-    events = pd.read_parquet(root / "frozen_results/national/ground_polygon_vv_primary.parquet")
-    events = events.loc[events.route.eq("polygon_first")].copy()
-    output = ROOT / "runs" / config["dataset_id"] / "national"
+    run_root = ROOT / "runs" / config["dataset_id"]
+    recomputed = run_root / "polygon-first/vv_primary.parquet"
+    complete = run_root / "polygon-first/COMPLETE.json"
+    event_source = recomputed if recomputed.is_file() and complete.is_file() else (
+        root / "frozen_results/national/ground_polygon_vv_primary.parquet"
+    )
+    events = pd.read_parquet(event_source)
+    if "route" in events:
+        events = events.loc[events.route.eq("polygon_first")].copy()
+    output = run_root / "national"
     lifecycle = lifecycle_summary(events, inventory.polygon_id, id_column="polygon_id")
     lifecycle = lifecycle.drop(columns="generation_count")
     intervals = rotation_periods(events, id_column="polygon_id")
@@ -361,6 +584,7 @@ def summarize(config: dict) -> None:
     atomic_parquet(lifecycle, output / "polygon_event_counts.parquet")
     atomic_parquet(intervals, output / "adjacent_event_intervals.parquet")
     atomic_parquet(annual, output / "annual_event_counts.parquet")
+    write_json({"event_source": str(event_source.resolve())}, output / "SOURCE.json")
     print(
         f"national events={len(events)} polygons={events.polygon_id.nunique()} "
         f"intervals={len(intervals)}"
@@ -370,13 +594,27 @@ def summarize(config: dict) -> None:
 def parser() -> argparse.ArgumentParser:
     root = argparse.ArgumentParser(description=__doc__)
     commands = root.add_subparsers(dest="command", required=True)
-    for command in ("prepare", "audit", "evaluate", "summarize"):
+    for command in ("prepare", "audit", "summarize"):
         item = commands.add_parser(command)
         item.add_argument("--config", type=Path, default=ROOT / "configs/data.local.json")
+    item = commands.add_parser("evaluate")
+    item.add_argument("--config", type=Path, default=ROOT / "configs/data.local.json")
+    item.add_argument(
+        "--source", choices=("auto", "recomputed", "frozen"), default="auto",
+        help="Use freshly generated component ledgers when available, or the frozen paper ledgers.",
+    )
     item = commands.add_parser("detect")
     item.add_argument("--config", type=Path, default=ROOT / "configs/data.local.json")
     item.add_argument("--route", choices=("polygon-first", "pixel-first"), required=True)
     item.add_argument("--track", help="Optional single track key; omit for resumable all-track execution.")
+    item.add_argument(
+        "--workers", type=int, default=1,
+        help="Independent pixel-sequence workers for Pixel-first detection.",
+    )
+    item.add_argument(
+        "--components", action="store_true",
+        help="Persist all N1-scored polygon-first candidates required by F0--F4 evaluation.",
+    )
     item = commands.add_parser("extract")
     item.add_argument("--config", type=Path, default=ROOT / "configs/data.local.json")
     item.add_argument("--track", help="Optional single track key; omit for all tracks.")
@@ -398,11 +636,13 @@ def main() -> None:
     elif args.command == "audit":
         audit(config)
     elif args.command == "evaluate":
-        evaluate(config)
+        evaluate(config, args.source)
     elif args.command == "summarize":
         summarize(config)
     elif args.command == "detect":
-        detect(config, args.route, args.track)
+        if args.workers < 1:
+            raise ValueError("--workers must be at least 1")
+        detect(config, args.route, args.track, args.components, args.workers)
     else:
         extract(config, args.track)
 

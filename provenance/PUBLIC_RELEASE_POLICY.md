@@ -1,5 +1,16 @@
 # Public-release policy
 
+## Owner-approved scope, 2026-09-05
+
+The owner has approved production of the minimal real scientific and pixel-level
+extension packages. On 2026-09-05 the owner also approved the proposed MIT code
+and CC BY 4.0 processed-data licenses and requested publication after validation.
+Packages remain in ignored dist/ until actual deposition. This supersedes earlier pending-owner-approval statements
+below for B/C only, not for exact geometry, original catalog/Zarr or imagery.
+Opaque group identities and local pixel adjacency are retained for scientific
+reproduction; the private lookup and absolute locations are not exported.
+See docs/REAL_CAPSULES.md. Authorization to build is not an external upload.
+
 ## Included in the GitHub release
 
 - source code and tests selected by the repository maintainers;
@@ -43,8 +54,8 @@ deposit and should not be silently added to Git history.
 
 ## Licensing
 
-The source repository had no approved project-wide software license at the time
-of this packaging pass. The authors must select a code license and must not use
-that license to imply rights over third-party data, imagery, or basemaps. Data
-and figure rights should be declared separately.
-
+Original software uses MIT (LICENSE); approved processed B/C data and study
+aggregates use CC BY 4.0 (DATA_LICENSE). Retain third-party code notices.
+Neither license implies rights over source imagery, basemaps or papers.
+The first software-only distribution excludes both manuscript trees and their
+rendered assets; they remain unchanged in the author's working repository.

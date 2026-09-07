@@ -48,14 +48,16 @@ We next evaluated the sensitivity of disturbance detection to stand representati
 \begin{figure*}[pos=!htbp]
     \centering
     \includegraphics[width=\linewidth]{figures/fig07_representation_configuration.pdf}
-    \caption{Sensitivity of Windowed CUSUM to stand representation, temporal window geometry, and polarization strategy. (a,b) Illustrative VV and VH stand trajectories with cell-level interquartile ranges and reference disturbances. (c--e) Event-level precision, recall, and F1 across stand representations, window configurations, and polarization strategies, respectively. Whiskers denote 95\% spatial-block bootstrap confidence intervals, and pale-green highlighting indicates the retained configurations.}
+    \caption{Sensitivity of Windowed CUSUM to stand representation, temporal window geometry, and polarization strategy. (a,b) Illustrative VV and VH stand trajectories with cell-level interquartile ranges and reference disturbances. (c--e) Event-level precision, recall, and F1 across stand representations, window configurations, and polarization strategies, respectively. Connected support used the spatially selected threshold $r=0.20$. Whiskers denote 95\% spatial-block bootstrap confidence intervals, and pale-green highlighting indicates the retained configurations.}
     \label{fig:stand_representation_sensitivity}
 \end{figure*}
 
-Under the fixed 48/12 configuration, the Polygon-first median achieved precision 0.762, recall 0.823, and F1 0.791 (Fig.~\ref{fig:stand_representation_sensitivity}~(c)). Alternative representations produced no detectable F1 improvement; even temporal DBSCAN, which had the highest alternative point estimate (F1 = 0.798), differed from the median by only $+0.007$ (95\% CI: $-0.032$ to 0.042). The Polygon-first median was therefore retained because it preserved high recall without requiring pixel-support or clustering parameters.
+Under the fixed 48/12 configuration, the Polygon-first median achieved precision 0.767, recall 0.824, and F1 0.795 (Fig.~\ref{fig:stand_representation_sensitivity}~(c)). Alternative representations produced no detectable F1 improvement; even temporal DBSCAN, which had the highest alternative point estimate (F1 = 0.818), differed from the median by only $+0.024$ (95\% CI: $-0.005$ to 0.049). The Polygon-first median was therefore retained because it preserved high recall without requiring pixel-support or clustering parameters.
+
+The fold-selected Pixel-first connected-support route ($r=0.20$) achieved precision 0.774, recall 0.788, F1 0.781, and temporal MAE 0.804 months. Its paired F1 difference from the Polygon-first median was $-0.014$ (95\% CI: $-0.034$ to 0.007). Applying the frozen threshold nationwide produced 6,197 VV events in 2,877 polygons, of which 3,583 had one-to-one VH support within two months. The corresponding Polygon-first chronology contained 6,658 events in 3,149 polygons. Thus, the Pixel-first connected-support route did not displace Polygon-first as the primary national chronology.
 
 
-Across the evaluated window geometries, 12-month displacements generally favored F1 over six-month displacements (Fig.~\ref{fig:stand_representation_sensitivity}~(d)). The highest fixed F1 was 0.797 for 36/12, only 0.003 above the prospectively locked 48/12 configuration (95\% CI: $-0.013$ to 0.019). Although 36/12 was selected in all five outer folds, nested spatial out-of-fold F1 was 0.796. The prespecified 48/12 geometry was therefore retained.
+Across the evaluated window geometries, 12-month displacements generally favored F1 over six-month displacements (Fig.~\ref{fig:stand_representation_sensitivity}~(d)). The highest fixed F1 was 0.797 for 36/12, only 0.003 above the prospectively locked 48/12 configuration (95\% CI: $-0.013$ to 0.019). Although 36/12 was selected in all five outer folds, nested spatial out-of-fold F1 was 0.797. The prespecified 48/12 geometry was therefore retained.
 
 
 
@@ -134,13 +136,13 @@ Additional controlled removal produced the same ordering. The full-minus-removed
 \subsection{Benchmark comparison and statistical robustness}
 \label{sec:benchmark_null_sensitivity}
 
-For external benchmarking, Windowed CUSUM achieved precision 0.787, recall 0.805, F1 0.796, and temporal MAE 0.778 months (Table~\ref{tab:benchmark_comparison}). The strongest alternative, decrease-filtered ReCuSum, matched its precision (0.787) but had lower recall (0.591; F1 = 0.675), yielding a paired F1 advantage of $+0.122$ (95\% CI: 0.094--0.149). The benchmark advantage therefore arose primarily from recurrent-event recall.
+For external benchmarking, Windowed CUSUM achieved precision 0.789, recall 0.806, F1 0.797, and temporal MAE 0.776 months (Table~\ref{tab:benchmark_comparison}). The strongest alternative, decrease-filtered ReCuSum, matched its precision (0.787) but had lower recall (0.591; F1 = 0.675), yielding a paired F1 advantage of $+0.122$ (95\% CI: 0.094--0.149). The benchmark advantage therefore arose primarily from recurrent-event recall.
 
 
 \begin{table}[pos=!htbp]
     \centering
     \small
-    \caption{Nested five-fold spatial out-of-fold comparison of disturbance detectors using common Polygon-first median trajectories and a $\pm2$-month event-matching tolerance. Temporal MAE was calculated for matched events only.}
+    \caption{Five-fold spatial out-of-fold comparison using common Polygon-first median VV inputs and $\pm2$-month event matching. Parameters were selected outside each held-out fold; the CuSum NRT decrease-filtered control retained the monthly adaptation's selections without retuning. Precision and F1 are conditional on the dated-reference catalogue; MAE concerns matched events only. CCDC uses the official Earth Engine implementation. CuSum NRT is a monthly stand-level adaptation; BOCD and BFAST-style rows are prototypes, not full reproductions of the published methods.}
     \label{tab:benchmark_comparison}
 
     \begin{tabular}{lcccc}
@@ -153,10 +155,16 @@ For external benchmarking, Windowed CUSUM achieved precision 0.787, recall 0.805
         \midrule
 
         \textbf{Windowed CUSUM}
-        & 0.787
-        & 0.805
-        & \textbf{0.796}
-        & 0.778 \\
+        & 0.789
+        & 0.806
+        & \textbf{0.797}
+        & 0.776 \\
+
+        CCDC VV (official GEE)
+        & 0.750
+        & 0.622
+        & 0.680
+        & 0.626 \\
 
         ReCuSum, decrease-filtered
         & 0.787
@@ -164,7 +172,13 @@ For external benchmarking, Windowed CUSUM achieved precision 0.787, recall 0.805
         & 0.675
         & 0.752 \\
 
-        f-pol BOCD, decrease-filtered
+        CuSum NRT, decrease-filtered
+        & 0.398
+        & 0.814
+        & 0.535
+        & 0.862 \\
+
+        BOCD prototype, decrease-filtered
         & 0.740
         & 0.343
         & 0.469
@@ -181,6 +195,12 @@ For external benchmarking, Windowed CUSUM achieved precision 0.787, recall 0.805
         & 0.572
         & 0.422
         & 0.755 \\
+
+        CuSum NRT, monthly adaptation
+        & 0.222
+        & 0.754
+        & 0.344
+        & 0.898 \\
 
         Classical lower CUSUM
         & 0.171
@@ -316,5 +336,14 @@ To assess whether the approximately three-year recurrence was specific to the VV
 These intervals represent recurrent stand turnover observed within the Sentinel-1 record. Notably, individual negative disturbance events could not always be independently attributed to clear-cut harvesting. The 36-month median is therefore interpreted as a rotation-relevant recurrence timescale of observed plantation turnover.
 
 Application of the VV-only Windowed CUSUM to 3,498 validated BALSA polygons identified 6,658 disturbance events during 2017--2025 (Fig.~\ref{fig:national_recurrence_patterns}). Event recurrence showed marked spatial heterogeneity (Fig.~\ref{fig:national_recurrence_patterns}~(a)), while annual detections ranged from 308 in 2023 to 1,026 in 2022 (Fig.~\ref{fig:national_recurrence_patterns}~(b)). The 2023 minimum coincided with the post-boom contraction that followed the 2019--2021 balsa fever, when exceptional wind-sector demand rapidly depleted mature plantation stocks and Ecuadorian balsa exports subsequently declined sharply~\citep{Sanchez2023BalsaExports,EIA2024IllWind}. As shown in Fig.~\ref{fig:national_recurrence_patterns}~(c), 82.9\% of the inventory contained one to three detected events and 349 plots contained none. The 2,194 stands with at least two events provided 3,509 consecutive inter-disturbance intervals, with a median of 36 months (IQR: 22--46 months; 95\% spatial-block bootstrap CI: 35--38 months; Fig.~\ref{fig:national_recurrence_patterns}d).
+
+\begin{nolinenumbers}
+\begin{figure}[pos=!htbp]
+    \centering
+    \includegraphics[width=0.92\linewidth]{figures/fig01_national_recurrence.pdf}
+    \caption{Recurrent stand-disturbance patterns reconstructed by Windowed CUSUM across the Ecuadorian balsa plantations. (a) Spatial pattern of stand-disturbance recurrence. (b) National annual stand-disturbance frequency. (c) Number of detected disturbances per balsa plantation. (d) Intervals between consecutive detected stand-disturbances; the dashed line indicates the median.}
+    \label{fig:national_recurrence_patterns}
+\end{figure}
+\end{nolinenumbers}
 
 \FloatBarrier

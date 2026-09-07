@@ -1,0 +1,5 @@
+primary_track_family,store_track_tokens,tile_track_groups,mgrs_tiles,burst_footprints_min,burst_footprints_max,stored_monthly_composites_min,stored_monthly_composites_max,first_month_min,first_month_max,last_month_min,last_month_max,polygon_track_trajectories
+18,"18, 18-19",19,19,7,22,113,118,2016-09,2016-10,2026-06,2026-06,3467
+47,"47, 47-48",2,2,11,12,76,76,2016-06,2016-06,2026-06,2026-06,16
+91,91,5,5,7,11,100,100,2016-10,2016-10,2026-06,2026-06,61
+120,"120, 120-121",14,14,7,20,108,112,2016-05,2016-05,2026-06,2026-06,457

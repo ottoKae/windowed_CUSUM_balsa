@@ -1,5 +1,10 @@
 # Data package
 
+Update, 2026-09-05: the owner approved B (minimal real science) and C (pixel
+extension) capsules. See [the capsule guide](../docs/REAL_CAPSULES.md).
+These are separate local ZIP release candidates, not new Git-tracked raw data.
+The exact-location/raw-data layer remains outside the approved release scope.
+
 This repository intentionally does **not** track the source geospatial data
 used in the Ecuador analysis. The public GitHub package contains only:
 

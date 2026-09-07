@@ -17,6 +17,9 @@ import pandas as pd
 
 from .component_ablation import (
     ComponentAblationConfig,
+    ComponentLedgers,
+    FORWARD_VARIANTS,
+    REMOVAL_VARIANTS,
     build_component_ledgers,
     derive_variant_events,
 )
@@ -124,20 +127,25 @@ _OUTPUT_COLUMNS = [
 ]
 
 
-def detect_series_n1(
+def scan_series_n1(
     series,
     dates,
     *,
     identifier: object,
     band: str,
     config: PaperDetectionConfig = PaperDetectionConfig(),
-) -> pd.DataFrame:
-    """Return accepted N1 candidates for one band of one monthly trajectory.
+    all_component_candidates: bool = False,
+    metadata: dict[str, object] | None = None,
+    series_seed: int | None = None,
+) -> ComponentLedgers:
+    """Return N1-scored master ledgers for one monthly trajectory.
 
     Missing observations remain ``NaN`` at their calendar positions.  The
     reported change month is the first sample in the post-change segment.
-    Overlapping-window candidates are intentionally retained so subsequent
-    track/event consolidation remains explicit and auditable.
+    By default only candidates eligible for the final F4 detector are scored,
+    preserving the cost of normal inference.  ``all_component_candidates``
+    also scores valid global and sliding candidates required by F0--F4 and
+    removal-control evaluation.
     """
 
     validated_dates = _validated_month_index(dates)
@@ -145,7 +153,12 @@ def detect_series_n1(
     values = np.asarray(values, dtype=np.float64)
     aligned_dates = pd.DatetimeIndex(aligned_dates)
     series_key = f"{identifier}:{band}"
-    series_seed = stable_seed(series_key, config.candidate_seed)
+    # Published pseudonyms must not change the frozen permutation stream.
+    if series_seed is None:
+        series_seed = stable_seed(series_key, config.candidate_seed)
+    elif not isinstance(series_seed, (int, np.integer)) or series_seed < 0:
+        raise ValueError("series_seed must be a non-negative integer")
+    series_seed = int(series_seed)
     scan_config = ComponentAblationConfig(
         window_length=config.window_length,
         step=config.step,
@@ -156,29 +169,16 @@ def detect_series_n1(
         start_year=config.start_year,
         end_year=config.end_year,
     )
-    ledger = build_component_ledgers(
+    candidate_metadata = dict(metadata or {})
+    candidate_metadata["Band"] = band
+    ledgers = build_component_ledgers(
         values,
         aligned_dates,
         config=scan_config,
         series_key=series_key,
         series_seed=series_seed,
-        metadata={"Band": band},
-    ).sliding_candidates.copy()
-    if ledger.empty:
-        return pd.DataFrame(columns=_OUTPUT_COLUMNS)
-
-    eligible = (
-        ledger["passes_window_calendar"].fillna(False)
-        & ledger["passes_reporting_calendar"].fillna(False)
-        & ledger["candidate_valid"].fillna(False)
-        & ledger["passes_central"].fillna(False)
-        & ledger["passes_decrease"].fillna(False)
+        metadata=candidate_metadata,
     )
-    ledger["passes_permutation"] = False
-    ledger["null_p_value"] = np.nan
-    ledger["exceedance_count"] = pd.Series(pd.NA, index=ledger.index, dtype="Int64")
-    ledger["permutations"] = pd.Series(pd.NA, index=ledger.index, dtype="Int64")
-    ledger["near_threshold_refined"] = False
 
     base = NullModelConfig(
         method="N1_IID_P025",
@@ -190,30 +190,87 @@ def detect_series_n1(
         replicates=config.refined_permutations,
         alpha=config.alpha,
     )
-    for index, candidate in ledger.loc[eligible].iterrows():
-        window = values[
-            int(candidate["window_start_index"]) : int(candidate["window_end_index"])
-        ]
-        seed = int(candidate["permutation_seed"])
-        score = iid_permutation_score(
-            window,
-            float(candidate["cusum_amplitude"]),
-            config=base,
-            seed=seed,
+    frames = (ledgers.global_candidates, ledgers.sliding_candidates)
+    for ledger in frames:
+        ledger["passes_permutation"] = False
+        ledger["null_p_value"] = np.nan
+        ledger["exceedance_count"] = pd.Series(pd.NA, index=ledger.index, dtype="Int64")
+        ledger["permutations"] = pd.Series(pd.NA, index=ledger.index, dtype="Int64")
+        ledger["near_threshold_refined"] = False
+        eligible = (
+            ledger["passes_window_calendar"].fillna(False)
+            & ledger["passes_reporting_calendar"].fillna(False)
+            & ledger["candidate_valid"].fillna(False)
         )
-        refine = config.refine_low <= score.null_p_value <= config.refine_high
-        if refine:
+        if not all_component_candidates:
+            eligible &= ledger["candidate_scope"].eq("sliding")
+            eligible &= ledger["passes_central"].fillna(False)
+            eligible &= ledger["passes_decrease"].fillna(False)
+        for index, candidate in ledger.loc[eligible].iterrows():
+            window = values[
+                int(candidate["window_start_index"]) : int(candidate["window_end_index"])
+            ]
+            seed = int(candidate["permutation_seed"])
             score = iid_permutation_score(
                 window,
                 float(candidate["cusum_amplitude"]),
-                config=refined,
+                config=base,
                 seed=seed,
             )
-        ledger.at[index, "passes_permutation"] = score.admitted
-        ledger.at[index, "null_p_value"] = score.null_p_value
-        ledger.at[index, "exceedance_count"] = score.exceedance_count
-        ledger.at[index, "permutations"] = score.replicates
-        ledger.at[index, "near_threshold_refined"] = refine
+            refine = config.refine_low <= score.null_p_value <= config.refine_high
+            if refine:
+                score = iid_permutation_score(
+                    window,
+                    float(candidate["cusum_amplitude"]),
+                    config=refined,
+                    seed=seed,
+                )
+            ledger.at[index, "passes_permutation"] = score.admitted
+            ledger.at[index, "null_p_value"] = score.null_p_value
+            ledger.at[index, "exceedance_count"] = score.exceedance_count
+            ledger.at[index, "permutations"] = score.replicates
+            ledger.at[index, "near_threshold_refined"] = refine
+
+    # Keep the persisted Boolean audit columns synchronized with the N1 score.
+    for definition in FORWARD_VARIANTS + REMOVAL_VARIANTS:
+        source = (
+            ledgers.global_candidates
+            if definition.source_ledger == "global"
+            else ledgers.sliding_candidates
+        )
+        accepted = derive_variant_events(
+            ledgers.global_candidates,
+            ledgers.sliding_candidates,
+            definition.variant_id,
+            reporting_only=False,
+        )
+        source[f"accepted_{definition.variant_id.lower()}"] = source[
+            "candidate_id"
+        ].isin(set(accepted["candidate_id"]))
+    return ledgers
+
+
+def detect_series_n1(
+    series,
+    dates,
+    *,
+    identifier: object,
+    band: str,
+    config: PaperDetectionConfig = PaperDetectionConfig(),
+    series_seed: int | None = None,
+) -> pd.DataFrame:
+    """Return accepted N1 candidates for one band of one monthly trajectory."""
+
+    ledger = scan_series_n1(
+        series,
+        dates,
+        identifier=identifier,
+        band=band,
+        config=config,
+        series_seed=series_seed,
+    ).sliding_candidates
+    if ledger.empty:
+        return pd.DataFrame(columns=_OUTPUT_COLUMNS)
 
     selected = derive_variant_events(
         pd.DataFrame(), ledger, "F4", reporting_only=True
@@ -270,4 +327,5 @@ __all__ = [
     "detect_series_n1",
     "detect_table_n1",
     "load_paper_config",
+    "scan_series_n1",
 ]

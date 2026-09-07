@@ -1,0 +1,26 @@
+[
+  {
+    "file": "method_metrics.csv",
+    "source_run": "cusum_nrt_ccdc_20260905_v1",
+    "source_relative_path": "method_metrics.csv",
+    "sha256": "b3fa249fe309f51b3f4face3ef759a8ce247b433db7ccd9d7adb7938ee1a964f"
+  },
+  {
+    "file": "paired_contrasts.csv",
+    "source_run": "cusum_nrt_ccdc_20260905_v1",
+    "source_relative_path": "paired_contrasts.csv",
+    "sha256": "681226c6b1be3e98b2739911f0fc0a34a2c0452f7ede4cf3a1536c8be2670b99"
+  },
+  {
+    "file": "direction_control_metrics.csv",
+    "source_run": "cusum_nrt_ccdc_20260905_v1",
+    "source_relative_path": "diagnostics/method_metrics.csv",
+    "sha256": "02da438e64a62bbf91398bc53860c4577e93b7ef1ecc9a8989b7ffd553505536"
+  },
+  {
+    "file": "direction_control_contrasts.csv",
+    "source_run": "cusum_nrt_ccdc_20260905_v1",
+    "source_relative_path": "diagnostics/paired_contrasts.csv",
+    "sha256": "76de5d6d55e71d0b1e193d4f8846d64edd8dc45aa3af435a9c05b1385ae2379f"
+  }
+]

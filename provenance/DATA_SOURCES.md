@@ -1,5 +1,11 @@
 # Data sources and redistribution status
 
+Owner authorization update (2026-09-05): B/C real time-series capsules, dated
+events and opaque evaluation groups are now approved for preparation. Exact
+geometry and the full spatial/raw layer remain withheld by the owner's explicit
+scope decision, not because the owner has failed to respond. Original imagery
+and third-party layers remain separate. See docs/REAL_CAPSULES.md.
+
 This register separates scientific provenance from redistribution permission.
 Public availability of a source does not automatically grant permission to
 republish a local copy.
@@ -25,4 +31,3 @@ assignment, reviewer identity, or evidence filename.
 The real row-level input and event ledgers are intentionally withheld pending a
 separate data-release decision. If released later, they should receive their own
 repository record, data license, version, DOI, checksums, and disclosure review.
-

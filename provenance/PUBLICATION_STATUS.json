@@ -1,0 +1,18 @@
+{
+  "software_version": "1.0.0",
+  "data_version": "balsa_bc_20260905_v1",
+  "owner_authorized_publication": true,
+  "software_license": "MIT",
+  "data_license": "CC-BY-4.0",
+  "citation_authors_source": "manuscript_JAG_v2/main.tex",
+  "citation_authors_confirmed": true,
+  "proposed_repository": "ottoKae/windowed_CUSUM_balsa",
+  "repository_url": "https://github.com/ottoKae/windowed_CUSUM_balsa",
+  "software_doi": null,
+  "data_doi": null,
+  "externally_published": false,
+  "software_distribution_excludes_manuscripts_and_rendered_assets": false,
+  "third_party_figure_permissions_confirmed": true,
+  "editable_workflow_source_included": true,
+  "full_spatial_raw_layer_excluded": true
+}

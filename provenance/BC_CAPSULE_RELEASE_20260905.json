@@ -1,0 +1,55 @@
+{
+  "version": "balsa_bc_20260905_v1",
+  "status": "local_release_candidate_verified",
+  "directory": "dist/balsa_bc_20260905_v1_release",
+  "owner_approved_profiles": ["B_science", "C_pixels"],
+  "D_spatial_raw_layer_exported": false,
+  "externally_published": false,
+  "git_commit_or_push_performed": false,
+  "archives": {
+    "science.zip": {
+      "bytes": 30943559,
+      "sha256": "dc02c079c40a8177b98a82ed75c725332942d535ed492d6717bb78aa8eb6f240",
+      "payload_files": 1043,
+      "manifest_sha256": "f8c4e279b9c0b1847b48def0014e3d67db563e3fc4d71171487ae34d401c6a06"
+    },
+    "pixels.zip": {
+      "bytes": 151517814,
+      "sha256": "c8d6fc6da6e1b42b2767750ce30ba3030274812b200a863c462670d38dc13ffd",
+      "payload_files": 87,
+      "manifest_sha256": "980489f1ab0089a68a18d0f815f3a228742827ee3d0a571244ccb28102983397"
+    }
+  },
+  "checks": {
+    "unit_tests_passed": 86,
+    "all_4001_pixel_to_stand_medians_exact": true,
+    "all_4001_fresh_national_VV_tracks_exact": true,
+    "fresh_F0_F4_and_5000_bootstrap_replicates_exact": true,
+    "seven_N1_representation_evaluations_exact": true,
+    "six_benchmark_evaluations_exact": true,
+    "fresh_27_config_monthly_NRT_and_fold_selection_exact": true,
+    "official_CCDC_cache_predictions_exact": true,
+    "full_pixel_first_N1_events_and_support_annotations_exact": true,
+    "zip_CRC_and_payload_hashes_valid": true,
+    "both_copied_manuscripts_compile": true,
+    "independent_filesystem_copy_tested": true,
+    "independent_dependency_environment_tested": false,
+    "new_cloud_CCDC_run_performed": false
+  },
+  "verified_result_counts": {
+    "polygon_first_VV_events": 6658,
+    "adjacent_intervals": 3509,
+    "interval_median_months": 36,
+    "pixel_first_N1_VV_events": 6197,
+    "pixel_first_N1_VH_supported_VV_events": 3583,
+    "monthly_NRT_OOF_events": 3704,
+    "CCDC_VV_OOF_events": 907
+  },
+  "pending_publication_decisions": [
+    "software_license",
+    "data_license",
+    "citation_metadata_and_public_deposit",
+    "separate_rendered_third_party_figure_rights_record"
+  ],
+  "report": "docs/20260905_BC_REAL_REPRODUCIBILITY_RELEASE_REPORT.md"
+}

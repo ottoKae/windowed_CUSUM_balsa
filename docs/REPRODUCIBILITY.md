@@ -8,10 +8,10 @@ depend on unavailable private data.
 This level is fully public.
 
 ```bash
-python -m pip install -e ".[test]"
-python -m pytest
+python -m pip install -e ".[io,validation,replay]"
 windowed-cusum paper data/demo/monthly_s1_synthetic.csv demo_events.csv \
   --config configs/paper_v1.json
+python provenance/audit_public_package.py
 ```
 
 The synthetic files contain no Ecuadorian coordinates and do not reproduce the
@@ -25,31 +25,27 @@ counts and interpretation against `results/count_ledger.json` and the hashes in
 `provenance/`. These tables support numerical auditing, but they are not a
 complete public source package for every manuscript figure.
 
-Figure 3 is the only manuscript figure that can be rebuilt entirely from this
-public checkout. Build the standalone method workflow with:
+The production source registry for the final manuscript is
+`manuscript_JAG_v2/figure_sources/FIGURE_BUILDERS.csv`. All known Python
+builders and inherited Python modules are stored in this repository. Public
+aggregate figure inputs are under `data/public/figure_inputs/`; inputs that
+contain plantation geometry, event-level time series, or licensed imagery stay
+under the ignored `data/local/paper_v1/` author bundle.
 
-```bash
-python scripts/figures/build_workflow.py manuscript/figures/workflow_rebuilt.pdf
-```
-
-Figures 1, 2, and 4--8 are distributed as frozen, checksum-verified publication
-PDFs. Rebuilding those seven figures requires authorized plantation geometry,
-reference events, S1-GRiTS products, administrative or basemap layers, or
-licensed interpretation imagery that cannot be redistributed here. The private
-authoring-script paths recorded in `manuscript/figures/FIGURE_MANIFEST.md` are
-provenance notes only: those paths are not expected to exist in this public
-repository. Verify the released assets with
-`manuscript/figures/SHA256SUMS.txt` instead of treating the private paths as
-public build commands.
+Consequently, the public checkout can audit every frozen figure and rebuild the
+figures driven only by public aggregates. An authorized author checkout can
+also run the restricted-input builders. The frozen manuscript PDFs remain the
+publication assets until a rebuild passes the exact-layout comparison described
+in `docs/20260906_MANUSCRIPT_FIGURE_REPRODUCIBILITY_AUDIT.md`.
 
 Build the LaTeX manuscript on Windows with:
 
 ```powershell
-cd manuscript
+cd manuscript_JAG_v2
 .\build_latex.ps1 -Clean
 ```
 
-The active paper uses only the files listed in the manuscript figure manifest.
+The active paper uses only the files listed in the final-manuscript figure registry.
 The manuscript build consumes the eight released PDFs and does not regenerate
 Figures 1, 2, or 4--8. Generated LaTeX auxiliaries and historical figure
 versions are not release sources.

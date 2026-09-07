@@ -1,0 +1,19 @@
+contrast,left,right,metric,estimate,bootstrap_median,ci_low,ci_high,probability_gt_zero,replicates,seed
+Polygon-first mean minus Polygon-first median,Polygon-first mean,Polygon-first median,precision,-0.015125008954796182,-0.015092530615058664,-0.030580345658343867,-0.0010144799968567718,0.0188,5000,20260829
+Polygon-first mean minus Polygon-first median,Polygon-first mean,Polygon-first median,recall,-0.007319304666056792,-0.007648416136235958,-0.02834757445540125,0.009927419354838665,0.1746,5000,20260829
+Polygon-first mean minus Polygon-first median,Polygon-first mean,Polygon-first median,f1,-0.011542711162760844,-0.011466989391218207,-0.02628109397107882,-0.0008222657627313962,0.0192,5000,20260829
+Polygon-first mode minus Polygon-first median,Polygon-first mode,Polygon-first median,precision,-0.05156187386699751,-0.05275577143711058,-0.08045991599733134,-0.020521835485941258,0.001,5000,20260829
+Polygon-first mode minus Polygon-first median,Polygon-first mode,Polygon-first median,recall,-0.24062214089661482,-0.24173709576028496,-0.2855795147341663,-0.206984736596234,0.0,5000,20260829
+Polygon-first mode minus Polygon-first median,Polygon-first mode,Polygon-first median,f1,-0.15171146917578493,-0.15248184750540095,-0.1863706121692684,-0.12576025241635097,0.0,5000,20260829
+Single-cell spatial medoid minus Polygon-first median,Single-cell spatial medoid,Polygon-first median,precision,-0.10749208285439493,-0.10840624913300756,-0.14002221484716965,-0.07919644696954543,0.0,5000,20260829
+Single-cell spatial medoid minus Polygon-first median,Single-cell spatial medoid,Polygon-first median,recall,-0.27721866422689845,-0.2769230769230769,-0.32627335219921155,-0.24351021457772637,0.0,5000,20260829
+Single-cell spatial medoid minus Polygon-first median,Single-cell spatial medoid,Polygon-first median,f1,-0.19653262786596115,-0.19657259411093997,-0.23677805581972614,-0.16823804334576134,0.0,5000,20260829
+Pixel-first connected support minus Polygon-first median,Pixel-first connected support,Polygon-first median,precision,0.007472064901270392,0.007547238020741642,-0.015341458684392698,0.03278926089330784,0.7498,5000,20260829
+Pixel-first connected support minus Polygon-first median,Pixel-first connected support,Polygon-first median,recall,-0.036596523330283626,-0.03644112987564324,-0.06876882721979498,-0.01019305201548188,0.0036,5000,20260829
+Pixel-first connected support minus Polygon-first median,Pixel-first connected support,Polygon-first median,f1,-0.013580246913580396,-0.013424555945109662,-0.033980643280354945,0.005464198311008235,0.0762,5000,20260829
+Pixel-first temporal DBSCAN minus Polygon-first median,Pixel-first temporal DBSCAN,Polygon-first median,precision,0.09379754996776268,0.09391831510869414,0.06897537161712512,0.12428644455380104,1.0,5000,20260829
+Pixel-first temporal DBSCAN minus Polygon-first median,Pixel-first temporal DBSCAN,Polygon-first median,recall,-0.0448307410795975,-0.04406779661016946,-0.08618675248275642,-0.013832178989737882,0.002,5000,20260829
+Pixel-first temporal DBSCAN minus Polygon-first median,Pixel-first temporal DBSCAN,Polygon-first median,f1,0.023518260276141456,0.02387418024209359,-0.005136186533504812,0.04880687504868892,0.9502,5000,20260829
+Pixel-first space--time DBSCAN minus Polygon-first median,Pixel-first space--time DBSCAN,Polygon-first median,precision,-0.025045376177033396,-0.025003663404833787,-0.04406463677242123,-0.0026749472909024883,0.016,5000,20260829
+Pixel-first space--time DBSCAN minus Polygon-first median,Pixel-first space--time DBSCAN,Polygon-first median,recall,-0.06221408966148223,-0.06238441633024194,-0.09855174525413356,-0.01995411022955175,0.0032,5000,20260829
+Pixel-first space--time DBSCAN minus Polygon-first median,Pixel-first space--time DBSCAN,Polygon-first median,f1,-0.042727573714336664,-0.04293249635479429,-0.06374535109105531,-0.018169920642301295,0.0008,5000,20260829

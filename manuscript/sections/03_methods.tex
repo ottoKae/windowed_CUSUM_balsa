@@ -1,15 +1,12 @@
 % !TeX root = ../main.tex
 \section{Methods}\label{sec:methods}
 
-
-
 We developed Windowed CUSUM to detect recurrent stand disturbances from near-decadal Sentinel-1 time series and reconstruct plantation turnover histories. The workflow comprised stand-level time-series construction, recurrent-event detection, spatially structured evaluation, and rotation-history reconstruction (Fig.~\ref{fig:workflow}).
-
 
 \begin{figure}[pos=!htbp]
     \centering
-    \includegraphics[width=0.85\linewidth]{figures/fig03_workflow.pdf}
-    \caption{Overall methodological framework for recurrent stand-disturbance detection and plantation-rotation analysis.}
+    \includegraphics[width=\linewidth]{figures/fig03_workflow.pdf}
+    \caption{Workflow of the proposed Windowed CUSUM. (a) Construction of track-specific monthly stand-level Sentinel-1 trajectories. (b) Localization, screening, and consolidation of recurrent disturbance candidates.}
     \label{fig:workflow}
 \end{figure}
 
@@ -43,9 +40,7 @@ separate until event consolidation.
 \end{equation}
 
 
-
-
-Alternative spatial representations were evaluated to test the sensitivity of disturbance detection to stand representation. Polygon-first alternatives comprised the spatial mean, histogram mode, and nearest representative grid cell. Pixel-first alternatives retained individual grid-cell trajectories through disturbance detection and subsequently consolidated candidate evidence using eight-neighbour support, temporal DBSCAN, or joint space--time DBSCAN~\citep{Ester1996DBSCAN}. Parameters required by the Pixel-first strategies were selected exclusively from spatial training data as described in Section~\ref{sec:experimental_evaluation}.
+Alternative spatial representations were evaluated to test the sensitivity of disturbance detection to stand representation. Polygon-first alternatives comprised the spatial mean, histogram mode, and nearest representative grid cell. Pixel-first alternatives retained individual grid-cell trajectories through disturbance detection and subsequently consolidated candidate evidence using eight-neighbour support, temporal DBSCAN, or joint space--time DBSCAN~\citep{Ester1996DBSCAN}. For connected support, $r$ was the size of the largest eight-neighbour component divided by the number of polygon-interior grid cells. Parameters required by the Pixel-first strategies were selected exclusively from spatial training data as described in Section~\ref{sec:experimental_evaluation}.
 
 
 \subsection{The proposed Windowed CUSUM}\label{sec:windowed_cusum}
@@ -155,7 +150,7 @@ The dated polygon event was therefore the unit of detector assessment, whereas t
 
 All configuration and component analyses followed the reference-event matching and spatial-inference protocol defined above. Whenever a representation or configuration required data-driven parameter selection, selection was restricted to the corresponding spatial training folds; analyses of locked configurations did not reopen parameter selection.
 
-Sensitivity to stand representation was evaluated with the detector fixed at a 48-month window, 12-month displacement, and finite-sample permutation threshold of $p_{\mathrm{perm}}\leq0.025$. The Polygon-first median was compared with Polygon-first mean, histogram mode, and a representative-cell medoid, as well as Pixel-first connected support, temporal DBSCAN, and joint space--time DBSCAN~\citep{Ester1996DBSCAN}. Parameters required by the Pixel-first strategies were selected exclusively within the spatial training folds. Paired F1 contrasts were calculated relative to the Polygon-first median using the common spatial-block resampling protocol.
+Sensitivity to stand representation was evaluated with the detector fixed at a 48-month window, 12-month displacement, and finite-sample permutation threshold of $p_{\mathrm{perm}}\leq0.025$. The Polygon-first median was compared with Polygon-first mean, histogram mode, and a representative-cell medoid, as well as Pixel-first connected support, temporal DBSCAN, and joint space--time DBSCAN~\citep{Ester1996DBSCAN}. Parameters required by the Pixel-first strategies were selected exclusively within the spatial training folds. All five outer folds selected $r=0.20$ for connected support; this value was then frozen, applied to polygon--track candidates before cross-track fusion, and used for the nationwide Pixel-first reconstruction. Paired F1 contrasts were calculated relative to the Polygon-first median using the common spatial-block resampling protocol.
 
 Window sensitivity evaluated $W\in\{24,36,48,60,72\}$ months and $S\in\{6,12\}$ months; 24/12 was excluded because its central decision interval was empty. A nested analysis selected geometry on the four training folds and evaluated it on the held-out fold. The previously locked 48/12 configuration remained unchanged for fixed operational analyses. Polarization sensitivity was evaluated under the retained Polygon-first representation and 48/12 geometry using VV-only, VH-only, either-polarization, and VV--VH agreement strategies.
 
@@ -166,7 +161,13 @@ Component attribution was evaluated only under the fixed operational configurati
 \subsubsection{Benchmark comparison and statistical robustness}
 \label{sec:benchmark_robustness}
 
-External benchmarking used the same reference catalogue, Polygon-first monthly trajectories, calendar support, event-matching rule, and spatial outer-fold structure defined above. Method-specific parameters were selected exclusively within the four spatial training folds before prediction on the held-out fold, and the five held-out prediction sets were concatenated for the final spatial out-of-fold comparison. Benchmark methods comprised maximum monthly decline, classical lower CUSUM~\citep{Page1954CUSUM}, ReCuSum~\citep{Ygorra2023ReCuSum}, a notebook implementation of factorized-polarization Bayesian online change-point detection~\citep{Bottani2026f-pol_BOCD}, and a BFAST-style seasonal one-break detector~\citep{Verbesselt2010BFAST}. Where decrease-filtered variants were evaluated, candidate events were additionally required to satisfy the same negative pre--post change direction used by Windowed CUSUM. Pairwise performance contrasts were quantified using the same paired spatial-block resampling scheme.
+External benchmarking used the same reference catalogue, Polygon-first monthly trajectories, calendar support, event-matching rule, and spatial outer-fold structure defined above. Method-specific parameters were selected exclusively within the four spatial training folds before prediction on the held-out fold, and the five held-out prediction sets were concatenated for the final spatial out-of-fold comparison. Benchmark methods comprised maximum monthly decline, classical lower CUSUM~\citep{Page1954CUSUM}, ReCuSum~\citep{Ygorra2023ReCuSum}, a notebook BOCD prototype~\citep{Bottani2026f-pol_BOCD}, a BFAST-style seasonal one-break prototype~\citep{Verbesselt2010BFAST}, monthly CuSum NRT and CCDC VV. The BOCD and BFAST-style rows describe evaluated prototypes, not full reproductions of the published methods. Where decrease-filtered variants were evaluated, candidate events were additionally required to satisfy the same negative pre--post change direction used by Windowed CUSUM. Pairwise performance contrasts were quantified using the same paired spatial-block resampling scheme.
+
+CuSum NRT and CCDC used the same 474 Polygon-first median VV trajectories from 462 reference polygons, retaining missing months without interpolation. The CuSum NRT scalar core was checked against the authors' implementation~\citep{Ygorra2024CuSumNRT}. Its monthly stand-level adaptation is not a reproduction of the original scene-level monitoring system. Window and confidence parameters were selected from 27 configurations outside each held-out fold. A separate decrease-filtered control retained those selections without retuning.
+
+CCDC used the official Earth Engine implementation, called from Python, with VV as the breakpoint band and optical TMask screening disabled~\citep{Bullock2022CCDC_S1}. Confirmed breaks with negative VV magnitude were mapped to calendar months before the common track-fusion and matching steps. Of 36 parameter configurations, three failed on the same trajectory and were excluded from all folds as technically unavailable. The remaining 33 covered every trajectory; no polygon was removed or failed computation treated as a zero-event result. This comparison concerns monthly SAR adaptation, not reproduction of an optical CCDC monitoring system.
+
+The two new primary F1 contrasts, Windowed CUSUM versus monthly CuSum NRT and CCDC VV, used individual 97.5\% intervals for Bonferroni family-wise coverage of 95\%. Additional NRT/CCDC contrasts used exploratory 95\% intervals. These estimates remain conditional on the dated-reference catalogue: unmatched predictions are not necessarily verified false alarms, and matched-event MAE is not operational alert latency.
 
 Temporal-null sensitivity changed only the permutation null while keeping the locked detector fixed. The finite-sample independent-value permutation~\citep{PhipsonSmyth2010Permutation} was compared with the previous empirical-rank implementation, 3-, 6-, and 12-month calendar-block permutations, residual moving-block-bootstrap nulls~\citep{Kunsch1989BlockBootstrap}, and a 3-month track-wise maximum-statistic null. All used an equivalent admission threshold of $p_{\mathrm{perm}}\le0.025$ and paired block inference. Monte Carlo stability was assessed across ten seeds for the stochastic null procedures. This analysis assessed robustness to temporal-null assumptions and did not reopen detector selection.
 
@@ -229,9 +230,6 @@ unmatched intermediate VV events were retained and VH-only events were
 not inserted. This subset was used only to assess polarization
 sensitivity of the inter-disturbance interval distribution, not to
 derive a separate VH-based rotation estimate.
-
-
-
 
 
 

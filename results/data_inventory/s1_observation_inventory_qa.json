@@ -1,0 +1,41 @@
+{
+  "catalog_rows": 112,
+  "smonthly_rows": 56,
+  "static_rows": 56,
+  "catalog_all_complete": true,
+  "monthly_all_ascending": true,
+  "used_tile_track_groups": 40,
+  "used_mgrs_tiles": 31,
+  "polygon_track_trajectories": 4001,
+  "target_months": [
+    126
+  ],
+  "calendars": [
+    "2016-01/2026-06"
+  ],
+  "unmatched_used_groups": 0,
+  "source_month_count_matches_catalog": true,
+  "source_start_matches_catalog": true,
+  "source_end_matches_catalog": true,
+  "expected_counts": {
+    "catalog_rows": 112,
+    "smonthly_rows": 56,
+    "static_rows": 56,
+    "used_tile_track_groups": 40,
+    "used_mgrs_tiles": 31,
+    "polygon_track_trajectories": 4001
+  },
+  "expected_count_checks": {
+    "catalog_rows": true,
+    "smonthly_rows": true,
+    "static_rows": true,
+    "used_tile_track_groups": true,
+    "used_mgrs_tiles": true,
+    "polygon_track_trajectories": true
+  },
+  "passed": true,
+  "catalog": "D:\\Project\\claude-demo\\methods\\windowed_CUSUM_balsa\\data\\local\\paper_v1\\s1grits\\catalog.parquet",
+  "cache_manifest": "D:\\Project\\claude-demo\\methods\\windowed_CUSUM_balsa\\data\\local\\paper_v1\\polygon_pixels\\cache_manifest.parquet",
+  "catalog_sha256": "62bc44529f99fdf87b66d7fd2059837d085e63098436cb4dd73bf4b44220df05",
+  "cache_manifest_sha256": "686f1a0f4f5b7551767d9de43acce611827dfc1d303ac58d51982906bd20081c"
+}

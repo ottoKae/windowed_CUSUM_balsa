@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from collections import deque
+from concurrent.futures import ProcessPoolExecutor
 import hashlib
 import json
 import os
@@ -14,7 +15,7 @@ import pandas as pd
 
 from .core import lr_cusum
 from .detection import DetectionConfig, stable_seed
-from .paper import PaperDetectionConfig, detect_series_n1
+from .paper import PaperDetectionConfig, detect_series_n1, scan_series_n1
 
 
 CALENDAR = pd.period_range("2017-01", "2025-12", freq="M")
@@ -199,6 +200,7 @@ def extract_track_cache(
     target_positions = calendar.get_indexer(source_periods[source_positions])
     values = np.full((len(pixels), 2, len(calendar)), np.nan, np.float32)
     counts = np.zeros((len(pixels), len(calendar)), np.uint16)
+    decode_failures = []
     chunk_height, chunk_width = group["VV_dB"].chunks[-2:]
     for (chunk_y, chunk_x), local in pixels.groupby(["chunk_y", "chunk_x"], sort=True):
         y0, x0 = int(chunk_y) * chunk_height, int(chunk_x) * chunk_width
@@ -215,12 +217,21 @@ def extract_track_cache(
                 continue
             selected = indexes[replace]; rr, cc = rows[replace], cols[replace]
             counts[selected, int(target)] = obs[replace]
-            values[selected, 0, int(target)] = np.asarray(
-                group["VV_dB"][int(source), y0:y1, x0:x1]
-            )[rr, cc]
-            values[selected, 1, int(target)] = np.asarray(
-                group["VH_dB"][int(source), y0:y1, x0:x1]
-            )[rr, cc]
+            for band_index, band in enumerate(("VV_dB", "VH_dB")):
+                try:
+                    block = np.asarray(group[band][int(source), y0:y1, x0:x1])
+                except Exception as error:
+                    decode_failures.append({
+                        "band": band,
+                        "source_index": int(source),
+                        "source_month": str(source_periods[int(source)]),
+                        "chunk_y": int(chunk_y),
+                        "chunk_x": int(chunk_x),
+                        "error_type": type(error).__name__,
+                        "error": str(error),
+                    })
+                    continue
+                values[selected, band_index, int(target)] = block[rr, cc]
     valid = (counts > 0) & np.isfinite(values).all(axis=1)
     values[:, 0, :][~valid] = np.nan; values[:, 1, :][~valid] = np.nan
     _atomic_npz(
@@ -240,6 +251,7 @@ def extract_track_cache(
         "observed_end": str(source_periods[source_positions].max()) if len(source_positions) else None,
         "valid_fraction": float(valid.mean()), "array_path": str(array_path.resolve()),
         "pixel_path": str(pixel_path.resolve()),
+        "decode_failures": decode_failures,
     }
     temporary_report = Path(str(report_path) + ".tmp")
     temporary_report.write_text(json.dumps(report, indent=2), encoding="utf-8")
@@ -265,6 +277,7 @@ def _series_events(
     values,
     config: DetectionConfig | PaperDetectionConfig,
     calendar: pd.PeriodIndex = CALENDAR,
+    seeds: dict | None = None,
 ):
     if values.shape[-1] != len(calendar):
         raise ValueError("series length and cache calendar differ")
@@ -277,6 +290,7 @@ def _series_events(
                 identifier=identifier,
                 band=band,
                 config=config,
+                series_seed=None if seeds is None else seeds.get(band),
             )
             for record in detected.to_dict("records"):
                 record["selection_score"] = 1.0 - float(record["null_p_value"])
@@ -320,7 +334,9 @@ def detect_polygon_first(associations, polygon_tracks, cache_dir, config):
             metadata = polygon_tracks.loc[
                 polygon_tracks.polygon_track_id.eq(polygon_track_id)
             ].iloc[0]
-            for event in _series_events(polygon_track_id, series, config, calendar):
+            seeds = {band: int(metadata[f"seed_{band}"]) for band in config.bands
+                     if f"seed_{band}" in metadata}
+            for event in _series_events(polygon_track_id, series, config, calendar, seeds):
                 rows.append({
                     "route": "polygon_first", "polygon_track_id": polygon_track_id,
                     "sample_id": metadata.sample_id, "polygon_id": metadata.polygon_id,
@@ -336,23 +352,111 @@ def detect_polygon_first(associations, polygon_tracks, cache_dir, config):
     return result.reset_index(drop=True)
 
 
-def detect_pixels(associations, cache_dir, config):
-    """Run LR-CuSum once per unique native pixel-track sequence."""
-    rows = []
-    for track_key in sorted(associations.track_key.unique()):
+def detect_polygon_first_components(
+    associations,
+    polygon_tracks,
+    cache_dir,
+    config: PaperDetectionConfig,
+    bands: tuple[str, ...] = ("VV_dB",),
+):
+    """Build N1-scored global and sliding ledgers for polygon-first series.
+
+    This is the auditable input to F0--F4 evaluation.  It is deliberately
+    separate from normal inference because it scores candidates removed by
+    intermediate component gates and is therefore more expensive.
+    """
+
+    unknown = set(bands) - set(config.bands)
+    if unknown:
+        raise ValueError(f"unknown component bands: {sorted(unknown)}")
+    global_rows = []
+    sliding_rows = []
+    for track_key, local in associations.groupby("track_key", sort=True):
         pixels, arrays = load_track_cache(track_key, cache_dir)
         calendar = _cache_calendar(arrays)
-        used = set(associations.loc[associations.track_key.eq(track_key), "pixel_track_id"])
-        for pixel in pixels.loc[pixels.pixel_track_id.isin(used)].itertuples(index=False):
-            for event in _series_events(
-                pixel.pixel_track_id, arrays["values"][int(pixel.cache_index)], config, calendar
-            ):
-                rows.append({
-                    "pixel_track_id": pixel.pixel_track_id, "track_key": track_key,
-                    "native_row": int(pixel.native_row), "native_col": int(pixel.native_col),
-                    **event,
-                })
-    result = pd.DataFrame(rows)
+        dates = calendar.to_timestamp().to_numpy()
+        mapping = pixels.set_index("pixel_track_id").cache_index
+        for polygon_track_id, group in local.groupby("polygon_track_id", sort=False):
+            indexes = mapping.loc[group.pixel_track_id].to_numpy(int)
+            with np.errstate(all="ignore"), warnings.catch_warnings():
+                warnings.filterwarnings("ignore", message="All-NaN slice encountered")
+                series = np.nanmedian(arrays["values"][indexes], axis=0)
+            row = polygon_tracks.loc[
+                polygon_tracks.polygon_track_id.eq(polygon_track_id)
+            ].iloc[0]
+            metadata = {
+                "route": "polygon_first",
+                "polygon_track_id": polygon_track_id,
+                "sample_id": row.sample_id,
+                "polygon_id": row.polygon_id,
+                "role": row.role,
+                "species_nco": row.species_nco,
+                "tile_id": row.tile_id,
+                "track_key": track_key,
+                "interior_pixels": len(indexes),
+            }
+            for band in bands:
+                band_index = config.bands.index(band)
+                ledgers = scan_series_n1(
+                    series[band_index],
+                    dates,
+                    identifier=polygon_track_id,
+                    band=band,
+                    config=config,
+                    all_component_candidates=True,
+                    metadata=metadata,
+                    series_seed=int(row[f"seed_{band}"]) if f"seed_{band}" in row else None,
+                )
+                global_rows.append(ledgers.global_candidates)
+                sliding_rows.append(ledgers.sliding_candidates)
+    return (
+        pd.concat(global_rows, ignore_index=True) if global_rows else pd.DataFrame(),
+        pd.concat(sliding_rows, ignore_index=True) if sliding_rows else pd.DataFrame(),
+    )
+
+
+def _detect_pixel_partition(track_key, pixel_ids, cache_dir, config):
+    """Detect one independent subset of pixels from a single track cache."""
+    pixels, arrays = load_track_cache(track_key, cache_dir)
+    calendar = _cache_calendar(arrays)
+    selected = pixels.loc[pixels.pixel_track_id.isin(set(pixel_ids))]
+    rows = []
+    for pixel in selected.itertuples(index=False):
+        for event in _series_events(
+            pixel.pixel_track_id, arrays["values"][int(pixel.cache_index)], config, calendar,
+            {band: int(getattr(pixel, f"seed_{band}")) for band in config.bands
+             if hasattr(pixel, f"seed_{band}")},
+        ):
+            rows.append({
+                "pixel_track_id": pixel.pixel_track_id, "track_key": track_key,
+                **({"native_row": int(pixel.native_row), "native_col": int(pixel.native_col)}
+                   if hasattr(pixel, "native_row") else {}),
+                **event,
+            })
+    return pd.DataFrame(rows)
+
+
+def detect_pixels(associations, cache_dir, config, *, workers: int = 1):
+    """Run LR-CuSum once per unique native pixel-track sequence."""
+    jobs = []
+    for track_key in sorted(associations.track_key.unique()):
+        used = sorted(set(
+            associations.loc[associations.track_key.eq(track_key), "pixel_track_id"]
+        ))
+        if not used:
+            continue
+        count = min(workers, len(used))
+        partitions = [part.tolist() for part in np.array_split(used, count) if len(part)]
+        jobs.extend((track_key, part, str(cache_dir), config) for part in partitions)
+    if not jobs:
+        return pd.DataFrame()
+    if workers == 1:
+        frames = [_detect_pixel_partition(*job) for job in jobs]
+    else:
+        with ProcessPoolExecutor(max_workers=workers) as executor:
+            frames = list(executor.map(_detect_pixel_partition, *zip(*jobs)))
+    nonempty = [frame for frame in frames if len(frame)]
+    result = pd.concat(nonempty, ignore_index=True) if nonempty else pd.DataFrame()
     if len(result):
         result = result.sort_values(_score_column(result), ascending=False).drop_duplicates(
             ["pixel_track_id", "Band", "change_time"]

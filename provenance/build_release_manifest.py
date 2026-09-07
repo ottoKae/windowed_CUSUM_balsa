@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import subprocess
 from pathlib import Path
 
 
@@ -12,32 +13,6 @@ PROVENANCE = ROOT / "provenance"
 MANIFEST = PROVENANCE / "RELEASE_MANIFEST.json"
 CHECKSUMS = PROVENANCE / "CHECKSUMS.sha256"
 EXCLUDED = {MANIFEST.resolve(), CHECKSUMS.resolve()}
-EXCLUDED_DIRS = {
-    ".git",
-    ".pytest_cache",
-    ".pytest_tmp",
-    ".pytest_tmp_root",
-    ".qa",
-    ".ruff_cache",
-    ".mypy_cache",
-    "__pycache__",
-    "build",
-    "dist",
-}
-EXCLUDED_SUFFIXES = {
-    ".aux",
-    ".abs",
-    ".bbl",
-    ".blg",
-    ".fdb_latexmk",
-    ".fls",
-    ".lof",
-    ".log",
-    ".lot",
-    ".out",
-    ".synctex.gz",
-    ".toc",
-}
 
 
 def sha256(path: Path) -> str:
@@ -48,26 +23,8 @@ def sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
-def included(path: Path) -> bool:
-    """Return whether *path* belongs to the distributable release."""
-
-    if not path.is_file() or path.resolve() in EXCLUDED:
-        return False
-    relative = path.relative_to(ROOT)
-    if (
-        relative.parts[:2] == ("data", "local")
-        or relative.parts[:1] == ("runs",)
-        or relative.as_posix() == "configs/data.local.json"
-    ):
-        return False
-    if any(part in EXCLUDED_DIRS or part.endswith(".egg-info") for part in relative.parts):
-        return False
-    name = path.name.lower()
-    return not any(name.endswith(suffix) for suffix in EXCLUDED_SUFFIXES)
-
-
 def main() -> None:
-    files = sorted(path for path in ROOT.rglob("*") if included(path))
+    files = release_files()
     records = [
         {
             "path": path.relative_to(ROOT).as_posix(),
@@ -78,8 +35,8 @@ def main() -> None:
     ]
     manifest = {
         "schema_version": "windowed-cusum-balsa.release-manifest.v2",
-        "release_date": "2026-09-04",
-        "scope": ["complete repository release, excluding generated build and QA files"],
+        "release_date": "2026-09-07",
+        "scope": ["Git tracked plus untracked non-ignored files; no ignored B/C archives"],
         "excluded_self_referential_files": [
             "provenance/RELEASE_MANIFEST.json",
             "provenance/CHECKSUMS.sha256"
@@ -94,6 +51,16 @@ def main() -> None:
         encoding="utf-8",
     )
     print(f"Wrote {len(records)} records ({manifest['total_bytes']} bytes).")
+
+
+def release_files() -> list[Path]:
+    """Use Git's actual allow/ignore rules, including already tracked files."""
+    result = subprocess.run(
+        ["git", "ls-files", "--cached", "--others", "--exclude-standard", "-z"],
+        cwd=ROOT, check=True, capture_output=True,
+    )
+    paths = {ROOT / x.decode("utf-8") for x in result.stdout.split(b"\0") if x}
+    return sorted(p for p in paths if p.is_file() and p.resolve() not in EXCLUDED)
 
 
 if __name__ == "__main__":

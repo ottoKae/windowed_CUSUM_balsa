@@ -7,6 +7,9 @@
     "references": "PATH/TO/20260825_balsa_validated_40tiles_v1_phase_e_reference_v1",
     "frozen_results": "PATH/TO/windowed_cusum_n1_full_40tile_v1",
     "component_candidates": "PATH/TO/windowed_cusum_component_ablation_40tile_v1",
+    "benchmark_comparison": "PATH/TO/notebook_complete_comparison_40tiles_validated_v2_prospective_lock",
+    "benchmark_closure": "PATH/TO/balsa_validation_closure_40tiles_validated_v2_strict_decision",
+    "prospective_review": "PATH/TO/2026/formal_evaluation/tables/review_unblinded.csv",
     "s1grits_root": "PATH/TO/S1-GRiTS_Ecuador_40tiles_201601_202606_v3",
     "natural_earth_root": "PATH/TO/natural_earth",
     "esri_cache": "PATH/TO/study_area_basemap"

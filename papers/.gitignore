@@ -1,0 +1,13 @@
+acquisition.local.toml
+.env
+papers_pdf/
+papers_xml/
+corpus/
+manual_pdf_inbox/
+outputs/
+*.jsonl
+*.har
+*.sqlite*
+*.xlsx
+*.xlsm
+bibliography*.csv

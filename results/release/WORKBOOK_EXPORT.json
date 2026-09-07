@@ -1,0 +1,8 @@
+{
+  "status": "complete",
+  "public_workbook": "results\\release\\windowed_cusum_balsa_paper_results_v1.xlsx",
+  "public_sha256": "1fa02bcf2e19047ce824992f86a5193dc3861e5f60f980782b5022d528069ded",
+  "private_workbook": "data/local/paper_v1/exports/windowed_cusum_balsa_private_protocol_v1.xlsx",
+  "private_sha256": "bcb8cf4f6305a2e1160ab5a2a069e5957ce141e94472e1ba27dea87b3522e8f3",
+  "note": "The public workbook contains aggregates only; the private workbook contains exact fold and OOF records."
+}
