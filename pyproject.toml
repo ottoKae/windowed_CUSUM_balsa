@@ -1,0 +1,51 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "windowed-cusum-balsa"
+version = "1.0.0"
+description = "Windowed CUSUM analysis of monthly Sentinel-1 stand disturbances"
+readme = "README.md"
+license = {file = "LICENSE"}
+requires-python = ">=3.10"
+dependencies = [
+  "numba>=0.58",
+  "numpy>=1.24",
+  "pandas>=2.0",
+]
+
+[project.optional-dependencies]
+cloud = ["earthengine-api>=1.0", "requests>=2.31"]
+io = ["openpyxl>=3.1", "pyarrow>=12"]
+validation = ["scikit-learn>=1.3", "scipy>=1.10"]
+geo = [
+  "affine>=2.4",
+  "geopandas>=0.14",
+  "pyproj>=3.6",
+  "rasterio>=1.3",
+  "shapely>=2.0",
+  "xarray>=2023.6",
+  "zarr>=2.16",
+]
+figures = ["matplotlib>=3.7"]
+replay = [
+  "rasterio>=1.3",
+  "pyarrow>=12",
+  "affine>=2.4",
+  "scikit-learn>=1.3",
+  "scipy>=1.10",
+  "shapely>=2.0",
+]
+
+[project.scripts]
+windowed-cusum = "lr_cusum.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+license-files = ["LICENSE", "docs/third_party/*LICENSE.txt"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["lr_cusum", "lr_cusum.*"]
+exclude = ["hd-grits", "hd-grits.*"]

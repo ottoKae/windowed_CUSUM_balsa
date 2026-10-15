@@ -1,0 +1,27 @@
+{
+  "protocol_id": "W36_D12_S12_B20_R0_M3_precision_evidence_20261015_v1",
+  "base_configuration_sha256": "8bdd38de354f0ea289accd5c2efa43edbdaf5488eb8123e4ce97be7649e1c132",
+  "detector_and_aggregation_unchanged": true,
+  "primary_tolerance_months": 3,
+  "sensitivity_tolerances_months": [
+    1,
+    2
+  ],
+  "all_scored_tolerances_months": [
+    1,
+    2,
+    3
+  ],
+  "tolerance_selection": "user_selected_after_inspection_of_previous_scores",
+  "polarization_pair_tolerance_months": 2,
+  "catalogue_reference": "R0_frozen_1049_month_plus_10_interval_separate",
+  "precision_evidence_version": "jag_reference_score_closeout_20261015_v1",
+  "population_reports": 1266,
+  "selected_reports": 307,
+  "sample_and_weights": "unchanged_original_probability_design",
+  "estimator": "original_two_stage_Hajek_U_scenarios",
+  "qualified_complete_history_domains": 0,
+  "population_F1": null,
+  "detector_configuration": "configs/standard_w36.json",
+  "note": "This evaluation overlay supersedes the historical M2 display default, not the frozen detector or polarization pairing."
+}

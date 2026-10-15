@@ -1,0 +1,92 @@
+% !TeX root = ../main.tex
+\section{Material}
+\subsection{Study region and balsa plantation inventory}
+
+The study covered mainland Ecuador, with commercial balsa plantations concentrated mainly across the Pacific coastal lowlands and Andean foothills (Fig.~\ref{fig:study_area}). These production regions span pronounced environmental gradients. Previous surveys of Ecuadorian balsa plantations reported elevations of approximately 20--700~m, mean annual temperatures of 23.5--26.7~$^\circ$C, and annual precipitation of about 1,000--3,019~mm across major growing provinces~\citep{CanadasLopez2019BalsaGrowth}. Wetter coastal and Andean-transition regions are also affected by frequent cloud cover, which limits the temporal continuity of optical observations~\citep{DelgadoAguilar2017EcuadorSAR,Santos2019EcuadorScarce}.
+
+\begin{figure}[pos=!htbp]
+    \centering
+    \includegraphics[width=\linewidth]{figures/fig02_study_area.pdf}
+    \caption{Study region and official balsa plantation inventory. Green markers show all 3,890 balsa polygons, yellow markers identify the subset containing dated stand-disturbance events, and the blue rectangle represents the Sentinel-1 Burst footprint in ascending orbit. (b)--(d) enlarge representative plantation regions. Hillshade background from Esri World Hillshade (© Esri).}
+    \label{fig:study_area}
+\end{figure}
+
+Balsa plantation boundaries were obtained from the Ecuadorian Ministry of Agriculture and Livestock through the Geoportal del Agro Ecuatoriano (\url{https://geoportal.agricultura.gob.ec/}). The source forestry inventory contained 26,206 plantation polygons. We retained 3,498 polygons labeled \texttt{BALSA} with validation status \texttt{VALIDADO}, covering a total mapped area of 13,651.85~ha. For stratified reporting, the retained polygons were grouped into three fixed area classes: small ($\leq1$~ha), medium ($>1$--5~ha), and large ($>5$~ha) (Table~\ref{tab:inventory}).
+
+\begin{table}[pos=!htbp]
+    \centering\small
+    \caption{Area characteristics of the 3,498 retained BALSA polygons.}
+    \label{tab:inventory}
+    \begin{tabular}{lrrrrr}
+    \toprule
+    Area class & Polygons & Count (\%) & Area (ha) & Area (\%) & Median (ha)\\
+    \midrule
+    Small ($\leq1$ ha) & 1,325 & 37.88 & 497.38 & 3.64 & 0.30\\
+    Medium ($>1$--5 ha) & 1,385 & 39.59 & 3,556.10 & 26.05 & 2.33\\
+    Large ($>5$ ha) & 788 & 22.53 & 9,598.37 & 70.31 & 8.68\\
+    \bottomrule
+    \end{tabular}
+\end{table}
+
+
+% =============================================
+\subsection{Sentinel-1 RTC Burst products}
+\label{sec:observation_design}
+
+VV and VH backscatter observations were obtained from the NASA OPERA Level-2 Radiometric Terrain Corrected Sentinel-1 (RTC-S1) archive~\citep{shiroma2023OPERARTC,opera2023rtc}. OPERA RTC-S1 is generated at the Sentinel-1 Interferometric Wide swath (IW) Burst level and provides 30-m radiometrically terrain-corrected $\gamma^{0}$ backscatter in power units. Radiometric terrain correction and geocoding use the Copernicus GLO-30 digital elevation model to reduce topography-induced radiometric effects~\citep{Small2011RTC,shiroma2023OPERARTC}. No speckle filtering is applied in the archived RTC-S1 products. The Burst products were organized using S1-GRiTS v3.0.0 (\url{https://github.com/ottoKae/S1-GRiTS}).
+
+% 说明组织数据的数量级别
+The mainland Ecuador archive covered 40 MGRS tiles and contained 83,524 available VV+VH RTC burst acquisitions spanning May 2016–June 2026 (Table~\ref{tab:s1_observation_coverage}). The 3,498 validated balsa polygons yielded 4,001 polygon--track trajectories across four ascending orbit families, reflecting multiple-track coverage of some stands. Observations from different tracks were processed separately through time-series construction and disturbance detection, with detections combined only during event-level consolidation. Monthly compositing, missing-data handling, and within-stand aggregation are described in Section~\ref{sec:s1_timeseries_representation}.  
+
+% The 3,498 validated BALSA polygons intersected 40 tile--track combinations, yielding 4,001 polygon--track objects for time-series extraction. Track identity was preserved throughout time-series construction and disturbance detection so that observations from different relative orbits or viewing geometries were not mixed before event consolidation.
+
+\begin{table*}[pos=!htbp]
+    \centering
+    \small
+    \setlength{\tabcolsep}{4pt}
+    \begin{threeparttable}
+    \caption{Track-specific Sentinel-1 RTC archive coverage and balsa trajectories used for disturbance analysis. The archive comprises 56 tile--track groups across 40 unique MGRS tiles.}
+    \label{tab:s1_observation_coverage}
+
+    \begin{tabular*}{\linewidth}
+        {@{\extracolsep{\fill}}lrlrr@{}}
+        \toprule
+        \shortstack[l]{Track} &
+        \shortstack[r]{Tile--track groups} &
+        Observation span &
+        \shortstack[r]{RTC burst products} &
+        \shortstack[r]{Balsa stand trajectories} \\
+        \midrule
+        TK18  & 22 & Sep. 2016--Jun. 2026 & 37,134 & 3,467 \\
+        TK47  & 7  & Jun. 2016--Jun. 2026 & 8,747  & 16    \\
+        TK91  & 8  & Oct. 2016--Jun. 2026 & 11,554 & 61    \\
+        TK120 & 19 & May 2016--Jun. 2026  & 26,089 & 457   \\
+        \midrule
+        Total & 56 & May 2016--Jun. 2026  & \textbf{83,524} & \textbf{4,001} \\
+        \bottomrule
+    \end{tabular*}
+    % \begin{tablenotes}[flushleft]\footnotesize
+    % \item Counts represent ASF-available VV+VH burst acquisitions within stored group months, deduplicated across overlapping tiles and processing versions, not verified historical composite inputs. Spans are group envelopes and may contain gaps.
+    % \item The 4,001 BALSA trajectories belong to the analysis subset of 40 groups in 31 tiles. Track families retain the combined orbit identifiers used by the archive.
+    % \end{tablenotes}
+    \end{threeparttable}
+\end{table*}
+
+
+% =================================
+\newpage
+\subsection{Independent dated reference events}
+
+Historical stand disturbances were dated by visual interpretation and linked to the fixed identifiers of the validated balsa polygons. Single-date PlanetScope imagery at approximately 3-m spatial resolution provided the primary evidence for identifying abrupt canopy loss and subsequent stand change. Monthly Planet basemaps at approximately 4.77-m resolution at the Equator were used when suitable single-date imagery was unavailable or when additional temporal context was required (Fig.~\ref{fig:timeseries_signature}). Reference interpretation focused on assigning disturbance timing at monthly resolution. Optical image sequences were examined for transitions from an intact plantation canopy to a clearly disturbed state. Reference interpretation was performed without access to Windowed CUSUM detections, and  polygons with unresolved disturbance timing were excluded.
+
+\begin{figure*}[pos=!htbp]
+    \centering
+    \includegraphics[width=\linewidth]{figures/fig06_representative_timeseries.pdf}
+    \caption{Sentinel-1 and optical observations of a representative balsa stand.
+    (a) Monthly Polygon-first VV and VH median trajectories from October 2016 to June 2026; shading shows the within-polygon pixel interquartile range and vertical lines mark dated reference events.
+    (b,c) PlanetScope and Sentinel-1 observations in February 2024.
+    (d,e) Corresponding observations after the event. Sentinel-1 false-colour composites use R = VV, G = VH, and B = VV$-$VH.}
+    \label{fig:timeseries_signature}
+\end{figure*}
+
+After exact polygon--month duplicates were reconciled, the historical catalogue contained 1,093 dated disturbance events across 462 validated balsa polygons. These reference stands were distributed among 57 spatial blocks used for spatially separated model evaluation. Of the 1,093 events, 1,018 had sufficient paired Sentinel-1 observations before and after the assigned disturbance month for event-level backscatter analysis. 

@@ -1,0 +1,993 @@
+{
+  "schema_version": 1,
+  "scope": "Current TeX asset inventory, not a new render or scientific-result update",
+  "entry_point_figure_counts": {
+    "main.tex": 8,
+    "supplementary.tex": 0
+  },
+  "protected_file_hashes": {
+    "manuscript_JAG_v2/main.tex": "6dda21d43bb5823a8cf66e98976b0dcbfc35c5d8f094c4fe3ae244d447861996",
+    "manuscript_JAG_v2/sections/01_introduction.tex": "5cc4b37f87f211ab4a5a3352add6c54a4d546e93d0423fe4c5715e62f53247c3",
+    "manuscript_JAG_v2/sections/02_materials.tex": "6f120ad3fb180edf596bd2c1e5319a7d94b27d11b8576231c68ad167f9ddbeab",
+    "manuscript_JAG_v2/sections/03_methods.tex": "e8be0cd1fd9ed6c01db83833c8370d66aca48f9f8804b8bc74f905d26a348f05",
+    "manuscript_JAG_v2/sections/04_results.tex": "67bc5c8cffbfe34722d131a1139b48d9e6d5c02814553859ece273de15408595",
+    "manuscript_JAG_v2/sections/05_discussion.tex": "90568e7163e1f60695613fe9104075bdbe409039b1159423b0201c64073f41db",
+    "manuscript_JAG_v2/sections/06_conclusion.tex": "175ee61196badda83b0f53710ac10b569d5be0c7582b6ff9c59165ed045b4307",
+    "manuscript_JAG_v2/sections/07_declarations.tex": "1f9b1491d8a9d47eadffde7a7af18cbe616fc8985c8a6ddfd669708d42484deb",
+    "manuscript_JAG_v2/supplementary.tex": "1d503ca6f319fbbf5c61a1709d66af62916a6f8290cbbab67895ff29c42e22f3",
+    "manuscript_JAG_v2/figures/fig01_national_recurrence.pdf": "7b719cdd9558f73174d4d059b9c0cb47152545cc6e62974e0c95eaf6bd1bb551",
+    "manuscript_JAG_v2/figures/fig02_study_area.pdf": "20d7564041475c1ef61db9f9cb2e831f24bc93f494a9424a3762acd8d4ba0484",
+    "manuscript_JAG_v2/figures/fig03_workflow.pdf": "f240a11197ed7ab05211112c0cc4f86b099fa868ab13832b174fdb4085479d91",
+    "manuscript_JAG_v2/figures/fig04_windowed_cusum_concept.pdf": "7a786a7dce7c574f126fa44f0662379db72b4709d34e262848b79bf0dde9dcab",
+    "manuscript_JAG_v2/figures/fig05_population_s1_signatures.pdf": "83d5a9896e45bd3b10938e6058e776aa6cad18891eeee7480bd7cf1ffc5333a8",
+    "manuscript_JAG_v2/figures/fig06_representative_timeseries.pdf": "13141d181f829a4037f70964d9d275b2432c2d252d9fba11cbfcb0acd5792b32",
+    "manuscript_JAG_v2/figures/fig07_representation_configuration.pdf": "e8e2bd9ae913c74058a4665462299e3c66a557545c4e982b1a014081e0dd337c",
+    "manuscript_JAG_v2/figures/fig08_polarization_intervals.pdf": "369ce7ab644f91a32c0f9cc25e07d620ba196b0457dd687e4398bedb90070190"
+  },
+  "tex_and_figures_unchanged": true,
+  "figures": [
+    {
+      "entry_point": "main.tex",
+      "tex_file": "manuscript_JAG_v2/sections/02_materials.tex",
+      "tex_line": 9,
+      "asset": "manuscript_JAG_v2/figures/fig02_study_area.pdf",
+      "asset_sha256": "20d7564041475c1ef61db9f9cb2e831f24bc93f494a9424a3762acd8d4ba0484",
+      "tex_encounter_order": 1,
+      "role": "Study area with ascending burst footprints",
+      "version": "study_area_bursts_v5, accepted 2026-09-11; static coverage, not proof of acquisition-time availability",
+      "binding_status": "output_and_receipt_hash_verified",
+      "source_scripts": "archive/legacy_20261004/scripts/build_study_area_bursts_v5.py",
+      "matched_output": "runs/figures/study_area_bursts_v5/study_area_bursts.pdf",
+      "rebuild_status": "Current PDF is hash-bound to accepted burst-v5 output. Earlier green-yellow index and simplified build_study_area.py do not identify this revision. Archived builder needs supplied inventory, boundary, burst-LUT geometry and basemap inputs.",
+      "rights": "Restricted inventory/geometry and basemap-derived content; no geometry or coordinates are copied into this catalog.",
+      "receipt_output_hash_verified": true,
+      "dependencies": [
+        {
+          "asset": "manuscript_JAG_v2/figures/fig02_study_area.pdf",
+          "dependency_role": "builders",
+          "path": "archive/legacy_20261004/scripts/build_study_area_bursts_v5.py",
+          "exists": true,
+          "kind": "file",
+          "sha256": "835a266112efb28e023b563fd207312d9c80c1115d3e5e203c3c63ac3c8f8801",
+          "public_export_path": "scripts/build_study_area_bursts_v5.py"
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig02_study_area.pdf",
+          "dependency_role": "helpers",
+          "path": "archive/legacy_20261004/scripts/build_study_area_figure.py",
+          "exists": true,
+          "kind": "file",
+          "sha256": "19c408cbb84b5327ecc5fba73de58aeddfedd65694580e43927174d65a6636ed",
+          "public_export_path": "scripts/build_study_area_figure.py"
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig02_study_area.pdf",
+          "dependency_role": "inputs",
+          "path": "configs/study_area_figure_v1.json",
+          "exists": true,
+          "kind": "file",
+          "sha256": "e8251efc6948c79816690bdcda884306aeb07f8dbb8e1c0ede5a063b9fc555c7",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig02_study_area.pdf",
+          "dependency_role": "inputs",
+          "path": "runs/figures/study_area_bursts_v5/resolved_config.json",
+          "exists": true,
+          "kind": "file",
+          "sha256": "27bd62e063beee5ecc6224ac94ae1fb70b95e78c8e43837b8f91b2c871bed48a",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig02_study_area.pdf",
+          "dependency_role": "inputs",
+          "path": "runs/figures/study_area_bursts_v5/selected_burst_footprints.parquet",
+          "exists": true,
+          "kind": "file",
+          "sha256": "2f23d6a0844c73d8b0b0490e3e358439c36e2d342b2f514309bc4e363f4ef5ae",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig02_study_area.pdf",
+          "dependency_role": "inputs",
+          "path": "runs/figures/study_area_bursts_v5/selected_burst_ids.csv",
+          "exists": true,
+          "kind": "file",
+          "sha256": "b1d20d191cfcc547eee853006dcae81e03f611e9bb6af2818e28ee9dac0d6a3d",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig02_study_area.pdf",
+          "dependency_role": "receipts",
+          "path": "runs/figures/study_area_bursts_v5/QA.json",
+          "exists": true,
+          "kind": "file",
+          "sha256": "b1a1fa78dba69e16a8616757da4e3079e5bab25ba4d7e96c6d9ba274d1c80a70",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig02_study_area.pdf",
+          "dependency_role": "receipts",
+          "path": "runs/figures/study_area_bursts_v5/integration_20260911_113929/replacement_receipt.json",
+          "exists": true,
+          "kind": "file",
+          "sha256": "d4b885d7349c682aca038121603916c669fc43fe594cb85ea86bd474c3f1b554",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig02_study_area.pdf",
+          "dependency_role": "candidate_outputs",
+          "path": "runs/figures/study_area_bursts_v5/study_area_bursts.pdf",
+          "exists": true,
+          "kind": "file",
+          "sha256": "20d7564041475c1ef61db9f9cb2e831f24bc93f494a9424a3762acd8d4ba0484",
+          "public_export_path": ""
+        }
+      ]
+    },
+    {
+      "entry_point": "main.tex",
+      "tex_file": "manuscript_JAG_v2/sections/02_materials.tex",
+      "tex_line": 84,
+      "asset": "manuscript_JAG_v2/figures/fig06_representative_timeseries.pdf",
+      "asset_sha256": "13141d181f829a4037f70964d9d275b2432c2d252d9fba11cbfcb0acd5792b32",
+      "tex_encounter_order": 2,
+      "role": "Representative stand series with SAR and optical image examples",
+      "version": "historical Polygon-first median and native-cell IQR example",
+      "binding_status": "source_route_only",
+      "source_scripts": "archive/legacy_20261004/analysis/workflows/build_timeseries_signature_polygon_iqr.py",
+      "matched_output": "",
+      "rebuild_status": "Formal historical source identified; exact export chain and complete frozen raster inputs not established here. Simplified build_representative_timeseries.py is not layout-equivalent.",
+      "rights": "Contains derived PlanetScope imagery. Original rasters, geometry and this image-bearing PDF are not automatically licensed for GitHub redistribution.",
+      "receipt_output_hash_verified": false,
+      "dependencies": [
+        {
+          "asset": "manuscript_JAG_v2/figures/fig06_representative_timeseries.pdf",
+          "dependency_role": "builders",
+          "path": "archive/legacy_20261004/analysis/workflows/build_timeseries_signature_polygon_iqr.py",
+          "exists": true,
+          "kind": "file",
+          "sha256": "acfb186fbf88ae5270fc401e5fe2156fcc5339ab80e7b6646375887500a4ddcf",
+          "public_export_path": "analysis/workflows/build_timeseries_signature_polygon_iqr.py"
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig06_representative_timeseries.pdf",
+          "dependency_role": "helpers",
+          "path": "archive/legacy_20261004/analysis/workflows/build_timeseries_signature_polygon_median.py",
+          "exists": true,
+          "kind": "file",
+          "sha256": "35ad3dbf44c90f643470a7af1b854cf638c76a173a7f5c82b40e7d70b814ec72",
+          "public_export_path": "analysis/workflows/build_timeseries_signature_polygon_median.py"
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig06_representative_timeseries.pdf",
+          "dependency_role": "inputs",
+          "path": "data/local/paper_v1/figure_inputs/fig06",
+          "exists": false,
+          "kind": "missing",
+          "sha256": "",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig06_representative_timeseries.pdf",
+          "dependency_role": "inputs",
+          "path": "data/local/paper_v1/polygon_pixels/polygon_tracks.parquet",
+          "exists": true,
+          "kind": "file",
+          "sha256": "64e5592e8ee702d1cd1369d8cc7977cb904631708ae2ab70fc888e91b5cdd15b",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig06_representative_timeseries.pdf",
+          "dependency_role": "inputs",
+          "path": "data/local/paper_v1/polygon_pixels/pixel_associations.parquet",
+          "exists": true,
+          "kind": "file",
+          "sha256": "583835098d10f2546671774bb5df525aedcaf0967866b3607f6b8439360da32e",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig06_representative_timeseries.pdf",
+          "dependency_role": "inputs",
+          "path": "data/local/paper_v1/polygon_pixels/cache",
+          "exists": true,
+          "kind": "directory",
+          "sha256": "",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig06_representative_timeseries.pdf",
+          "dependency_role": "inputs",
+          "path": "configs/figure_sources.local.json",
+          "exists": true,
+          "kind": "file",
+          "sha256": "003aa5207db5eafb4b48eefab7f53171a729f9ccb010a0f0df40af222dd5382a",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig06_representative_timeseries.pdf",
+          "dependency_role": "receipts",
+          "path": "archive/legacy_20261004/docs/20260906_MANUSCRIPT_FIGURE_REPRODUCIBILITY_AUDIT.md",
+          "exists": true,
+          "kind": "file",
+          "sha256": "ec7ce164617c10696761ccb91873be70d4055a95aeeb9a72064a50796fd53bf9",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig06_representative_timeseries.pdf",
+          "dependency_role": "receipts",
+          "path": "manuscript_JAG_v2/figure_sources/FIGURE_BUILDERS.csv",
+          "exists": true,
+          "kind": "file",
+          "sha256": "e6e688a27f47e3993752227f83c92f01f3fb1688b18d2a41b35a1c0c1d816761",
+          "public_export_path": ""
+        }
+      ]
+    },
+    {
+      "entry_point": "main.tex",
+      "tex_file": "manuscript_JAG_v2/sections/03_methods.tex",
+      "tex_line": 19,
+      "asset": "manuscript_JAG_v2/figures/fig03_workflow.pdf",
+      "asset_sha256": "f240a11197ed7ab05211112c0cc4f86b099fa868ab13832b174fdb4085479d91",
+      "tex_encounter_order": 3,
+      "role": "Method workflow diagram",
+      "version": "legacy manually authored workflow; not a regenerated W36+B20 diagram",
+      "binding_status": "source_route_only",
+      "source_scripts": "manuscript_JAG_v2/figure_sources/powerpoint/windowed-CUSUM-workflow-figures-01.pptx",
+      "matched_output": "",
+      "rebuild_status": "Editable authoring source is recorded; no export receipt binds its current bytes to the PDF. scripts/figures/build_workflow.py is an alternative W48 polygon-first diagram, not an exact reconstruction.",
+      "rights": "Existing source README records author permission. Embedded assets and document metadata still require the public export policy.",
+      "receipt_output_hash_verified": false,
+      "dependencies": [
+        {
+          "asset": "manuscript_JAG_v2/figures/fig03_workflow.pdf",
+          "dependency_role": "builders",
+          "path": "manuscript_JAG_v2/figure_sources/powerpoint/windowed-CUSUM-workflow-figures-01.pptx",
+          "exists": true,
+          "kind": "file",
+          "sha256": "67bfe6ec461d935b8888e88b3ff8e21ef820c05ad600edd6d69c74e4a086f05a",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig03_workflow.pdf",
+          "dependency_role": "receipts",
+          "path": "manuscript_JAG_v2/figure_sources/README.md",
+          "exists": true,
+          "kind": "file",
+          "sha256": "0649d28d408eeb684d0a552ff04c066f970d2953be7894730ae5d073b0473997",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig03_workflow.pdf",
+          "dependency_role": "receipts",
+          "path": "manuscript_JAG_v2/figure_sources/powerpoint/README.md",
+          "exists": true,
+          "kind": "file",
+          "sha256": "cacc0c63aeda2bca5064ffa9b02e00ee6af1e1e85a53668635856aa43247df17",
+          "public_export_path": ""
+        }
+      ]
+    },
+    {
+      "entry_point": "main.tex",
+      "tex_file": "manuscript_JAG_v2/sections/03_methods.tex",
+      "tex_line": 52,
+      "asset": "manuscript_JAG_v2/figures/fig04_windowed_cusum_concept.pdf",
+      "asset_sha256": "7a786a7dce7c574f126fa44f0662379db72b4709d34e262848b79bf0dde9dcab",
+      "tex_encounter_order": 4,
+      "role": "CUSUM concept and decision semantics",
+      "version": "Polygon-first W48; n1-current-data-bishan-v22 plus 2026-09-11 v3 label placement",
+      "binding_status": "output_and_receipt_hash_verified",
+      "source_scripts": "scripts/figures/preview_concept_label_positions_v3.py;analysis/workflows/build_windowed_cusum_concept_n1_current.py",
+      "matched_output": "runs/figures/concept_label_preview_20260911_v3_review/windowed_cusum_concept_n1_current.pdf",
+      "rebuild_status": "Current PDF hash matches v3 output manifest. Preview script protects the previous author PDF hash and is not an unconditional rerun entry; input paths also require the private sibling archive.",
+      "rights": "Derived restricted stand series; catalog records input paths and hashes only.",
+      "receipt_output_hash_verified": true,
+      "dependencies": [
+        {
+          "asset": "manuscript_JAG_v2/figures/fig04_windowed_cusum_concept.pdf",
+          "dependency_role": "builders",
+          "path": "scripts/figures/preview_concept_label_positions_v3.py",
+          "exists": true,
+          "kind": "file",
+          "sha256": "8b0dbe400cc4da8e89fe024f2b412694fe327c6c77efdb5854a9af8a08a4d9f2",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig04_windowed_cusum_concept.pdf",
+          "dependency_role": "builders",
+          "path": "analysis/workflows/build_windowed_cusum_concept_n1_current.py",
+          "exists": true,
+          "kind": "file",
+          "sha256": "8f4a33b3a8f24259942f74264fcb70f5ba88e6edf14d2279bf93ab21f88933dd",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig04_windowed_cusum_concept.pdf",
+          "dependency_role": "inputs",
+          "path": "../LR-CuSum_v100/outputs/balsa_validation_closure_40tiles_validated_v2_strict_decision/polygon_series_metadata.parquet",
+          "exists": true,
+          "kind": "file",
+          "sha256": "d019f9440eab6cc63e7be2df738542833b1a3260038309645a14c52ced7f547d",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig04_windowed_cusum_concept.pdf",
+          "dependency_role": "inputs",
+          "path": "../LR-CuSum_v100/outputs/balsa_validation_closure_40tiles_validated_v2_strict_decision/polygon_series.npz",
+          "exists": true,
+          "kind": "file",
+          "sha256": "5853c415371229aa13857230d3e5afeb372e964101a5c64f619a5b5422a61cdd",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig04_windowed_cusum_concept.pdf",
+          "dependency_role": "inputs",
+          "path": "../LR-CuSum_v100/outputs/balsa_validation_closure_40tiles_validated_v2_strict_decision/reference_events.parquet",
+          "exists": true,
+          "kind": "file",
+          "sha256": "868e0542de279d466f1d4fafa6464f2d8685ccc3438035623fd7514986495474",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig04_windowed_cusum_concept.pdf",
+          "dependency_role": "inputs",
+          "path": "../LR-CuSum_v100/outputs/windowed_cusum_component_ablation_40tile_v1/candidate_audit/sliding_candidates.parquet",
+          "exists": true,
+          "kind": "file",
+          "sha256": "d9f1d543caef4ae8215afba06e1028a3d9d63b8391ae5b4907443009709103b6",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig04_windowed_cusum_concept.pdf",
+          "dependency_role": "inputs",
+          "path": "../LR-CuSum_v100/outputs/windowed_cusum_temporal_null_audit_40tile_v1/candidate_scores/N1_IID_P025.parquet",
+          "exists": true,
+          "kind": "file",
+          "sha256": "bd0eeab643e14780a1317a92a959c991dd748f5ccc9f802d17237d9517029b17",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig04_windowed_cusum_concept.pdf",
+          "dependency_role": "inputs",
+          "path": "../LR-CuSum_v100/configs/windowed_cusum_temporal_null_audit_40tile_v1.json",
+          "exists": true,
+          "kind": "file",
+          "sha256": "4a571e8b0bad5f1566b087666a7142c515c0650e28f74d5cef192ac1eb8bdb03",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig04_windowed_cusum_concept.pdf",
+          "dependency_role": "receipts",
+          "path": "runs/figures/concept_label_preview_20260911_v3_review/windowed_cusum_concept_n1_current_manifest.json",
+          "exists": true,
+          "kind": "file",
+          "sha256": "b5b5fbb6bd2b70b73818e4333326b8e8de575d90ab926934e893e081c4965579",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig04_windowed_cusum_concept.pdf",
+          "dependency_role": "receipts",
+          "path": "runs/figures/concept_label_preview_20260911_v3_review/label_preview_receipt.json",
+          "exists": true,
+          "kind": "file",
+          "sha256": "201461b65f0e24a20e2f7698d3f832059560451c158b6cb91d62ac2f55c8286c",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig04_windowed_cusum_concept.pdf",
+          "dependency_role": "candidate_outputs",
+          "path": "runs/figures/concept_label_preview_20260911_v3_review/windowed_cusum_concept_n1_current.pdf",
+          "exists": true,
+          "kind": "file",
+          "sha256": "7a786a7dce7c574f126fa44f0662379db72b4709d34e262848b79bf0dde9dcab",
+          "public_export_path": ""
+        }
+      ]
+    },
+    {
+      "entry_point": "main.tex",
+      "tex_file": "manuscript_JAG_v2/sections/04_results.tex",
+      "tex_line": 14,
+      "asset": "manuscript_JAG_v2/figures/fig05_population_s1_signatures.pdf",
+      "asset_sha256": "83d5a9896e45bd3b10938e6058e776aa6cad18891eeee7480bd7cf1ffc5333a8",
+      "tex_encounter_order": 5,
+      "role": "Population Sentinel-1 signatures",
+      "version": "historical signature v11; not current W36 event-score output",
+      "binding_status": "source_route_only",
+      "source_scripts": "scripts/figures/build_population_s1_signatures.py;analysis/workflows/build_population_s1_signature_figure_v11.py",
+      "matched_output": "",
+      "rebuild_status": "Local wrapper historically rendered successfully but page crop differed by about 1 point. Source route established; exact frozen-PDF reproduction not established.",
+      "rights": "Restricted stand trajectories; aggregate releases require existing data-release policy.",
+      "receipt_output_hash_verified": false,
+      "dependencies": [
+        {
+          "asset": "manuscript_JAG_v2/figures/fig05_population_s1_signatures.pdf",
+          "dependency_role": "builders",
+          "path": "scripts/figures/build_population_s1_signatures.py",
+          "exists": true,
+          "kind": "file",
+          "sha256": "17e49a077358ac9106f0c4f94323bcd7b04b3e4b54ff26878df8d26b836487cb",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig05_population_s1_signatures.pdf",
+          "dependency_role": "builders",
+          "path": "analysis/workflows/build_population_s1_signature_figure_v11.py",
+          "exists": true,
+          "kind": "file",
+          "sha256": "bd2f8e65b96c98dcaeab2946bbf47065c07177f88e3e3bdab5e04064a880deb1",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig05_population_s1_signatures.pdf",
+          "dependency_role": "helpers",
+          "path": "analysis/workflows/build_population_s1_signature_figure_v2.py",
+          "exists": true,
+          "kind": "file",
+          "sha256": "0b160814ccba6d7ffa9f5e057d87fa2ae2e428edf768e353f4d70546bfad940e",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig05_population_s1_signatures.pdf",
+          "dependency_role": "helpers",
+          "path": "analysis/workflows/build_population_s1_signature_figure_v4.py",
+          "exists": true,
+          "kind": "file",
+          "sha256": "b07af28ddf355138aa3b874acd8e89297ef776565feb8b70f4a227ea1d6957ab",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig05_population_s1_signatures.pdf",
+          "dependency_role": "helpers",
+          "path": "analysis/workflows/build_population_s1_signature_figure_v7.py",
+          "exists": true,
+          "kind": "file",
+          "sha256": "37db70a25bcadb60b1f6547df842578823f90fd3c414714e0583ae19630d36a3",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig05_population_s1_signatures.pdf",
+          "dependency_role": "helpers",
+          "path": "analysis/workflows/build_population_s1_signature_figure_v9.py",
+          "exists": true,
+          "kind": "file",
+          "sha256": "7957df32cd9f3a1027b73d112aa3ba924ddde88e663a3a061eea97801dd94579",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig05_population_s1_signatures.pdf",
+          "dependency_role": "helpers",
+          "path": "analysis/workflows/build_population_s1_signature_figure_v10.py",
+          "exists": true,
+          "kind": "file",
+          "sha256": "5461f52ec89ab429d44ca750c14b70e348cb4d1912c556af84afb174fa97548c",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig05_population_s1_signatures.pdf",
+          "dependency_role": "inputs",
+          "path": "data/local/paper_v1/figure_inputs/fig04_population_signatures/national_balsa_series_metadata.parquet",
+          "exists": true,
+          "kind": "file",
+          "sha256": "0455f9e8734e3bb0d198e948563665ba7fab64a359dfe18a227a67e697f7ddb2",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig05_population_s1_signatures.pdf",
+          "dependency_role": "inputs",
+          "path": "data/local/paper_v1/figure_inputs/fig04_population_signatures/national_balsa_series.npz",
+          "exists": true,
+          "kind": "file",
+          "sha256": "d5b21fbd4d9d6dc1e738857a2bea11b8042d6f44495beadcece68c7d8dc9f828",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig05_population_s1_signatures.pdf",
+          "dependency_role": "inputs",
+          "path": "data/local/paper_v1/figure_inputs/fig04_population_signatures/historical_event_summary.csv",
+          "exists": true,
+          "kind": "file",
+          "sha256": "8295369a4a64b7dffc49613cf0db5534518177193127863d3ca077fec0d5b3e2",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig05_population_s1_signatures.pdf",
+          "dependency_role": "inputs",
+          "path": "data/local/paper_v1/figure_inputs/fig04_population_signatures/historical_event_aligned.parquet",
+          "exists": true,
+          "kind": "file",
+          "sha256": "51ce540938530968775c3ddf434baeda9637dd99eca9f4f6282fa7345b5b0acc",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig05_population_s1_signatures.pdf",
+          "dependency_role": "inputs",
+          "path": "data/local/paper_v1/figure_inputs/fig04_population_signatures/table_s1_signature_summary.csv",
+          "exists": true,
+          "kind": "file",
+          "sha256": "0b8f817c5895cdb88bba3185e8a0898306c21448e4ab18de309f6fc983446126",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig05_population_s1_signatures.pdf",
+          "dependency_role": "inputs",
+          "path": "data/local/paper_v1/figure_inputs/fig04_population_signatures/signature_analysis_manifest.json",
+          "exists": true,
+          "kind": "file",
+          "sha256": "8938b1a880474a0db8b8df55be963b5be08ba84dba0d56de2f08355a2f17ca5a",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig05_population_s1_signatures.pdf",
+          "dependency_role": "receipts",
+          "path": "runs/public_audit/figure04_build/figure_03_population_s1_signature_v11_manifest.json",
+          "exists": true,
+          "kind": "file",
+          "sha256": "071a3092d7631236497add3f8ad7cf3425e74d9fa21b9dd250707a52c458074b",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig05_population_s1_signatures.pdf",
+          "dependency_role": "receipts",
+          "path": "archive/legacy_20261004/docs/20260906_MANUSCRIPT_FIGURE_REPRODUCIBILITY_AUDIT.md",
+          "exists": true,
+          "kind": "file",
+          "sha256": "ec7ce164617c10696761ccb91873be70d4055a95aeeb9a72064a50796fd53bf9",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig05_population_s1_signatures.pdf",
+          "dependency_role": "candidate_outputs",
+          "path": "runs/public_audit/fig05_population_s1_signatures.pdf",
+          "exists": true,
+          "kind": "file",
+          "sha256": "649f66532e9a8d2b618147f6e505da128863ca59520b776cc78db2d279c2c2c8",
+          "public_export_path": ""
+        }
+      ]
+    },
+    {
+      "entry_point": "main.tex",
+      "tex_file": "manuscript_JAG_v2/sections/04_results.tex",
+      "tex_line": 35,
+      "asset": "manuscript_JAG_v2/figures/fig07_representation_configuration.pdf",
+      "asset_sha256": "e8e2bd9ae913c74058a4665462299e3c66a557545c4e982b1a014081e0dd337c",
+      "tex_encounter_order": 6,
+      "role": "Historical representation and parameter sensitivity",
+      "version": "figure5 metric-encoding v19; historical P/R/F1 and W48 configurations, not current frozen weighted precision",
+      "binding_status": "source_route_only",
+      "source_scripts": "scripts/figures/build_representation_configuration.py;analysis/workflows/build_figure5_abcde_metric_encoding_v19.py",
+      "matched_output": "",
+      "rebuild_status": "Localized aggregate input route exists. Historical rebuild differed in page crop; it must not overwrite the current asset or relabel old F1 as current W36 performance.",
+      "rights": "Aggregate tables are under data/public; retain their historical method and evaluation labels.",
+      "receipt_output_hash_verified": false,
+      "dependencies": [
+        {
+          "asset": "manuscript_JAG_v2/figures/fig07_representation_configuration.pdf",
+          "dependency_role": "builders",
+          "path": "scripts/figures/build_representation_configuration.py",
+          "exists": true,
+          "kind": "file",
+          "sha256": "5db167636d3fde3169afc01239e651c6d50fc43015c0e7e70a16f2d5769a55d7",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig07_representation_configuration.pdf",
+          "dependency_role": "builders",
+          "path": "analysis/workflows/build_figure5_abcde_metric_encoding_v19.py",
+          "exists": true,
+          "kind": "file",
+          "sha256": "acee4b2ce2fe459b5ec354ae8165f8626245c658a5f82d11d97a450ded1fd568",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig07_representation_configuration.pdf",
+          "dependency_role": "helpers",
+          "path": "analysis/workflows/build_figure5_abcde_2col3row.py",
+          "exists": true,
+          "kind": "file",
+          "sha256": "f72292e082eddc5a98492c895f957092fc6395833577e43586d483c57f8d938c",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig07_representation_configuration.pdf",
+          "dependency_role": "helpers",
+          "path": "analysis/workflows/build_figure5_abcde_compact.py",
+          "exists": true,
+          "kind": "file",
+          "sha256": "835836ab1f33cce68719635fb1d1341626189a7be1eca2ea69fb606b56e221b8",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig07_representation_configuration.pdf",
+          "dependency_role": "helpers",
+          "path": "analysis/workflows/build_stand_representation_ablation_figure.py",
+          "exists": true,
+          "kind": "file",
+          "sha256": "8f948f038bdfafcceb99c37f09f138b8f2c8b7286e433139f78678de10ce2917",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig07_representation_configuration.pdf",
+          "dependency_role": "helpers",
+          "path": "scripts/build_n1_window_step_polarization_figure.py",
+          "exists": true,
+          "kind": "file",
+          "sha256": "f58fe0fc4e5398f44dbec2584ffa8f65c6e1795f2df9ce68250af75cdecbcaee",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig07_representation_configuration.pdf",
+          "dependency_role": "helpers",
+          "path": "archive/legacy_20261004/scripts/build_n1_window_step_polarization_figure_v2.py",
+          "exists": true,
+          "kind": "file",
+          "sha256": "feeb1cb173cbe37706c1c688c40cbdcb50f2fd01c38f9242357d6f85f152d9bd",
+          "public_export_path": "scripts/build_n1_window_step_polarization_figure_v2.py"
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig07_representation_configuration.pdf",
+          "dependency_role": "helpers",
+          "path": "archive/legacy_20261004/scripts/build_n1_window_step_polarization_figure_v3.py",
+          "exists": true,
+          "kind": "file",
+          "sha256": "d2b915608e17c4caf05993fe1e4eba23831c7965cdd7b2013e16519271ca2356",
+          "public_export_path": "scripts/build_n1_window_step_polarization_figure_v3.py"
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig07_representation_configuration.pdf",
+          "dependency_role": "helpers",
+          "path": "archive/legacy_20261004/scripts/build_n1_window_step_polarization_figure_v4.py",
+          "exists": true,
+          "kind": "file",
+          "sha256": "eeaca4c27b9fa77374c3d50cf75189088d42c5102cec49ce273a197114f66188",
+          "public_export_path": "scripts/build_n1_window_step_polarization_figure_v4.py"
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig07_representation_configuration.pdf",
+          "dependency_role": "helpers",
+          "path": "archive/legacy_20261004/scripts/build_n1_window_step_polarization_figure_v5.py",
+          "exists": true,
+          "kind": "file",
+          "sha256": "ce15f913021ac9a2ff85fb19b06d5a617682da2c76463f3ceed90d2e9af67858",
+          "public_export_path": "scripts/build_n1_window_step_polarization_figure_v5.py"
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig07_representation_configuration.pdf",
+          "dependency_role": "helpers",
+          "path": "archive/legacy_20261004/scripts/build_n1_window_step_polarization_figure_v6.py",
+          "exists": true,
+          "kind": "file",
+          "sha256": "d5c5488ac8783733c6ad3b9cd59ade19debe81dd74340a20bcdbe13d3f99bf20",
+          "public_export_path": "scripts/build_n1_window_step_polarization_figure_v6.py"
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig07_representation_configuration.pdf",
+          "dependency_role": "helpers",
+          "path": "archive/legacy_20261004/scripts/build_n1_window_step_polarization_figure_v7.py",
+          "exists": true,
+          "kind": "file",
+          "sha256": "9e59b87fd2c9bcb53ee6dcdebf3b8f9485e8efdda77b3cac2b41f52c81a9e360",
+          "public_export_path": "scripts/build_n1_window_step_polarization_figure_v7.py"
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig07_representation_configuration.pdf",
+          "dependency_role": "helpers",
+          "path": "archive/legacy_20261004/scripts/build_n1_window_step_polarization_figure_v8.py",
+          "exists": true,
+          "kind": "file",
+          "sha256": "3456689f6d6edf0561db5a9be6c2599f9d08f6bcfd692a4d048c468ff6c5cd9d",
+          "public_export_path": "scripts/build_n1_window_step_polarization_figure_v8.py"
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig07_representation_configuration.pdf",
+          "dependency_role": "inputs",
+          "path": "data/public/figure_inputs/fig06_representation_configuration/aggregation_trajectories_exact.csv",
+          "exists": true,
+          "kind": "file",
+          "sha256": "ca94badf8b145e51b33c2ae9570b83b9de9e35428c2ca757e0d3c81d06225c91",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig07_representation_configuration.pdf",
+          "dependency_role": "inputs",
+          "path": "data/public/figure_inputs/fig06_representation_configuration/representation_metrics_figure_compat.csv",
+          "exists": true,
+          "kind": "file",
+          "sha256": "a1e0b775d5d49b72bf412011ef0319d9dff6928503167ed037332b0e7ae30032",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig07_representation_configuration.pdf",
+          "dependency_role": "inputs",
+          "path": "data/public/figure_inputs/fig06_representation_configuration/n1",
+          "exists": true,
+          "kind": "directory",
+          "sha256": "",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig07_representation_configuration.pdf",
+          "dependency_role": "inputs",
+          "path": "data/public/figure_inputs/fig06_representation_configuration/window",
+          "exists": true,
+          "kind": "directory",
+          "sha256": "",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig07_representation_configuration.pdf",
+          "dependency_role": "receipts",
+          "path": "runs/public_audit/figure06_build_v4/manifest.json",
+          "exists": true,
+          "kind": "file",
+          "sha256": "e5ec088c7278b280e69e18b1c2ec744b5b62f45e12c8cc58f0ec3897ebb4cb23",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig07_representation_configuration.pdf",
+          "dependency_role": "receipts",
+          "path": "archive/legacy_20261004/docs/20260906_MANUSCRIPT_FIGURE_REPRODUCIBILITY_AUDIT.md",
+          "exists": true,
+          "kind": "file",
+          "sha256": "ec7ce164617c10696761ccb91873be70d4055a95aeeb9a72064a50796fd53bf9",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig07_representation_configuration.pdf",
+          "dependency_role": "candidate_outputs",
+          "path": "runs/public_audit/fig07_representation_configuration_v4.pdf",
+          "exists": true,
+          "kind": "file",
+          "sha256": "bd8c5c218c0a47d2fcd1ad522e1754dfa35fda89a41f1a54c375da5f8386deb1",
+          "public_export_path": ""
+        }
+      ]
+    },
+    {
+      "entry_point": "main.tex",
+      "tex_file": "manuscript_JAG_v2/sections/04_results.tex",
+      "tex_line": 197,
+      "asset": "manuscript_JAG_v2/figures/fig01_national_recurrence.pdf",
+      "asset_sha256": "7b719cdd9558f73174d4d059b9c0cb47152545cc6e62974e0c95eaf6bd1bb551",
+      "tex_encounter_order": 7,
+      "role": "National recurrence and adjacent intervals",
+      "version": "legacy Polygon-first VV chronology; 3498 stands and 6658 events; not W36+B20",
+      "binding_status": "source_route_only",
+      "source_scripts": "scripts/figures/build_national_recurrence.py;analysis/workflows/build_figure6_recurrence_10km.py",
+      "matched_output": "",
+      "rebuild_status": "Historical audit reports pixel-identical layout; binary PDF identity is checked separately below. No rebuild performed in this catalog task.",
+      "rights": "Restricted stand geometry and basemap-derived content; review redistribution and attribution before publishing binaries.",
+      "receipt_output_hash_verified": false,
+      "dependencies": [
+        {
+          "asset": "manuscript_JAG_v2/figures/fig01_national_recurrence.pdf",
+          "dependency_role": "builders",
+          "path": "scripts/figures/build_national_recurrence.py",
+          "exists": true,
+          "kind": "file",
+          "sha256": "5746ae2ed14b7f8b86f616c8325a5fd7be65f8bef5f1db79defea241e605f235",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig01_national_recurrence.pdf",
+          "dependency_role": "builders",
+          "path": "analysis/workflows/build_figure6_recurrence_10km.py",
+          "exists": true,
+          "kind": "file",
+          "sha256": "da2bdc309a36dfb467111cc4dd1a2cf06feaa71123c410092e8f3b76cf3f2204",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig01_national_recurrence.pdf",
+          "dependency_role": "helpers",
+          "path": "analysis/workflows/build_hex_disturbance_maps_1km2.py",
+          "exists": true,
+          "kind": "file",
+          "sha256": "c55cea54b187f60913e4d5ddec06abbba8d8481925341eca29f1ef1c8e3d7521",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig01_national_recurrence.pdf",
+          "dependency_role": "helpers",
+          "path": "analysis/workflows/build_hex_disturbance_maps.py",
+          "exists": true,
+          "kind": "file",
+          "sha256": "53b199fdb32500702018a7a32f7f80900b7a2d895cf2c3457b9e2d5c5c758ec4",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig01_national_recurrence.pdf",
+          "dependency_role": "helpers",
+          "path": "analysis/workflows/build_figure6_chronology_interval_maps.py",
+          "exists": true,
+          "kind": "file",
+          "sha256": "5409d72228a43accc6539b8415f530b965bd4f26ada97a9d9e3f112890f95ceb",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig01_national_recurrence.pdf",
+          "dependency_role": "inputs",
+          "path": "data/local/paper_v1/frozen_results/national/events/VV_dB.ground.parquet",
+          "exists": true,
+          "kind": "file",
+          "sha256": "d22a13007507890e22746303cf6b9cf03dfa8eb9203c2706a8952ea81086da83",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig01_national_recurrence.pdf",
+          "dependency_role": "inputs",
+          "path": "data/local/paper_v1/polygon_pixels/polygon_tracks.parquet",
+          "exists": true,
+          "kind": "file",
+          "sha256": "64e5592e8ee702d1cd1369d8cc7977cb904631708ae2ab70fc888e91b5cdd15b",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig01_national_recurrence.pdf",
+          "dependency_role": "inputs",
+          "path": "data/local/paper_v1/inventory/balsa_validated.parquet",
+          "exists": true,
+          "kind": "file",
+          "sha256": "b112379d8347f1732522445581c42da1eb371dc714b49fda5f50467569f1d99c",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig01_national_recurrence.pdf",
+          "dependency_role": "inputs",
+          "path": "data/local/paper_v1/admin/analysis_context/ecuador_mainland.parquet",
+          "exists": true,
+          "kind": "file",
+          "sha256": "e2b369a60115bc838ee1454d837ad6c6c5ae4a9d7d30beacba361fa2f846e1b2",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig01_national_recurrence.pdf",
+          "dependency_role": "inputs",
+          "path": "data/local/paper_v1/admin/analysis_context/amazonia_sensu_stricto.parquet",
+          "exists": true,
+          "kind": "file",
+          "sha256": "823902a2e6c815d3d90c305a06a1e7deef229534b89204d708eb632e2c419cc3",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig01_national_recurrence.pdf",
+          "dependency_role": "inputs",
+          "path": "data/local/paper_v1/basemap",
+          "exists": true,
+          "kind": "directory",
+          "sha256": "",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig01_national_recurrence.pdf",
+          "dependency_role": "inputs",
+          "path": "configs/study_area_figure_v1.json",
+          "exists": true,
+          "kind": "file",
+          "sha256": "e8251efc6948c79816690bdcda884306aeb07f8dbb8e1c0ede5a063b9fc555c7",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig01_national_recurrence.pdf",
+          "dependency_role": "receipts",
+          "path": "runs/figure_sources/figure08_national_recurrence/figure_manifest.json",
+          "exists": true,
+          "kind": "file",
+          "sha256": "0bf5839c679ca1ad73bfb9fff3f7199dea4ebfd6dc190a1996236be1d5642b3c",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig01_national_recurrence.pdf",
+          "dependency_role": "receipts",
+          "path": "archive/legacy_20261004/docs/20260906_MANUSCRIPT_FIGURE_REPRODUCIBILITY_AUDIT.md",
+          "exists": true,
+          "kind": "file",
+          "sha256": "ec7ce164617c10696761ccb91873be70d4055a95aeeb9a72064a50796fd53bf9",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig01_national_recurrence.pdf",
+          "dependency_role": "candidate_outputs",
+          "path": "runs/figure_sources/figure08_national_recurrence/figure_06_national_recurrence_10km.pdf",
+          "exists": true,
+          "kind": "file",
+          "sha256": "b11b9b69d5677a38a1da3991a51aabda93eecaf7dbedd2a0e337ac411a9cd2e1",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig01_national_recurrence.pdf",
+          "dependency_role": "candidate_outputs",
+          "path": "runs/figure_repro_audit_exact_20260906/fig01_national_recurrence.pdf",
+          "exists": true,
+          "kind": "file",
+          "sha256": "1fbeb001c6ca122f3825c3777518c0064eb6431464a39afeedf7c3100b362ae1",
+          "public_export_path": ""
+        }
+      ]
+    },
+    {
+      "entry_point": "main.tex",
+      "tex_file": "manuscript_JAG_v2/sections/04_results.tex",
+      "tex_line": 210,
+      "asset": "manuscript_JAG_v2/figures/fig08_polarization_intervals.pdf",
+      "asset_sha256": "369ce7ab644f91a32c0f9cc25e07d620ba196b0457dd687e4398bedb90070190",
+      "tex_encounter_order": 8,
+      "role": "Cross-polarization support of adjacent disturbance intervals",
+      "version": "historical Polygon-first VV-primary interval sensitivity; pairing +/-2 months; not pixel-level VV union/intersection+B20",
+      "binding_status": "source_route_only",
+      "source_scripts": "archive/legacy_20261004/scripts/summarize_n1_polarization_interval_sensitivity.py",
+      "matched_output": "",
+      "rebuild_status": "Formal source route identified; exact frozen output match is unresolved. scripts/figures/build_polarization_intervals.py is a simplified reimplementation.",
+      "rights": "Event-level inputs remain restricted; aggregate tables retain legacy chronology semantics.",
+      "receipt_output_hash_verified": false,
+      "dependencies": [
+        {
+          "asset": "manuscript_JAG_v2/figures/fig08_polarization_intervals.pdf",
+          "dependency_role": "builders",
+          "path": "archive/legacy_20261004/scripts/summarize_n1_polarization_interval_sensitivity.py",
+          "exists": true,
+          "kind": "file",
+          "sha256": "294614b691cca2df2706250bc9339c1d2ca4eff29c546edb2aaa608158bb3957",
+          "public_export_path": "scripts/summarize_n1_polarization_interval_sensitivity.py"
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig08_polarization_intervals.pdf",
+          "dependency_role": "inputs",
+          "path": "data/local/paper_v1/frozen_results/polarization/vv_primary_adjacent_intervals_vh_pm2.parquet",
+          "exists": true,
+          "kind": "file",
+          "sha256": "88da09b2811919ee561b00389f749669f14705fd4d7b070e525f09d34296fc75",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig08_polarization_intervals.pdf",
+          "dependency_role": "inputs",
+          "path": "results/polarization/spatial_block_bootstrap_vh_pm2.csv",
+          "exists": true,
+          "kind": "file",
+          "sha256": "8b0cd2c6b53d3d93e0de411c9ff68c12b27ec3f02ff0a08667ad9e5c823c4a64",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig08_polarization_intervals.pdf",
+          "dependency_role": "inputs",
+          "path": "../LR-CuSum_v100/outputs/windowed_cusum_n1_polarization_interval_sensitivity_40tile_v1/metrics",
+          "exists": true,
+          "kind": "directory",
+          "sha256": "",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig08_polarization_intervals.pdf",
+          "dependency_role": "inputs",
+          "path": "../LR-CuSum_v100/outputs/windowed_cusum_n1_polarization_interval_sensitivity_40tile_v1/intervals",
+          "exists": true,
+          "kind": "directory",
+          "sha256": "",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig08_polarization_intervals.pdf",
+          "dependency_role": "receipts",
+          "path": "archive/legacy_20261004/docs/20260906_MANUSCRIPT_FIGURE_REPRODUCIBILITY_AUDIT.md",
+          "exists": true,
+          "kind": "file",
+          "sha256": "ec7ce164617c10696761ccb91873be70d4055a95aeeb9a72064a50796fd53bf9",
+          "public_export_path": ""
+        },
+        {
+          "asset": "manuscript_JAG_v2/figures/fig08_polarization_intervals.pdf",
+          "dependency_role": "receipts",
+          "path": "manuscript_JAG_v2/figure_sources/FIGURE_BUILDERS.csv",
+          "exists": true,
+          "kind": "file",
+          "sha256": "e6e688a27f47e3993752227f83c92f01f3fb1688b18d2a41b35a1c0c1d816761",
+          "public_export_path": ""
+        }
+      ]
+    }
+  ]
+}

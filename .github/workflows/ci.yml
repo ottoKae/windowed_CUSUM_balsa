@@ -1,0 +1,33 @@
+name: Public source checks
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  python:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Verify public snapshot
+        run: python tooling/release/export_public.py --verify .
+      - name: Install the package normally
+        run: |
+          python -m pip install ".[io,validation,replay]" -c configs/requirements-reproduce.txt
+          python -m pip install pytest geopandas -c configs/requirements-reproduce.txt
+      - name: Confirm installed import
+        run: python -I -c "import lr_cusum; from pathlib import Path; p=Path(lr_cusum.__file__); print(p); assert 'site-packages' in p.parts"
+      - name: Run tests
+        run: python -I -m pytest tests --import-mode=importlib -q -p no:cacheprovider --basetemp .test-tmp/ci
+      - name: Run the synthetic example
+        run: python -I -m lr_cusum paper data/demo/monthly_s1_synthetic.csv .test-tmp/demo_events.csv --config configs/standard_w36.json

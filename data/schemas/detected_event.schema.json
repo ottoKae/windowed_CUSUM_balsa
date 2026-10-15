@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/windowed-cusum-balsa/detected-event.schema.json",
+  "title": "Windowed CUSUM detected-event record",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["ID", "Band", "change_time"],
+  "properties": {
+    "ID": {"type": "string"},
+    "Band": {"enum": ["VV_dB", "VH_dB"]},
+    "change_time": {"type": "string", "format": "date"},
+    "cusum_amplitude": {"type": ["number", "null"]},
+    "p_perm": {"type": ["number", "null"], "minimum": 0, "maximum": 1}
+  }
+}
+

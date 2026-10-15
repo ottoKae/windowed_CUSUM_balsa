@@ -1,0 +1,24 @@
+SPDX-License-Identifier: CC-BY-4.0
+
+Copyright (c) 2026 Windowed CUSUM data contributors
+
+The owner-authorized processed scientific reproducibility package (science,
+profile B), pixel-level extension (pixels, profile C), and study-generated
+aggregate result tables are licensed under the Creative Commons Attribution
+4.0 International License.
+
+Full, governing license terms:
+https://creativecommons.org/licenses/by/4.0/legalcode
+
+License summary:
+https://creativecommons.org/licenses/by/4.0/
+
+Provide appropriate credit, retain the license link, and indicate changes as
+required by that license. Citation metadata accompany each data release.
+The material is provided without warranties under the license terms.
+
+This grant does not cover original Sentinel-1 products, official source
+geometries, original S1-GRiTS catalog/Zarr, third-party static layers,
+administrative vectors, Esri basemaps, commercial optical imagery, third-party
+papers, or third-party software. These are excluded or retain their own terms.
+Software licensing is specified separately in LICENSE and retained notices.

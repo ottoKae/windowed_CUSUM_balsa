@@ -1,0 +1,54 @@
+{
+  "analysis": "N1 window-length/step and polarization sensitivity",
+  "figure_claim": "Window length and step jointly control the precision-recall balance, 36/12 and frozen 48/12 have no detectable paired F1 difference, and polarization fusion provides distinct operating points without improving the overall F1 of VV-only detection.",
+  "protocol": {
+    "detector": "Windowed CUSUM",
+    "null_model": "N1 IID permutation",
+    "permutation_threshold": 0.025,
+    "polarization_window_months": 48,
+    "polarization_step_months": 12,
+    "polarization_agreement_tolerance_months": 1,
+    "reference_match_tolerance_months": 2,
+    "matcher": "optimal_v2",
+    "bootstrap_unit": "complete spatial block",
+    "bootstrap_replicates": 5000,
+    "bootstrap_seed": 20260831
+  },
+  "audit": {
+    "vv_reference_parity": true,
+    "reference_sample_count": 462,
+    "reference_event_count": 1093,
+    "strategy_event_counts": {
+      "VV only": 1175,
+      "VH only": 1147,
+      "VV or VH": 1485,
+      "VV and VH": 831
+    },
+    "vv_metric_parity": true,
+    "spatial_blocks": 57,
+    "valid_geometry_combinations": [
+      "24/6",
+      "36/6",
+      "48/6",
+      "36/12",
+      "48/12"
+    ],
+    "excluded_geometry": {
+      "configuration": "24/12",
+      "reason": "central decision interval W - 2S equals zero"
+    }
+  },
+  "input_sha256": {
+    "outputs\\windowed_cusum_n1_full_40tile_v1\\geometry\\geometry_metrics.csv": "b563600d8ca141714b4abe68ad80bf8b776c89dc202efcd86587c6c2f5f9bfae",
+    "outputs\\windowed_cusum_n1_full_40tile_v1\\geometry\\geometry_contrasts.csv": "9cbbb2f4489bc003c4450455adf8ea7755452e5a5e47074fc8d1be96292a1c18",
+    "outputs\\windowed_cusum_n1_full_40tile_v1\\national\\ground_polygon_events.parquet": "a3413d17ed685c52af74cda305c7875185863e111692e742d7f44d7a8b708d28",
+    "outputs\\balsa_validation_closure_40tiles_validated_v2_strict_decision\\reference_events.parquet": "868e0542de279d466f1d4fafa6464f2d8685ccc3438035623fd7514986495474",
+    "outputs\\balsa_validation_closure_40tiles_validated_v2_strict_decision\\locked_outer_spatial_folds.csv": "631d523f2ce2ea8645b035aba1fe6ddf228cce6701a2fe3be7f3d02f7fdf3776"
+  },
+  "outputs": {
+    "figure_pdf": "D:\\Project\\claude-demo\\methods\\LR-CuSum_v100\\outputs\\jag_codex_20260821\\method_figure\\window_length_step_polarization_n1_20260831_v1\\figure_06_window_length_step_polarization_n1.pdf",
+    "figure_svg": "D:\\Project\\claude-demo\\methods\\LR-CuSum_v100\\outputs\\jag_codex_20260821\\method_figure\\window_length_step_polarization_n1_20260831_v1\\figure_06_window_length_step_polarization_n1.svg",
+    "figure_png": "D:\\Project\\claude-demo\\methods\\LR-CuSum_v100\\outputs\\jag_codex_20260821\\method_figure\\window_length_step_polarization_n1_20260831_v1\\figure_06_window_length_step_polarization_n1.png",
+    "figure_tiff": "D:\\Project\\claude-demo\\methods\\LR-CuSum_v100\\outputs\\jag_codex_20260821\\method_figure\\window_length_step_polarization_n1_20260831_v1\\figure_06_window_length_step_polarization_n1.tiff"
+  }
+}

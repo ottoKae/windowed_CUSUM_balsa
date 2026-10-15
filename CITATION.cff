@@ -1,0 +1,38 @@
+cff-version: 1.2.0
+message: "Please cite the software version used and the accompanying data release."
+type: software
+title: "Windowed CUSUM for recurrent stand disturbances"
+version: 1.0.0
+license: MIT
+repository-code: "https://github.com/ottoKae/windowed_CUSUM_balsa"
+abstract: >-
+  Detection and spatially blocked evaluation of recurrent stand disturbances
+  from monthly Sentinel-1 VV/VH time series in Ecuadorian balsa plantations.
+# Author order follows the current manuscript_JAG_v2/main.tex.
+# The configured repository is not a claim of publication or data deposition.
+# No release date, paper DOI or data DOI is asserted.
+authors:
+  - family-names: Rao
+    given-names: Keyi
+    orcid: "https://orcid.org/0000-0001-8443-9819"
+  - family-names: Dong
+    given-names: Shixin
+    orcid: "https://orcid.org/0009-0005-7299-5312"
+  - family-names: Hu
+    given-names: Zhongwen
+    orcid: "https://orcid.org/0000-0003-2689-3196"
+  - family-names: Alvarez
+    given-names: Cesar Ivan
+    orcid: "https://orcid.org/0000-0001-5629-0893"
+  - family-names: Dian
+    given-names: Yuanyong
+    orcid: "https://orcid.org/0000-0002-4957-3681"
+  - family-names: Wu
+    given-names: Zhaocong
+    orcid: "https://orcid.org/0000-0003-2435-5538"
+keywords:
+  - Sentinel-1
+  - CUSUM
+  - forest disturbance
+  - balsa plantation
+  - reproducibility

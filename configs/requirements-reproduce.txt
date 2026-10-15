@@ -1,0 +1,16 @@
+# Tested Python 3.12 dependencies for W36 replay and evaluation
+numba==0.66.0
+llvmlite==0.48.0
+numpy==2.4.3
+pandas==2.3.3
+scipy==1.17.1
+scikit-learn==1.8.0
+openpyxl==3.1.5
+pyarrow==23.0.1
+rasterio==1.5.0
+affine==2.4.0
+shapely==2.1.2
+pytest==9.0.3
+geopandas==1.2.0
+pyproj==3.8.0
+pyogrio==0.13.0

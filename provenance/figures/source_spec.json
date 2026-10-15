@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "figures": {
+    "fig01_national_recurrence.pdf": {
+      "role": "National recurrence and adjacent intervals",
+      "version": "legacy Polygon-first VV chronology; 3498 stands and 6658 events; not W36+B20",
+      "builders": ["scripts/figures/build_national_recurrence.py", "analysis/workflows/build_figure6_recurrence_10km.py"],
+      "helpers": ["analysis/workflows/build_hex_disturbance_maps_1km2.py", "analysis/workflows/build_hex_disturbance_maps.py", "analysis/workflows/build_figure6_chronology_interval_maps.py"],
+      "inputs": ["data/local/paper_v1/frozen_results/national/events/VV_dB.ground.parquet", "data/local/paper_v1/polygon_pixels/polygon_tracks.parquet", "data/local/paper_v1/inventory/balsa_validated.parquet", "data/local/paper_v1/admin/analysis_context/ecuador_mainland.parquet", "data/local/paper_v1/admin/analysis_context/amazonia_sensu_stricto.parquet", "data/local/paper_v1/basemap", "configs/study_area_figure_v1.json"],
+      "receipts": ["runs/figure_sources/figure08_national_recurrence/figure_manifest.json", "archive/legacy_20261004/docs/20260906_MANUSCRIPT_FIGURE_REPRODUCIBILITY_AUDIT.md"],
+      "candidate_outputs": ["runs/figure_sources/figure08_national_recurrence/figure_06_national_recurrence_10km.pdf", "runs/figure_repro_audit_exact_20260906/fig01_national_recurrence.pdf"],
+      "rebuild_status": "Historical audit reports pixel-identical layout; binary PDF identity is checked separately below. No rebuild performed in this catalog task.",
+      "rights": "Restricted stand geometry and basemap-derived content; review redistribution and attribution before publishing binaries."
+    },
+    "fig02_study_area.pdf": {
+      "role": "Study area with ascending burst footprints",
+      "version": "study_area_bursts_v5, accepted 2026-09-11; static coverage, not proof of acquisition-time availability",
+      "builders": ["archive/legacy_20261004/scripts/build_study_area_bursts_v5.py"],
+      "helpers": ["archive/legacy_20261004/scripts/build_study_area_figure.py"],
+      "inputs": ["configs/study_area_figure_v1.json", "runs/figures/study_area_bursts_v5/resolved_config.json", "runs/figures/study_area_bursts_v5/selected_burst_footprints.parquet", "runs/figures/study_area_bursts_v5/selected_burst_ids.csv"],
+      "receipts": ["runs/figures/study_area_bursts_v5/QA.json", "runs/figures/study_area_bursts_v5/integration_20260911_113929/replacement_receipt.json"],
+      "candidate_outputs": ["runs/figures/study_area_bursts_v5/study_area_bursts.pdf"],
+      "receipt_output_hash": {"path": "runs/figures/study_area_bursts_v5/integration_20260911_113929/replacement_receipt.json", "keys": ["accepted_sha256"]},
+      "rebuild_status": "Current PDF is hash-bound to accepted burst-v5 output. Earlier green-yellow index and simplified build_study_area.py do not identify this revision. Archived builder needs supplied inventory, boundary, burst-LUT geometry and basemap inputs.",
+      "rights": "Restricted inventory/geometry and basemap-derived content; no geometry or coordinates are copied into this catalog."
+    },
+    "fig03_workflow.pdf": {
+      "role": "Method workflow diagram",
+      "version": "legacy manually authored workflow; not a regenerated W36+B20 diagram",
+      "builders": ["manuscript_JAG_v2/figure_sources/powerpoint/windowed-CUSUM-workflow-figures-01.pptx"],
+      "helpers": [],
+      "inputs": [],
+      "receipts": ["manuscript_JAG_v2/figure_sources/README.md", "manuscript_JAG_v2/figure_sources/powerpoint/README.md"],
+      "candidate_outputs": [],
+      "rebuild_status": "Editable authoring source is recorded; no export receipt binds its current bytes to the PDF. scripts/figures/build_workflow.py is an alternative W48 polygon-first diagram, not an exact reconstruction.",
+      "rights": "Existing source README records author permission. Embedded assets and document metadata still require the public export policy."
+    },
+    "fig04_windowed_cusum_concept.pdf": {
+      "role": "CUSUM concept and decision semantics",
+      "version": "Polygon-first W48; n1-current-data-bishan-v22 plus 2026-09-11 v3 label placement",
+      "builders": ["scripts/figures/preview_concept_label_positions_v3.py", "analysis/workflows/build_windowed_cusum_concept_n1_current.py"],
+      "helpers": [],
+      "inputs": ["../LR-CuSum_v100/outputs/balsa_validation_closure_40tiles_validated_v2_strict_decision/polygon_series_metadata.parquet", "../LR-CuSum_v100/outputs/balsa_validation_closure_40tiles_validated_v2_strict_decision/polygon_series.npz", "../LR-CuSum_v100/outputs/balsa_validation_closure_40tiles_validated_v2_strict_decision/reference_events.parquet", "../LR-CuSum_v100/outputs/windowed_cusum_component_ablation_40tile_v1/candidate_audit/sliding_candidates.parquet", "../LR-CuSum_v100/outputs/windowed_cusum_temporal_null_audit_40tile_v1/candidate_scores/N1_IID_P025.parquet", "../LR-CuSum_v100/configs/windowed_cusum_temporal_null_audit_40tile_v1.json"],
+      "receipts": ["runs/figures/concept_label_preview_20260911_v3_review/windowed_cusum_concept_n1_current_manifest.json", "runs/figures/concept_label_preview_20260911_v3_review/label_preview_receipt.json"],
+      "candidate_outputs": ["runs/figures/concept_label_preview_20260911_v3_review/windowed_cusum_concept_n1_current.pdf"],
+      "receipt_output_hash": {"path": "runs/figures/concept_label_preview_20260911_v3_review/windowed_cusum_concept_n1_current_manifest.json", "keys": ["outputs", "windowed_cusum_concept_n1_current.pdf", "sha256"]},
+      "rebuild_status": "Current PDF hash matches v3 output manifest. Preview script protects the previous author PDF hash and is not an unconditional rerun entry; input paths also require the private sibling archive.",
+      "rights": "Derived restricted stand series; catalog records input paths and hashes only."
+    },
+    "fig05_population_s1_signatures.pdf": {
+      "role": "Population Sentinel-1 signatures",
+      "version": "historical signature v11; not current W36 event-score output",
+      "builders": ["scripts/figures/build_population_s1_signatures.py", "analysis/workflows/build_population_s1_signature_figure_v11.py"],
+      "helpers": ["analysis/workflows/build_population_s1_signature_figure_v2.py", "analysis/workflows/build_population_s1_signature_figure_v4.py", "analysis/workflows/build_population_s1_signature_figure_v7.py", "analysis/workflows/build_population_s1_signature_figure_v9.py", "analysis/workflows/build_population_s1_signature_figure_v10.py"],
+      "inputs": ["data/local/paper_v1/figure_inputs/fig04_population_signatures/national_balsa_series_metadata.parquet", "data/local/paper_v1/figure_inputs/fig04_population_signatures/national_balsa_series.npz", "data/local/paper_v1/figure_inputs/fig04_population_signatures/historical_event_summary.csv", "data/local/paper_v1/figure_inputs/fig04_population_signatures/historical_event_aligned.parquet", "data/local/paper_v1/figure_inputs/fig04_population_signatures/table_s1_signature_summary.csv", "data/local/paper_v1/figure_inputs/fig04_population_signatures/signature_analysis_manifest.json"],
+      "receipts": ["runs/public_audit/figure04_build/figure_03_population_s1_signature_v11_manifest.json", "archive/legacy_20261004/docs/20260906_MANUSCRIPT_FIGURE_REPRODUCIBILITY_AUDIT.md"],
+      "candidate_outputs": ["runs/public_audit/fig05_population_s1_signatures.pdf"],
+      "rebuild_status": "Local wrapper historically rendered successfully but page crop differed by about 1 point. Source route established; exact frozen-PDF reproduction not established.",
+      "rights": "Restricted stand trajectories; aggregate releases require existing data-release policy."
+    },
+    "fig06_representative_timeseries.pdf": {
+      "role": "Representative stand series with SAR and optical image examples",
+      "version": "historical Polygon-first median and native-cell IQR example",
+      "builders": ["archive/legacy_20261004/analysis/workflows/build_timeseries_signature_polygon_iqr.py"],
+      "helpers": ["archive/legacy_20261004/analysis/workflows/build_timeseries_signature_polygon_median.py"],
+      "inputs": ["data/local/paper_v1/figure_inputs/fig06", "data/local/paper_v1/polygon_pixels/polygon_tracks.parquet", "data/local/paper_v1/polygon_pixels/pixel_associations.parquet", "data/local/paper_v1/polygon_pixels/cache", "configs/figure_sources.local.json"],
+      "receipts": ["archive/legacy_20261004/docs/20260906_MANUSCRIPT_FIGURE_REPRODUCIBILITY_AUDIT.md", "manuscript_JAG_v2/figure_sources/FIGURE_BUILDERS.csv"],
+      "candidate_outputs": [],
+      "rebuild_status": "Formal historical source identified; exact export chain and complete frozen raster inputs not established here. Simplified build_representative_timeseries.py is not layout-equivalent.",
+      "rights": "Contains derived PlanetScope imagery. Original rasters, geometry and this image-bearing PDF are not automatically licensed for GitHub redistribution."
+    },
+    "fig07_representation_configuration.pdf": {
+      "role": "Historical representation and parameter sensitivity",
+      "version": "figure5 metric-encoding v19; historical P/R/F1 and W48 configurations, not current frozen weighted precision",
+      "builders": ["scripts/figures/build_representation_configuration.py", "analysis/workflows/build_figure5_abcde_metric_encoding_v19.py"],
+      "helpers": ["analysis/workflows/build_figure5_abcde_2col3row.py", "analysis/workflows/build_figure5_abcde_compact.py", "analysis/workflows/build_stand_representation_ablation_figure.py", "scripts/build_n1_window_step_polarization_figure.py", "archive/legacy_20261004/scripts/build_n1_window_step_polarization_figure_v2.py", "archive/legacy_20261004/scripts/build_n1_window_step_polarization_figure_v3.py", "archive/legacy_20261004/scripts/build_n1_window_step_polarization_figure_v4.py", "archive/legacy_20261004/scripts/build_n1_window_step_polarization_figure_v5.py", "archive/legacy_20261004/scripts/build_n1_window_step_polarization_figure_v6.py", "archive/legacy_20261004/scripts/build_n1_window_step_polarization_figure_v7.py", "archive/legacy_20261004/scripts/build_n1_window_step_polarization_figure_v8.py"],
+      "inputs": ["data/public/figure_inputs/fig06_representation_configuration/aggregation_trajectories_exact.csv", "data/public/figure_inputs/fig06_representation_configuration/representation_metrics_figure_compat.csv", "data/public/figure_inputs/fig06_representation_configuration/n1", "data/public/figure_inputs/fig06_representation_configuration/window"],
+      "receipts": ["runs/public_audit/figure06_build_v4/manifest.json", "archive/legacy_20261004/docs/20260906_MANUSCRIPT_FIGURE_REPRODUCIBILITY_AUDIT.md"],
+      "candidate_outputs": ["runs/public_audit/fig07_representation_configuration_v4.pdf"],
+      "rebuild_status": "Localized aggregate input route exists. Historical rebuild differed in page crop; it must not overwrite the current asset or relabel old F1 as current W36 performance.",
+      "rights": "Aggregate tables are under data/public; retain their historical method and evaluation labels."
+    },
+    "fig08_polarization_intervals.pdf": {
+      "role": "Cross-polarization support of adjacent disturbance intervals",
+      "version": "historical Polygon-first VV-primary interval sensitivity; pairing +/-2 months; not pixel-level VV union/intersection+B20",
+      "builders": ["archive/legacy_20261004/scripts/summarize_n1_polarization_interval_sensitivity.py"],
+      "helpers": [],
+      "inputs": ["data/local/paper_v1/frozen_results/polarization/vv_primary_adjacent_intervals_vh_pm2.parquet", "results/polarization/spatial_block_bootstrap_vh_pm2.csv", "../LR-CuSum_v100/outputs/windowed_cusum_n1_polarization_interval_sensitivity_40tile_v1/metrics", "../LR-CuSum_v100/outputs/windowed_cusum_n1_polarization_interval_sensitivity_40tile_v1/intervals"],
+      "receipts": ["archive/legacy_20261004/docs/20260906_MANUSCRIPT_FIGURE_REPRODUCIBILITY_AUDIT.md", "manuscript_JAG_v2/figure_sources/FIGURE_BUILDERS.csv"],
+      "candidate_outputs": [],
+      "rebuild_status": "Formal source route identified; exact frozen output match is unresolved. scripts/figures/build_polarization_intervals.py is a simplified reimplementation.",
+      "rights": "Event-level inputs remain restricted; aggregate tables retain legacy chronology semantics."
+    }
+  }
+}
