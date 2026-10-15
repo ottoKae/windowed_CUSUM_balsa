@@ -11,7 +11,8 @@ To check a clean public export after a normal installation:
 ```sh
 python -m pip install ".[io,validation,replay]" -c configs/requirements-reproduce.txt
 python -m pip install pytest geopandas -c configs/requirements-reproduce.txt
-python -m pytest tests --import-mode=importlib -q -p no:cacheprovider --basetemp .test-tmp/public-check
+python -c "from pathlib import Path; Path('.test-tmp').mkdir(exist_ok=True)"
+python -I -m pytest tests --import-mode=importlib -q -p no:cacheprovider --basetemp .test-tmp/public-check
 ```
 
 Use a unique basetemp for simultaneous runs. Pytest may clear that exact directory;

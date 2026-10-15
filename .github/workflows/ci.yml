@@ -28,6 +28,8 @@ jobs:
       - name: Confirm installed import
         run: python -I -c "import lr_cusum; from pathlib import Path; p=Path(lr_cusum.__file__); print(p); assert 'site-packages' in p.parts"
       - name: Run tests
-        run: python -I -m pytest tests --import-mode=importlib -q -p no:cacheprovider --basetemp .test-tmp/ci
+        run: |
+          python -c "from pathlib import Path; Path('.test-tmp').mkdir(exist_ok=True)"
+          python -I -m pytest tests --import-mode=importlib -q -p no:cacheprovider --basetemp .test-tmp/ci
       - name: Run the synthetic example
         run: python -I -m lr_cusum paper data/demo/monthly_s1_synthetic.csv .test-tmp/demo_events.csv --config configs/standard_w36.json

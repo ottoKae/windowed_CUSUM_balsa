@@ -39,6 +39,7 @@ replace the CAS license.
 python tooling/release/export_public.py --verify .
 python -m pip install ".[io,validation,replay]" -c configs/requirements-reproduce.txt
 python -m pip install pytest geopandas -c configs/requirements-reproduce.txt
+python -c "from pathlib import Path; Path('.test-tmp').mkdir(exist_ok=True)"
 python -I -m pytest tests --import-mode=importlib -q -p no:cacheprovider --basetemp .test-tmp/public-check
 python -I -m lr_cusum paper data/demo/monthly_s1_synthetic.csv .test-tmp/demo_events.csv --config configs/standard_w36.json
 ```
