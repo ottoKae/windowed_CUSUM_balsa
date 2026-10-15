@@ -1,0 +1,158 @@
+% Load float before the class loads hyperref, avoiding duplicate float anchors.
+\RequirePackage{float}
+\documentclass[a4paper,fleqn]{cas-sc}
+
+\usepackage[authoryear]{natbib}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{threeparttable}
+\usepackage{graphicx}
+\usepackage{multirow}
+\usepackage{lineno}
+\usepackage[section]{placeins}
+\usepackage{xcolor}
+\usepackage{setspace}
+\usepackage{amsmath}
+
+\ExplSyntaxOn
+\cs_new_eq:NN \lr_cusum_original_make_tbl_caption:nn \__make_tbl_caption:nn
+\cs_set:Npn \__make_tbl_caption:nn #1#2
+  {
+    \group_begin:
+      \skip_set:Nn \l_tbl_abovecap_skip {3pt}
+      \setstretch{1.5}
+      \lr_cusum_original_make_tbl_caption:nn {#1} {#2}
+    \group_end:
+  }
+\cs_new_eq:NN \lr_cusum_original_make_fig_caption:nn \__make_fig_caption:nn
+\cs_set:Npn \__make_fig_caption:nn #1#2
+  {
+    \group_begin:
+      \skip_set:Nn \l_fig_abovecap_skip {3pt}
+      \setstretch{1.5}
+      \lr_cusum_original_make_fig_caption:nn {#1} {#2}
+    \group_end:
+  }
+\ExplSyntaxOff
+
+\begin{document}
+\linenumbers
+
+\let\WriteBookmarks\relax
+\def\floatpagepagefraction{1}
+\def\textpagefraction{.001}
+
+\shorttitle{Mapping recurrent harvests in Ecuadorian balsa plantations}
+\shortauthors{Rao et al.}
+
+% TODO(author): Confirm corresponding-author marks and email assignments before submission.
+\author[1]{Keyi Rao}[orcid=0000-0001-8443-9819]\cormark[1]
+\credit{Conceptualization, Methodology, Software, Visualization, Data curation, Formal analysis, Project administration, Writing -- original draft}
+
+\author[1]{Shixin Dong}[orcid=0009-0005-7299-5312]\cormark[1]
+\credit{Methodology, Software, Visualization, Validation, Writing -- original draft}
+
+\author[2]{Zhongwen Hu}[orcid=0000-0003-2689-3196]
+\credit{Validation, Funding acquisition, Writing -- review and editing}
+
+\author[3,4]{Cesar Ivan Alvarez}[orcid=0000-0001-5629-0893]
+\credit{Conceptualization, Methodology, Writing -- review and editing}
+
+\author[5]{Yuanyong Dian}[orcid=0000-0002-4957-3681]
+\credit{Validation, Writing -- review \& editing}
+
+\author[1]{Zhaocong Wu}[orcid=0000-0003-2435-5538]
+\ead{zcwoo@whu.edu.cn}
+\credit{Conceptualization, Supervision, Funding acquisition}
+
+\affiliation[1]{organization={School of Remote Sensing and Information Engineering, Wuhan University},
+  addressline={No. 299 Bayi Road, Wuchang District}, city={Wuhan}, postcode={430072},
+  state={Hubei}, country={China}}
+\affiliation[2]{organization={School of Architecture and Urban Planning and MNR Key Laboratory for Geo-Environmental Monitoring of Great Bay Area, Shenzhen University},
+  addressline={No. 3688 Nanhai Avenue, Nanshan District}, city={Shenzhen},
+  postcode={518060}, state={Guangdong}, country={China}}
+\affiliation[3]{
+    organization={College of Horticulture \& Forestry Sciences, 
+    Huazhong Agricultural University},
+    addressline={No. 1 Shizishan Street, Hongshan District},
+    city={Wuhan},
+    postcode={430070},
+    state={Hubei},
+    country={China}
+}
+\affiliation[4]{organization={Institute of Geography, Faculty of Applied Informatics, University of Augsburg},
+  addressline={Universit\"atsstra\ss e 12}, city={Augsburg}, postcode={86159}, country={Germany}}
+\affiliation[5]{organization={Maestr\'ia en Sistemas de Informaci\'on Geogr\'afica, Topograf\'ia Automatizada y Fotogrametr\'ia Digital, Universidad Cat\'olica de Santiago de Guayaquil},
+  city={Guayaquil}, country={Ecuador}}
+  
+\cortext[cor1]{Corresponding author}
+
+% Detecting 突出识别事件的过程与能力。标题以它开头，读者首先关注CUSUM如何提取候选、如何排除误检，以及事件日期是否准确。
+% Mapping 突出带有空间位置的事件及其属性产品。标题以它开头，读者首先关注哪些地点何时发生采伐、哪些地点发生多次，以及次数和间隔怎样分布。
+% 用 successive，重点是2018—2021、2021—2025这两对前后相邻的事件。用 recurrent，重点是同一地点在观测期内经历了三次采伐
+% \title[mode=title]{SAR-based Windowed CUSUM detects recurrent stand disturbances from decadal Sentinel-1 time series in Ecuadorian balsa plantations}
+\title[mode=title]{Mapping recurrent harvests in Ecuadorian balsa plantations from decadal Sentinel-1 time series with Windowed CUSUM}
+
+% \begin{abstract}
+% Balsa plantations supply lightweight timber, including material for wind-energy infrastructure, but their rapid turnover is difficult to reconstruct under persistent tropical cloud cover. The expanding Sentinel-1 archive offers repeated observations of disturbance and recovery within the same stands. We developed Windowed CUSUM to connect near-decadal, track-specific radar trajectories to recurrent stand-disturbance histories. The framework renews the temporal reference within overlapping windows, separates candidate estimation from central-interval admission, and consolidates directionally and statistically screened detections. Evaluation used 1,093 dated reference events from 462 polygons in 57 spatial blocks. Spatial out-of-fold precision, recall and F1 were 0.789, 0.806 and 0.797, respectively. F1 exceeded the evaluated decrease-filtered ReCuSum implementation by 0.122 (95\% spatial-block bootstrap interval: 0.094--0.149). Component removal identified local-reference windowing as the largest contributor to performance. Temporal truncation nevertheless showed that reliable retrospective dating did not imply immediate detection: recall reached 0.790 with six months of subsequent observations. Application to 3,498 inventory polygons yielded 6,658 detections during 2017--2025 and 3,509 inter-disturbance intervals, with a median of 36 months. Restricting this frozen catalogue to its final five years retained only 1,349 intervals, illustrating the additional historical information available from the longer record rather than an accuracy gain. The framework supports auditable reconstruction of recurrent plantation disturbances, while observation boundaries, incomplete reference histories and uncertain disturbance causes limit interpretation as biological rotation ages.
+% \end{abstract}
+
+% Balsa plantations have rapid management turnover, but persistent tropical cloud cover limits optical reconstruction of repeated stand disturbances. 
+
+
+% Abstract还是主要写方法，增加方法的权重，方法的难度和创新要表达出来。强调 Windowed cusum在几个方面有创新？创新是什么，解决了什么问题，解决应用中的什么问题，不是技术层面的效果
+\begin{abstract}
+  Short-rotation balsa (\textit{Ochroma pyramidale}) plantations undergo repeated harvest and recovery cycles that are difficult to reconstruct from optical imagery under persistent tropical cloud cover. To address this, we developed \textit{Windowed CUSUM}, a temporally adaptive cumulative-sum framework for recurrent stand-disturbance detection from decadal Sentinel-1 synthetic aperture radar (SAR) time series. The framework addresses three challenges in long-term SAR monitoring. First, burst-level observations are organized into track-specific monthly stand trajectories to maintain consistent acquisition geometry and summarize spatially heterogeneous backscatter. Second, overlapping temporal windows repeatedly renew the local reference, allowing disturbance candidates to be evaluated against the local backscatter context across successive rotations. Third, candidates are screened for negative shifts consistent with canopy loss and for statistical support relative to local background variability. We evaluated the framework using 1,093 visually dated disturbances from 462 balsa stands in Ecuador. Among 1,018 events with paired observations, median VV and VH declines were approximately 1.5~dB despite substantial overlap in absolute backscatter. Under spatial cross-validation, Windowed CUSUM achieved precision 0.789, recall 0.806, and F1 0.797, exceeding decrease-filtered ReCuSum (F1 0.675) and CCDC (F1 0.680). Ablation analysis identified local-reference renewal as the main source of recurrent-event recall, while candidate screening preserved precision. Applied to 3,498 validated balsa plantation polygons during 2017--2025, the framework reconstructed 6,658 disturbances, with a median inter-disturbance interval of 36 months. These results show that decadal SAR trajectories can recover recurrent stand-scale structural disturbances despite heterogeneous backscatter backgrounds, enabling plantation turnover to be reconstructed where optical continuity is limited.
+\end{abstract}
+
+
+% ===================================
+% 提出什么方法、解决什么任务；
+% 创新一：解决长期背景非平稳；
+% 创新二：解决 candidate specificity；
+% 数据组织：保证长期观测几何一致；
+% 应用结果：36 个月轮伐间隔。
+
+\begin{highlights}
+  \item Windowed CUSUM detected recurrent disturbances from decadal Sentinel-1 and achieved F1 0.797
+  % Windowed CUSUM 基于十年尺度 Sentinel-1 时序检测反复发生的林分扰动，F1 达到 0.797。
+
+  \item Sliding windows adapt local references to evolving stand backscatter across rotations
+  % 滑动时间窗口根据不同轮伐阶段不断变化的林分后向散射状态，自适应更新局部参考。
+
+  \item Candidate screening retains canopy-loss shifts beyond local background variability
+  % 候选事件筛选保留与冠层损失一致、且超出局部背景变异的后向散射变化。
+
+  \item Track-specific Sentinel-1 trajectories limit mixing of acquisition geometries
+  % 按轨道构建 Sentinel-1 时序轨迹，减少不同观测几何条件的混合。
+
+  \item Balsa disturbance histories showed a median inter-disturbance interval of 36 months
+  % 重建的巴沙木扰动历史显示，相邻扰动之间的中位时间间隔为 36 个月。
+\end{highlights}
+
+% ===================================
+\begin{keywords}
+Balsa plantation \sep
+Sentinel-1 SAR \sep
+forest disturbance monitoring \sep
+time-series change detection \sep
+CUSUM \sep
+plantation rotation
+\end{keywords}
+
+\maketitle
+\doublespacing
+
+\input{sections/01_introduction}
+\input{sections/02_materials}
+\input{sections/03_methods}
+\input{sections/04_results}
+\input{sections/05_discussion}
+\input{sections/06_conclusion}
+\input{sections/07_declarations}
+
+\printcredits
+\bibliographystyle{cas-model2-names}
+\bibliography{references}
+
+\end{document}

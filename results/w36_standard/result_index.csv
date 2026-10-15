@@ -1,0 +1,17 @@
+item,status,scope
+standard_W36,full_replay_exact,26890 pixels / 1266 reports
+probability_precision,frozen_evidence_closeout_20261015,307 original samples / original weights / M3 primary; runs/validation/jag_reference_score_closeout_20261015_v1/scoring/weighted_precision.csv
+existing_benchmarks,reused,current pixel+B20 outputs; non-W36 precision NA
+component_removals,reused,current W36 pixel+B20; negative filter audit not repeated
+polarization,computed,VH once; VV-first union/intersection
+null_block3,computed,78226 pre-permutation candidates
+seed_diagnostic,computed,512 pixels; baseline and two extra seeds
+truncation,not_started_conditional,not adopted as a current W36 paper result
+polygon_first,not_started_conditional,historical manuscript comparison retained as historical
+native_core_125_215_reviews,retired_native_queue_not_required,Preserved historical queue; not applicable to current pixel+B20; no new review requested
+complete_domain_F1,NA,0 qualified fully verified domains in current frozen materials
+manuscript_and_figures,preserved_unchanged,historical text/figures not silently upgraded
+precision_previous_evidence_snapshot,preserved_reproduced,20261002 evidence; M3 203T/93F/11U; superseded only by explicit new evidence version
+evaluation_primary_tolerance,3_months_post_results_choice,M1/M2 retained; base standard_w36.json remains historical M2; use new evaluation_manifest.json
+current_core_152_151_reviews,deferred_not_started,303 prepared comparator reports; outside frozen closeout scope
+latest_freeze_handoff,completed,docs/20261015_WINDOWED_CUSUM_FROZEN_RESULTS_UPDATE_EN.md

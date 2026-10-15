@@ -1,0 +1,16 @@
+method,tolerance_months,n_multi_stands,n_all_found,complete_history_recovery,ci_lower,ci_upper,scope
+vv,1,403,236,0.5856079404466501,0.4805605825435091,0.6807519383401386,all_registered_month_events_not_all_real_events
+vv,2,403,311,0.771712158808933,0.7040766792153754,0.8284047087477167,all_registered_month_events_not_all_real_events
+vv,3,403,329,0.8163771712158809,0.7667791061190823,0.8565405167047105,all_registered_month_events_not_all_real_events
+vh,1,403,175,0.43424317617866004,0.3230308730093725,0.519338087284252,all_registered_month_events_not_all_real_events
+vh,2,403,222,0.5508684863523573,0.4488861788617886,0.6273016732283464,all_registered_month_events_not_all_real_events
+vh,3,403,242,0.6004962779156328,0.5,0.676966699628366,all_registered_month_events_not_all_real_events
+block3,1,403,112,0.27791563275434245,0.20266644518272425,0.34070222093950137,all_registered_month_events_not_all_real_events
+block3,2,403,133,0.33002481389578164,0.2416594827586207,0.40506601920558705,all_registered_month_events_not_all_real_events
+block3,3,403,135,0.3349875930521092,0.25,0.40648503514353856,all_registered_month_events_not_all_real_events
+vv_intersection_vh,1,403,129,0.3200992555831266,0.2120242227148107,0.4012990817351379,all_registered_month_events_not_all_real_events
+vv_intersection_vh,2,403,162,0.40198511166253104,0.3003192415355246,0.47441908023018026,all_registered_month_events_not_all_real_events
+vv_intersection_vh,3,403,170,0.4218362282878412,0.3273268750678389,0.4926946234607122,all_registered_month_events_not_all_real_events
+vv_union_vh,1,403,263,0.652605459057072,0.5503573331810742,0.7408314558558098,all_registered_month_events_not_all_real_events
+vv_union_vh,2,403,336,0.8337468982630273,0.7766289550613321,0.8847140830016217,all_registered_month_events_not_all_real_events
+vv_union_vh,3,403,352,0.8734491315136477,0.8322763135078897,0.9051506569568065,all_registered_month_events_not_all_real_events

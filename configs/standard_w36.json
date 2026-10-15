@@ -1,0 +1,84 @@
+{
+  "protocol_id": "W36_D12_S12_B20_R0_M2_v1",
+  "detector": {
+    "bands": [
+      "VV_dB"
+    ],
+    "window_length": 36,
+    "step": 12,
+    "minimum_observations": 12,
+    "alpha": 0.025,
+    "permutations": 3999,
+    "refine_low": 0.015,
+    "refine_high": 0.035,
+    "refined_permutations": 19999,
+    "candidate_seed": 20260820,
+    "start_year": 2017,
+    "end_year": 2025
+  },
+  "geometry": {
+    "window_months": 36,
+    "decision_months": 12,
+    "stride_months": 12
+  },
+  "input": {
+    "calendar_start": "2016-01",
+    "calendar_end": "2026-06",
+    "report_start": "2017-01",
+    "report_end": "2025-12",
+    "mask": "joint_VV_VH_valid_and_n_obs_positive",
+    "spatial_support": "frozen_master_pixel_center_membership"
+  },
+  "aggregation": {
+    "method": "B20",
+    "months": 3,
+    "support_numerator": 1,
+    "support_denominator": 5,
+    "fixed_master_grid_denominator": true,
+    "ranking": [
+      "remaining_unique_pixels_desc",
+      "remaining_unique_pixel_month_nodes_desc",
+      "window_start_month_asc"
+    ],
+    "representative_month": "floor(median(unique_pixel_month_node_ordinals)+0.5)",
+    "source_reassignment": false,
+    "complete_windows_only_at_cutoff": true
+  },
+  "polarization": {
+    "pair_tolerance_months": 2,
+    "paired_date": "VV",
+    "unpaired_VH_date": "VH"
+  },
+  "evaluation": {
+    "primary_tolerance_months": 2,
+    "sensitivity_tolerances_months": [
+      1,
+      2,
+      3
+    ],
+    "reference_version": "R0_frozen",
+    "precision_population": "frozen_1266_reports",
+    "sample_size": 307,
+    "estimator": "two_stage_Hajek_U_scenarios",
+    "ci_df": 26,
+    "catalogue_only_F1_is_not_population_F1": true
+  },
+  "extensions": {
+    "null": "calendar_block_permutation",
+    "block_length_months": 3,
+    "seed_diagnostic_size": 512,
+    "seed_diagnostic_seeds": [
+      20260820,
+      20260821,
+      20260822
+    ],
+    "truncation_horizons_months": [
+      0,
+      3,
+      6,
+      12
+    ],
+    "truncation_enabled": false,
+    "polygon_first_enabled": false
+  }
+}

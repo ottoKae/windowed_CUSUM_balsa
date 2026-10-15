@@ -1,0 +1,125 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.test-tmp/
+.pytest_tmp*/
+.qa/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+build/
+dist/
+.venv/
+venv/
+
+# Editors and operating systems
+.vscode/
+.idea/
+# Machine-local editing skill; keep it outside the public repository.
+/.agents/skills/latex-bibtex-vscode/
+.DS_Store
+Thumbs.db
+
+# Credentials and local configuration
+**/*.local.*
+!.env.example
+*service-account*.json
+*service_account*.json
+application_default_credentials.json
+.netrc
+_netrc
+.ssh/
+.aws/
+.earthengine/
+.config/earthengine/
+*.pem
+*.p12
+*.pfx
+.env
+.env.*
+!.env.example
+credentials*.json
+token*.json
+configs/data.local.json
+configs/figure_sources.local.json
+
+# Large or machine-local data products
+outputs/
+*.zarr/
+data/raw/
+data/interim/
+data/external/
+data/cache/
+data/local/
+data/capsules/
+# FC001 exact-location registry assembled for the authorized local workflow.
+data/balsa_FC001_dated_event_subset/
+runs/
+results/**/candidates/
+results/**/replicates/
+
+# Detailed observation-provenance receipts are author-side records.  The
+# non-identifying orbit-family summaries remain public under results/data_inventory/.
+/results/data_inventory/asf_burst_counts_20260905/
+/results/data_inventory/burst_provenance_20260905/
+/results/data_inventory/s1_tile_track_inventory.csv
+
+# Local literature notes and bilingual drafting material
+docs/20260905_JAG_SCIENTIFIC_QUESTION_AND_OPTIMIZATION_PLAN.md
+docs/Timeliness in forest change monitoring_A new assessment framework.pdf
+docs/timeliness_corpus_20260905.toml
+docs/timeliness_reading_20260905/
+
+# LaTeX build products
+manuscript/*.aux
+manuscript/*.abs
+manuscript/*.bbl
+manuscript/*.blg
+manuscript/*.fdb_latexmk
+manuscript/*.fls
+manuscript/*.log
+manuscript/*.lof
+manuscript/*.lot
+manuscript/*.out
+manuscript/*.synctex.gz
+manuscript/*.toc
+
+# All manuscript versions; generated files are not source inputs.
+*.aux
+*.abs
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.lof
+*.log
+*.lot
+*.out
+*.synctex.gz
+*.toc
+/manuscript_JAG_v2/audit/
+/docs/**/*.pdf
+/docs/local/
+/docs/*_CN.md
+/manuscript_JAG_v2/README_CN.md
+/papers/search_*/raw/
+/papers/papers_pdf/
+/papers/outputs/
+/papers/acquisition.local.toml
+*.har
+/data/private/
+
+# Local Yiling stand analysis and derived products; temporarily excluded from Git.
+/yiling_stand_analysis/
+
+# Historical experiments remain available locally, outside the public export.
+/archive/
+
+# Author-side diagnostics may contain review text, temporary TeX and private paths.
+# Reusable tests and release/catalogue helpers remain under tests/ and tooling/.
+/tooling/diagnostics/
+# Exact-location stand inventories are local sources, not public sample tables.
+/data/stand_datasets/

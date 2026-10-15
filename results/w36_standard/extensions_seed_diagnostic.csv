@@ -1,0 +1,4 @@
+seed,pixels,pixel_month_nodes,retained,added,lost,jaccard,stand_scoring
+20260820,512,805,805,0,0,1.0,not_applicable_incomplete_stand_subset
+20260821,512,809,804,5,1,0.9925925925925926,not_applicable_incomplete_stand_subset
+20260822,512,809,801,8,4,0.985239852398524,not_applicable_incomplete_stand_subset

@@ -1,0 +1,7 @@
+% !TeX root = ../main.tex
+
+\section{Conclusion}
+
+Windowed CUSUM provides a locally adaptive framework for reconstructing recurrent stand disturbances from long Sentinel-1 time series. Track-specific trajectories preserve acquisition-geometry consistency, overlapping windows repeatedly renew the temporal reference, and window-specific permutation calibration evaluates each CUSUM departure relative to the variability of the same local context. Under spatial out-of-fold evaluation, Windowed CUSUM achieved an F1 of 0.797, compared with 0.680 for CCDC VV and 0.675 for decrease-filtered ReCuSum. The advantage arose primarily from higher recurrent-event recall. Component analysis further identified local-reference renewal as the main source of sensitivity, while central event admission and local statistical calibration recovered precision.
+
+Applied to 3,498 validated balsa polygons, the locked detector reconstructed 6,658 disturbances and 3,509 consecutive inter-disturbance intervals during 2017--2025, with a median recurrence of 36 months. More broadly, the study shows that geometry-consistent SAR trajectories combined with local temporal and statistical adaptation can extend disturbance monitoring from isolated change detection toward reconstruction of recurrent plantation disturbance histories in cloud-prone regions.

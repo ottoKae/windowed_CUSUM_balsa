@@ -1,0 +1,21 @@
+{
+  "collection_version": "20261015_v1",
+  "counts": {
+    "frozen_verified_events": 300,
+    "frozen_links": 363,
+    "frozen_review_states": 717,
+    "report_population": 1266,
+    "formal_probability_sample": 307,
+    "identity_groups": 40,
+    "relation_followups": 28,
+    "repeat_readings": 31,
+    "history_domains": 7,
+    "history_observations": 11,
+    "current_deferred_benchmark_reports": 303,
+    "historical_native_benchmark_queue": 340
+  },
+  "source_paths": 67,
+  "unique_source_objects": 56,
+  "missing_sources": 0,
+  "statement": "Counts describe overlapping roles and versions, not one independent event population."
+}
