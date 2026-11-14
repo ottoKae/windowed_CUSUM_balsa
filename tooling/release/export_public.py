@@ -69,7 +69,7 @@ def privacy_findings(files: dict[str, Path], path_exemptions=(), approved_pdfs=N
         if SECRET.search(text):
             problems.append("credential-like content")
         # The privacy validators themselves contain search expressions, not records.
-        if name not in {"src/lr_cusum/capsule.py", "tooling/release/export_public.py"}:
+        if name != "tooling/release/export_public.py":
             if ABSOLUTE_PATH.search(text) and name not in path_exemptions:
                 problems.append("machine-specific absolute path")
             if PRIVATE_RECORD.search(text):

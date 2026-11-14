@@ -13,9 +13,9 @@ import pandas as pd
 from common import ROOT, SOURCE, OUT, MONTHS, load_inputs, save_detector, write_json
 
 sys.path.insert(0, str(ROOT / "src"))
-from lr_cusum.baselines import fpol_bocd_detect, is_decrease
-from lr_cusum.cusum_nrt_adapter import score_windows
-from lr_cusum.validation_closure import maximum_drop_events, classical_lower_cusum_events
+from windowed_cusum.benchmarks.baselines import fpol_bocd_detect, is_decrease
+from windowed_cusum.benchmarks.cusum_nrt_adapter import score_windows
+from windowed_cusum.evaluation.validation_closure import maximum_drop_events, classical_lower_cusum_events
 
 CACHE = ROOT / "runs/validation/pixel_b20_benchmark_window_20261004_v3"
 ARCHIVE = ROOT.parent / "windowed_CUSUM_pixelwise/archives/stand_workflow_20260914/src/lr_cusum"
@@ -41,7 +41,8 @@ def main():
                CACHE / "predictions/pixel_events.parquet", CACHE / "predictions/pixel_status.parquet",
                CACHE / "config/configuration_manifest.json"]
     for filename, names in source_functions.items():
-        current, archived = ROOT / "src/lr_cusum" / filename, ARCHIVE / filename
+        group = "evaluation" if filename == "validation_closure.py" else "benchmarks"
+        current, archived = ROOT / "src/windowed_cusum" / group / filename, ARCHIVE / filename
         assert_function_identity(current, archived, names)
         sources.extend([current, archived])
     status = pd.read_parquet(CACHE / "predictions/pixel_status.parquet")

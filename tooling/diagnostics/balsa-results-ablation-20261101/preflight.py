@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[3]
 sys.path[:0] = [str(ROOT / "src"), str(ROOT / "tooling/release"),
                str(ROOT / "tooling/diagnostics/balsa-national-firstpost-20261030")]
 from build_sample_release import original_tables
-from lr_cusum.catalogue_evaluation import catalogue_metrics
+from windowed_cusum.evaluation.catalogue_evaluation import catalogue_metrics
 import detector_engine as engine
 
 SOURCE = ROOT / "runs/validation/balsa_firstpost_national_20261030_v2"

@@ -38,7 +38,7 @@ From the exported directory, using Python 3.12:
 python tooling/release/export_public.py --verify .
 python -m pip install ".[io,validation,geo,figures]" -c configs/requirements-reproduce.txt
 python -m pip install pytest -c configs/requirements-reproduce.txt
-python -I -c "import lr_cusum; from pathlib import Path; assert 'site-packages' in Path(lr_cusum.__file__).parts"
+python -I -c "import windowed_cusum; from pathlib import Path; assert 'site-packages' in Path(windowed_cusum.__file__).parts"
 python -c "from pathlib import Path; Path('.test-tmp').mkdir(exist_ok=True)"
 python -I -m pytest tests --import-mode=importlib -q -p no:cacheprovider --basetemp .test-tmp/public-check
 python scripts/run_current_pipeline.py --output .test-tmp/current-demo

@@ -6,7 +6,7 @@ from dataclasses import dataclass
 import numpy as np
 import pandas as pd
 
-from .core import lr_cusum
+from windowed_cusum.detector.core import lr_cusum
 
 
 @dataclass(frozen=True)

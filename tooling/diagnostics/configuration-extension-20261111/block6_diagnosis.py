@@ -11,9 +11,9 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / "src"))
-from lr_cusum.core import cusum_amplitude
-from lr_cusum.detection import stable_seed
-from lr_cusum.temporal_nulls import NullModelConfig, calendar_block_permutation_score, _cusum_range_finite
+from windowed_cusum.detector.core import cusum_amplitude
+from windowed_cusum.detector.detection import stable_seed
+from windowed_cusum.detector.temporal_nulls import NullModelConfig, calendar_block_permutation_score, _cusum_range_finite
 
 
 def main():

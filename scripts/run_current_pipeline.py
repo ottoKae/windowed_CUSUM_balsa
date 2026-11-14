@@ -13,8 +13,8 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from lr_cusum import star_segmentation as stp
-from lr_cusum.harvest_quarter_aggregation import _identifier
+from windowed_cusum.stand import star_segmentation as stp
+from windowed_cusum.stand.harvest_quarter_aggregation import _identifier
 
 
 def run(input_dir: Path | None, output: Path, workers=1, stp_replay=None):

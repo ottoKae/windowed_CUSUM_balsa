@@ -37,7 +37,7 @@ def main():
     assert refs.event_id.is_unique and axes["sample_ids"] == cohort
     assert indices.shape == (5000, 459) and indices.min() >= 0 and indices.max() < 459
     input_paths = [reference_path, draws_path, axes_path, EVALUATION_CODE / "evaluate.py",
-                   EVALUATION_CODE / "run.py", ROOT / "src/lr_cusum/event_scoring.py", Path(__file__)]
+                   EVALUATION_CODE / "run.py", ROOT / "src/windowed_cusum/evaluation/event_scoring.py", Path(__file__)]
     summaries, counts, matched, per_stand = [], {}, {}, []
     for variant in VARIANTS:
         base = FROZEN / "variants" / REUSED[variant] if variant in REUSED else OUT / "variants" / variant

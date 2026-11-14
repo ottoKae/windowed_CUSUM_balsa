@@ -21,8 +21,8 @@ import detector_adapter as adapter
 ROOT = adapter.ROOT
 sys.path[:0] = [str(ROOT / "scripts"), str(ROOT / "tooling/release")]
 from fc001_validation_detection import read_track, CACHE
-from lr_cusum.event_scoring import _canonical_matching
-from lr_cusum.harvest_bounded_event_aggregation import build_bounded_events
+from windowed_cusum.evaluation.event_scoring import _canonical_matching
+from windowed_cusum.stand.harvest_bounded_event_aggregation import build_bounded_events
 
 SOURCE = ROOT / "runs/validation/balsa_firstpost_national_20261030_v2"
 OUT = ROOT / "runs/validation/balsa_results_ablation_20261101_v1/polarization"

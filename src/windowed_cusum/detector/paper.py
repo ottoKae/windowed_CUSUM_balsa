@@ -1,9 +1,8 @@
-"""Frozen N1 Windowed CUSUM candidate detection used by the paper.
+"""Shared N1 configuration and candidate primitives.
 
-The older :func:`lr_cusum.core.lr_cusum` function is retained for archived
-LR-CuSum comparisons.  This module is the public entry point for the final
-paper protocol: 48-month windows, 12-month displacement, central-window and
-negative-change gates, and a finite-sample-corrected IID permutation p-value.
+The first-post detector adapter supplies the current W36/D12/S12 settings.
+The defaults here also support historical experiments; this module alone is
+not the current end-to-end detector, TDA and STP pipeline.
 """
 from __future__ import annotations
 
@@ -15,17 +14,10 @@ from typing import Mapping
 import numpy as np
 import pandas as pd
 
-from .component_ablation import (
-    ComponentAblationConfig,
-    ComponentLedgers,
-    FORWARD_VARIANTS,
-    REMOVAL_VARIANTS,
-    build_component_ledgers,
-    derive_variant_events,
-)
-from .core import _calendar_align
-from .detection import stable_seed
-from .temporal_nulls import NullModelConfig, iid_permutation_score
+from windowed_cusum.detector.component_ablation import ComponentAblationConfig, ComponentLedgers, FORWARD_VARIANTS, REMOVAL_VARIANTS, build_component_ledgers, derive_variant_events
+from windowed_cusum.detector.core import _calendar_align
+from windowed_cusum.detector.detection import stable_seed
+from windowed_cusum.detector.temporal_nulls import NullModelConfig, iid_permutation_score
 
 
 @dataclass(frozen=True)

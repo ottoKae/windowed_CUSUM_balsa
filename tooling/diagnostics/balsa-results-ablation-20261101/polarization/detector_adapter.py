@@ -8,11 +8,11 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[4]
 sys.path.insert(0, str(ROOT / "src"))
-from lr_cusum import window_geometry as geometry
-from lr_cusum.core import cusum_amplitude
-from lr_cusum.detection import stable_seed
-from lr_cusum.paper import load_paper_config
-from lr_cusum.temporal_nulls import iid_permutation_score
+from windowed_cusum.detector import window_geometry as geometry
+from windowed_cusum.detector.core import cusum_amplitude
+from windowed_cusum.detector.detection import stable_seed
+from windowed_cusum.detector.paper import load_paper_config
+from windowed_cusum.detector.temporal_nulls import iid_permutation_score
 
 CONFIG_PATH = ROOT / "configs/firstpost_w36_d12_s12_b20_20261030_v2.json"
 DATES = pd.date_range("2016-01-01", "2026-06-01", freq="MS")

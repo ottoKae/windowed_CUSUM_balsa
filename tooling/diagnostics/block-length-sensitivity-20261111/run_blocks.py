@@ -43,8 +43,8 @@ def main():
         frozen.SOURCE / "master_units.parquet", frozen.SOURCE / "validation_membership.parquet",
         frozen.SOURCE / "validation/pixel_events.parquet", frozen.SOURCE / "validation/pixel_execution.parquet",
         frozen.SOURCE / "validation/source_members.parquet", Path(frozen.__file__),
-        Path(frozen.engine.__file__), tda_path, ROOT / "src/lr_cusum/core.py",
-        ROOT / "src/lr_cusum/temporal_nulls.py", ROOT / "src/lr_cusum/window_geometry.py", Path(__file__)]
+        Path(frozen.engine.__file__), tda_path, ROOT / "src/windowed_cusum/detector/core.py",
+        ROOT / "src/windowed_cusum/detector/temporal_nulls.py", ROOT / "src/windowed_cusum/detector/window_geometry.py", Path(__file__)]
     inputs = {str(path.relative_to(ROOT)): frozen.sha(path) for path in paths}
     frozen.save(OUT / "input_manifest.json", dict(input_sha256=inputs, reference_stands=459,
         reference_records=1049, fixed_pixels=25555, added_lengths=[4,5], main_configuration_unchanged=True))

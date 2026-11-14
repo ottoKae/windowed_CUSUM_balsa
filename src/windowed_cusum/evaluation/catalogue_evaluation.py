@@ -6,7 +6,7 @@ population recall and cannot form population F1 with sampled report precision.
 import json
 import numpy as np
 import pandas as pd
-from .event_scoring import _canonical_matching
+from windowed_cusum.evaluation.event_scoring import _canonical_matching
 TOLERANCES = (1, 2, 3)
 
 

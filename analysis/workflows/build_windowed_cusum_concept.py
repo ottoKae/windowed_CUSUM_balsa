@@ -41,11 +41,7 @@ SRC_ROOT = REPO_ROOT / "src"
 if str(SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(SRC_ROOT))
 
-from lr_cusum.core import (  # noqa: E402
-    bootstrap_confidence,
-    cusum_amplitude,
-    generate_windows,
-)
+from windowed_cusum.detector.core import bootstrap_confidence, cusum_amplitude, generate_windows
 
 
 DEFAULT_SAMPLE_ID = "plantation:8655"

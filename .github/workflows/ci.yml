@@ -26,7 +26,7 @@ jobs:
           python -m pip install ".[io,validation,geo,figures]" -c configs/requirements-reproduce.txt
           python -m pip install pytest geopandas -c configs/requirements-reproduce.txt
       - name: Confirm installed import
-        run: python -I -c "import lr_cusum; from pathlib import Path; p=Path(lr_cusum.__file__); print(p); assert 'site-packages' in p.parts"
+        run: python -I -c "import windowed_cusum; from pathlib import Path; p=Path(windowed_cusum.__file__); print(p); assert 'site-packages' in p.parts"
       - name: Run tests
         run: |
           python -c "from pathlib import Path; Path('.test-tmp').mkdir(exist_ok=True)"

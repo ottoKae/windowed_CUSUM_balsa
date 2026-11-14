@@ -11,7 +11,7 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / "src"))
-from lr_cusum.catalogue_evaluation import bootstrap_ratios, frozen_recall
+from windowed_cusum.evaluation.catalogue_evaluation import bootstrap_ratios, frozen_recall
 
 
 REPORT_COLUMNS = ["prediction_id", "sample_id", "representative_month", "response_months"]

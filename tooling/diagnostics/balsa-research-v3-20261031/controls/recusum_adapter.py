@@ -9,7 +9,7 @@ import time
 import numpy as np
 
 from run_controls import (ROOT, OUT, SOURCE, DATES, freeze, sha, save, stable_seed)
-from lr_cusum.baselines import cusum_single, recusum_detect
+from windowed_cusum.benchmarks.baselines import cusum_single, recusum_detect
 
 
 def firstpost_recusum(values, *, seed, confidence=.9, bootstrap=800,

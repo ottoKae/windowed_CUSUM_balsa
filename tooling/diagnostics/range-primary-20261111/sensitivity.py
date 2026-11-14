@@ -32,7 +32,7 @@ def main():
     assert (len(refs), len(cohort), len(pairs)) == (1049,459,590)
     assert json.loads(axes_path.read_text())["sample_ids"] == cohort and draws.shape == (5000,459)
     paths = [reference_path,draws_path,axes_path,Path(__file__),Path(evaluation.__file__),
-             ROOT / "src/lr_cusum/event_scoring.py"]
+             ROOT / "src/windowed_cusum/evaluation/event_scoring.py"]
     summaries, counts, matches_by, histories, stand_rows = [], {}, {}, {}, []
     old_path = FROZEN / "summary_by_stage.csv"
     paths.append(old_path)

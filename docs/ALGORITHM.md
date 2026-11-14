@@ -8,11 +8,12 @@ maps Tables 3–5 to the actual source files and public aggregate results.
 The current analysis follows **monthly native-pixel Sentinel-1 series → W36
 Windowed CUSUM with first-post dating → Temporal Detection Aggregation (TDA) →
 conditional Spatial Timing Partitioning (STP)**. The earlier W36+B20 release is
-retained as historical code and evidence. Sharing a 36-month window does not make
+retained in the local archive and historical evidence. Sharing a 36-month window does not make
 the two pipelines interchangeable.
 
-The public source keeps the original implementation paths. Selected Python files
-under `tooling/diagnostics/` are active algorithm dependencies; their location
+The numerical package is organized by role under `src/windowed_cusum/`.
+Selected Python files under `tooling/diagnostics/` retain their original paths
+and are active algorithm dependencies; their location
 does not mean that all diagnostics, private inputs or run outputs are public.
 Install the package with the `io` and `validation` extras for the array/table
 interfaces below. Reading or writing the optional spatial products also requires
@@ -22,9 +23,9 @@ the `geo` extras. Run file-based entries from the repository root.
 
 The current adapter is
 [`detector_engine.py`](../tooling/diagnostics/balsa-national-firstpost-20261030/detector_engine.py).
-It uses [`window_geometry.py`](../src/lr_cusum/window_geometry.py),
-[`core.py`](../src/lr_cusum/core.py),
-[`temporal_nulls.py`](../src/lr_cusum/temporal_nulls.py), and the detector settings
+It uses [`window_geometry.py`](../src/windowed_cusum/detector/window_geometry.py),
+[`core.py`](../src/windowed_cusum/detector/core.py),
+[`temporal_nulls.py`](../src/windowed_cusum/detector/temporal_nulls.py), and the detector settings
 in [`firstpost_w36_d12_s12_b20_20261030_v2.json`](../configs/firstpost_w36_d12_s12_b20_20261030_v2.json).
 The configuration retains its historical B20 identifier because it also records
 the earlier aggregation stage. TDA and STP have their own implementations below.
@@ -55,9 +56,10 @@ the worker process. This is the existing process-local adapter used by the
 production workflow; it should not be mixed with historical detector calls in
 the same process when comparing date conventions.
 
-`windowed-cusum paper` and [`scripts/reproduce.py`](../scripts/reproduce.py) use
-the historical `paper.py` detector path. Their synthetic example and capsule
-replay remain useful checks, but do not run the current first-post/TDA/STP chain.
+The former `windowed-cusum paper` CLI and B20 replay entries are archived
+locally and are not installed or exported. Use `scripts/run_current_pipeline.py`
+for the current workflow. Numerical modules are grouped in
+[`src/windowed_cusum/`](../src/README.md).
 
 ## Temporal Detection Aggregation
 
@@ -104,7 +106,7 @@ without them, as demonstrated by
 ## Spatial Timing Partitioning
 
 The numerical implementation is
-[`star_segmentation.py`](../src/lr_cusum/star_segmentation.py).
+[`star_segmentation.py`](../src/windowed_cusum/stand/star_segmentation.py).
 Its retained module name and `STARS_V1` identifiers predate the current STP name.
 `segment(reports, members, units, Config(...))` operates on supplied tables:
 

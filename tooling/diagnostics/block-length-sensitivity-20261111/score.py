@@ -37,7 +37,7 @@ def main():
     assert json.loads(axes_path.read_text())["sample_ids"] == cohort
     assert draws.shape == (5000, 459)
     paths = [ref_path, draws_path, axes_path, Path(__file__), Path(evaluation.__file__),
-             ROOT / "src/lr_cusum/event_scoring.py"]
+             ROOT / "src/windowed_cusum/evaluation/event_scoring.py"]
     summaries, counts, all_matches = [], {}, {}
     for name, source in SOURCES.items():
         frames = {}

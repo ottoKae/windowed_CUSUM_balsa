@@ -10,11 +10,11 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / "src"))
-from lr_cusum.core import cusum_amplitude
-from lr_cusum.paper import load_paper_config
-from lr_cusum.temporal_nulls import iid_permutation_score
-from lr_cusum.harvest_bounded_event_aggregation import build_bounded_events
-import lr_cusum.window_geometry as geometry
+from windowed_cusum.detector.core import cusum_amplitude
+from windowed_cusum.detector.paper import load_paper_config
+from windowed_cusum.detector.temporal_nulls import iid_permutation_score
+from windowed_cusum.stand.harvest_bounded_event_aggregation import build_bounded_events
+import windowed_cusum.detector.window_geometry as geometry
 
 METHOD = "windowed_w36_d12_s12_firstpost_v2"
 AGGREGATION = "B20_FIRSTPOST_V2"

@@ -14,7 +14,7 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / "src"))
-from lr_cusum import star_segmentation as stars
+from windowed_cusum.stand import star_segmentation as stars
 
 RUN = ROOT / "runs/validation/harvest_inventory_20261104_v1"
 OLD = ROOT / "runs/validation/balsa_sts_episode_v4_1_20261102_v1/baselines/methods/R2_TIME"
@@ -268,7 +268,7 @@ def main():
     if not args.cohort_only:
         paths.append(args.tda / "execution_receipt.json")
     before = {str(p.relative_to(ROOT)): digest(p) for p in paths}
-    code_paths = [Path(__file__), ROOT / "src/lr_cusum/star_segmentation.py"]
+    code_paths = [Path(__file__), ROOT / "src/windowed_cusum/stand/star_segmentation.py"]
     code_before = {str(p.relative_to(ROOT)): digest(p) for p in code_paths}
     reports = pd.read_parquet(input_dir / "reports.parquet")
     members = pd.read_parquet(input_dir / "source_members.parquet")

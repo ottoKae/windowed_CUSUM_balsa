@@ -14,9 +14,9 @@ Its filename retains the historical B20 identifier; current TDA and STP rules
 are implemented separately, as described in the
 [algorithm guide](../docs/ALGORITHM.md).
 
-[`standard_w36.json`](standard_w36.json) is retained for the historical
-`windowed-cusum paper` synthetic demonstration and earlier W36+B20 interfaces.
-Its evaluation fields are historical and do not define current TDA/STP scoring.
+[`benchmarks/legacy_w36.json`](benchmarks/legacy_w36.json) preserves the earlier
+W36 settings needed by the benchmark replay helper. It is not the default for
+the current pipeline; the old B20 command-line entry is archived locally.
 
 [`requirements-reproduce.txt`](requirements-reproduce.txt) records dependency
 constraints. [`public_export.json`](public_export.json) defines the explicit

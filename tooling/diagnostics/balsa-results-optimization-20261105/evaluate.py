@@ -12,7 +12,7 @@ from scipy.stats import norm
 from run import ROOT, RUN, SOURCE, write_json, display_name
 
 sys.path.insert(0,str(ROOT/"src"))
-from lr_cusum.event_scoring import _canonical_matching
+from windowed_cusum.evaluation.event_scoring import _canonical_matching
 
 OUT=RUN/"fullchain"
 MONTH0=pd.Period("2016-01",freq="M").ordinal

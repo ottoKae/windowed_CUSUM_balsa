@@ -1,7 +1,7 @@
 """Official EWMACD; explicit finite-date mapping validated by cloud preflight."""
 import numpy as np
 import pandas as pd
-from .ccdc_adapter import virtual_collection, read_pixels
+from windowed_cusum.benchmarks.ccdc_adapter import virtual_collection, read_pixels
 
 
 def run_ewmacd(values, dates, *, history_end, weight=.3, persistence=1):

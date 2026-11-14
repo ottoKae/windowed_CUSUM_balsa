@@ -7,7 +7,7 @@ contains private data and earlier experiments; those are not copied wholesale.
 | Responsibility | Location |
 |---|---|
 | Current algorithm, callable interfaces and replay limits | [ALGORITHM.md](ALGORITHM.md) |
-| Numerical library | `src/lr_cusum/` |
+| Numerical library | `src/windowed_cusum/` |
 | Current supplied-data workflow | `scripts/run_current_pipeline.py` |
 | Common report evaluation and summary-table checks | `scripts/experiments/` |
 | Public experiment summaries and provenance | `results/summary/` |
@@ -27,18 +27,19 @@ The figure helpers likewise retain their original `scripts/figures/`,
 
 For maintenance, separate the current callable functions from historical replay
 commands: the supplied-data runner calls `detector_engine.initialize/batch`,
-`tda.aggregate_frames`, and `lr_cusum.star_segmentation.segment`. TDA currently
+`tda.aggregate_frames`, and `windowed_cusum.stand.star_segmentation.segment`. TDA currently
 reuses `prepare_phases`, `temporal_edges` and `assemble_hflag` from the dated
 helpers listed in the algorithm guide. Those files are live dependencies, not
 disposable diagnostics. Keep their frozen source signatures intact when fixing
 public input/output interfaces. Relocating them requires output-parity checks
 and an explicit update of their callers and provenance.
 
-Earlier W36+B20 scripts and configurations are identified as historical
-compatibility interfaces. They do not substitute for the first-post detector or
-TDA/STP. Earlier scoring summaries, experimental plans and review records remain
-local; their presence in an author checkout does not make them current public
-results.
+The installed package has four groups: `detector`, `stand`, `evaluation`, and
+`benchmarks`; [src/README.md](../src/README.md) explains their roles. Earlier
+W36+B20 entry points and the original source tree are archived locally in
+`src/archive/`. They are neither installed nor included in the public export.
+Reused numerical helpers remain in the current package when the detector,
+experiments or figures still depend on them.
 
 The public export omits raw data, real row-level tables, exact geometry, private
 experiment documents/results, PPTX sources and archives. Public figure source

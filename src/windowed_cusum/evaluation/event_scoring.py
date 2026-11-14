@@ -16,7 +16,7 @@ import numpy as np
 import pandas as pd
 from scipy.optimize import linear_sum_assignment
 
-from .b20_probability_estimation import tolerance_spec
+from windowed_cusum.evaluation.b20_probability_estimation import tolerance_spec
 
 
 REVIEW_COLUMNS = ["prediction_id", "review_status", "occurrence", "context_complete", "evidence_notes"]
@@ -335,7 +335,7 @@ def verify_frozen_outputs(run_dir):
 def publish_scored_results(run_dir, frame, tables, estimator=None):
     """Validate scoring AND estimation before replacing any derived results."""
     if estimator is None:
-        from .b20_probability_estimation import summarize_probability_results
+        from windowed_cusum.evaluation.b20_probability_estimation import summarize_probability_results
         estimator = summarize_probability_results
     result = score_review_tables(frame, **tables)
     summary = estimator(frame, result)

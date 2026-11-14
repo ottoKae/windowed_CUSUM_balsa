@@ -13,9 +13,7 @@ import sys
 import numpy as np
 import pandas as pd
 
-from .harvest_quarter_aggregation import (
-    _identifier, _json, _prepare_events, _require, quarter_label, quarter_number,
-)
+from windowed_cusum.stand.harvest_quarter_aggregation import _identifier, _json, _prepare_events, _require, quarter_label, quarter_number
 
 PROTOCOL_VERSION = "stand_event_b20_execution_v1_1"
 WINDOW_STARTS = pd.period_range("2017-01", "2025-10", freq="M")

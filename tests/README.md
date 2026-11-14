@@ -3,8 +3,7 @@
 The public export contains selected tests whose implementation dependencies are
 included. These cover the real temporal relation and assembly functions, TDA
 over synthetic tables, STP source conservation and cached-prefix RNG behavior,
-and release selection/verification. Retained historical B20 checks cover that
-interface separately. Additional author-workflow tests in the local repository
+and release selection/verification. Additional author-workflow tests in the local repository
 may need private data or GUI dependencies and are not all exported.
 
 From a clean public checkout with Python 3.12:
@@ -13,7 +12,7 @@ From a clean public checkout with Python 3.12:
 python tooling/release/export_public.py --verify .
 python -m pip install ".[io,validation,geo,figures]" -c configs/requirements-reproduce.txt
 python -m pip install pytest -c configs/requirements-reproduce.txt
-python -I -c "import lr_cusum; from pathlib import Path; assert 'site-packages' in Path(lr_cusum.__file__).parts"
+python -I -c "import windowed_cusum; from pathlib import Path; assert 'site-packages' in Path(windowed_cusum.__file__).parts"
 python -c "from pathlib import Path; Path('.test-tmp').mkdir(exist_ok=True)"
 python -I -m pytest tests --import-mode=importlib -q -p no:cacheprovider --basetemp .test-tmp/public-check
 ```
@@ -26,8 +25,8 @@ artifacts and do not reproduce the paper's real-data results.
 
 CI also runs `scripts/run_current_pipeline.py`, exercising the actual first-post
 W36 → TDA → STP chain on invented pixels, and checks the published aggregate
-tables with `scripts/experiments/check_published_results.py`. The old
-`python -m lr_cusum paper` CLI remains a historical compatibility interface.
+tables with `scripts/experiments/check_published_results.py`. Historical source
+code is excluded from the installed package and public snapshot.
 
 Use a unique `.test-tmp/<run-id>/` for concurrent runs. Pytest may clear that exact
 basetemp directory; never point it at production data, the repository root or a

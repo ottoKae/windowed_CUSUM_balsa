@@ -19,8 +19,8 @@ ROOT = Path(__file__).resolve().parents[3]
 if str(ROOT / "src") not in sys.path:
     sys.path.insert(0, str(ROOT / "src"))
 
-from lr_cusum.baselines import cusum_single, is_decrease
-from lr_cusum.detection import stable_seed
+from windowed_cusum.benchmarks.baselines import cusum_single, is_decrease
+from windowed_cusum.detector.detection import stable_seed
 
 METHODS = {
     "recusum_decrease_c09_m12": dict(date_policy="legacy_peak", minimum_segment=12, decrease=True),
@@ -159,7 +159,7 @@ def main():
             raise ValueError(f"Frozen {method} contains units outside the current membership")
         expected = events.assign(index=pd.to_datetime(events.change_time).dt.to_period("M").astype("int64")-MONTHS[0].ordinal)
         expected = expected.groupby("unit_id")["index"].apply(lambda x: sorted(set(x))).to_dict()
-        sources = [source_file, Path(__file__), ROOT / "src/lr_cusum/baselines.py",
+        sources = [source_file, Path(__file__), ROOT / "src/windowed_cusum/benchmarks/baselines.py",
             SOURCE / "master_values.npy", SOURCE / "master_units.parquet", SOURCE / "validation_membership.parquet"]
         if config["date_policy"] == "firstpost":
             sources.append(ROOT / "tooling/diagnostics/balsa-research-v3-20261031/controls/recusum_adapter.py")

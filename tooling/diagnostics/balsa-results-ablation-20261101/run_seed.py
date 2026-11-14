@@ -10,8 +10,8 @@ import numpy as np
 import pandas as pd
 
 from preflight import ROOT, SOURCE, TRACE, OUT as RUN, digest
-from lr_cusum.detection import stable_seed
-from lr_cusum.temporal_nulls import NullModelConfig, iid_permutation_score
+from windowed_cusum.detector.detection import stable_seed
+from windowed_cusum.detector.temporal_nulls import NullModelConfig, iid_permutation_score
 
 OUT = RUN / "seed"
 SEEDS = (20260820, 20260821, 20260822)

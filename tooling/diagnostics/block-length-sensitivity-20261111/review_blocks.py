@@ -12,9 +12,9 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / "src"))
-from lr_cusum.core import cusum_amplitude
-from lr_cusum.detection import stable_seed
-from lr_cusum.temporal_nulls import NullModelConfig, calendar_block_permutation_score
+from windowed_cusum.detector.core import cusum_amplitude
+from windowed_cusum.detector.detection import stable_seed
+from windowed_cusum.detector.temporal_nulls import NullModelConfig, calendar_block_permutation_score
 
 
 def main():
@@ -71,7 +71,7 @@ def main():
         two_case_block4_block5_production_output_parity=True,
         source_diagnosis=str(old_path.relative_to(ROOT)),
         source_diagnosis_sha256=hashlib.sha256(old_path.read_bytes()).hexdigest(),
-        kernel_sha256=hashlib.sha256((ROOT/"src/lr_cusum/temporal_nulls.py").read_bytes()).hexdigest(),
+        kernel_sha256=hashlib.sha256((ROOT/"src/windowed_cusum/detector/temporal_nulls.py").read_bytes()).hexdigest(),
         geometry=geometry,cases=cases,notes=[
             "Each replicate draws a uniform calendar offset, retains partial edge blocks, and uniformly permutes their order.",
             "Missing values are removed after calendar-block assembly; their original absolute locations are not preserved.",

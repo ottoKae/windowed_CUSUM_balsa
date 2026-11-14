@@ -69,7 +69,7 @@ def audit():
         SOURCE/"validation/pixel_events.parquet", SOURCE/"validation/pixel_execution.parquet",
         SOURCE/"validation/source_members.parquet", OLD/"source_members.parquet",
         A1/"calibration_A1.parquet", SOURCE/"protocol.json", SOURCE/"method_signature.json",
-        ROOT/"src/lr_cusum/star_segmentation.py", PLAN]
+        ROOT/"src/windowed_cusum/stand/star_segmentation.py", PLAN]
     protected += [Path(v["path"]) for v in config["inputs"].values()]
     protected += [ROOT/"manuscript_JAG/main.tex", *sorted((ROOT/"manuscript_JAG/sections").glob("*.tex"))]
     protected += list((ROOT/"runs/validation/harvest_inventory_20261104_v1/products").glob("*.parquet"))
@@ -122,7 +122,7 @@ def gate_receipt():
     suites = ET.parse(path).getroot().findall("testsuite")
     cases = [case.attrib["name"] for suite in suites for case in suite.findall("testcase")]
     assert len(cases) == 7 and all(int(s.attrib[k]) == 0 for s in suites for k in ("errors","failures","skipped"))
-    production = ROOT/"src/lr_cusum/star_segmentation.py"
+    production = ROOT/"src/windowed_cusum/stand/star_segmentation.py"
     write_json(RUN/"synthetic/implementation_gate.json",dict(status="passed",tests=cases,
         production_sha256=digest(production), test_source_sha256=digest(ROOT/"tests/test_stp_production_gate.py"),
         adapter_sha256=digest(ROOT/"tooling/diagnostics/balsa-stars-20261102/run_e1_production.py"),

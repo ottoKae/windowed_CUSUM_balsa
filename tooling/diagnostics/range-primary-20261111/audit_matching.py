@@ -15,7 +15,7 @@ VALIDATION = ROOT / "runs/validation"
 FROZEN = VALIDATION / "balsa_results_optimization_20261105_v1/fullchain"
 OUT = VALIDATION / "range_primary_20261111_v1/audit_matching.json"
 sys.path.insert(0, str(ROOT / "src"))
-from lr_cusum.event_scoring import _canonical_matching
+from windowed_cusum.evaluation.event_scoring import _canonical_matching
 
 
 def main():

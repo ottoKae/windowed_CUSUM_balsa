@@ -38,7 +38,7 @@ def main():
     protected += [TRACE, CONFIG, ROOT / "manuscript_JAG/sections/03_methods.tex"]
     dependencies = [Path(__file__), Path(engine.__file__), Path(chain.__file__), Path(TDA.__file__),
         Path(TDA.preparation.__file__), Path(TDA.baseline.__file__),
-        *sorted((ROOT / "src/lr_cusum").glob("*.py"))]
+        *sorted((ROOT / "src/windowed_cusum").rglob("*.py"))]
     hashes = {str(p): chain.digest(p) for p in protected + dependencies}
     protocol = dict(status="running", stages=list(VARIANTS) + ["F3_direction", "F4_permutation"],
         calendar=["2016-01", "2026-06"], report_period=["2017-01", "2025-12"],

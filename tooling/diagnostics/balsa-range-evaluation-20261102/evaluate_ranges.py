@@ -13,7 +13,7 @@ ROOT = Path(__file__).resolve().parents[3]
 sys.path[:0] = [str(ROOT / "src"), str(ROOT / "tooling/release"),
                str(ROOT / "tooling/diagnostics/balsa-harvest-episode-20261101")]
 from build_sample_release import original_tables
-from lr_cusum.event_scoring import _canonical_matching
+from windowed_cusum.evaluation.event_scoring import _canonical_matching
 from label_evaluation import paired_summary
 
 SOURCE = ROOT / "runs/validation/balsa_sts_episode_v4_1_20261102_v1"
@@ -144,7 +144,7 @@ def main():
     inputs = [p / name for p in directories for name in ["reports.parquet", "source_members.parquet"]]
     inputs += [SOURCE / "evaluation/label_metrics.csv", SOURCE / "evaluation/reference_matches.parquet",
                ROOT / "runs/validation/balsa_harvest_episode_20261101_v3/monthly_activity.parquet",
-               ROOT / "src/lr_cusum/event_scoring.py",
+               ROOT / "src/windowed_cusum/evaluation/event_scoring.py",
                ROOT / "tooling/diagnostics/balsa-harvest-episode-20261101/label_evaluation.py"]
     inputs += list((ROOT / "manuscript_JAG").rglob("*.tex"))
     tables, config = original_tables()

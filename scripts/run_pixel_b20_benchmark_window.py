@@ -1,7 +1,7 @@
 """Run the frozen FC001 native pixels through common local benchmarks and B20.
 
 This driver is intentionally thin: numerical detectors are imported from the
-frozen/current lr_cusum sources, native monthly caches remain read-only, and the
+frozen/current numerical sources, native monthly caches remain read-only, and the
 existing B20 allocator is called after method-specific acceptance.  SQLite
 checkpoints make every method/configuration resumable and distinguish successful
 zero-event executions from failures and unexecuted pixels.
@@ -30,7 +30,7 @@ CURRENT_SRC = ROOT / "src"
 INPUTS = ROOT / "runs/validation/existing_labels_w36_20260927_v1/inputs"
 OLD_REMOVALS = ROOT / "runs/validation/jag_event_accuracy_recalculation_20260928_v1/pixel_removals"
 DEFAULT_RUN = ROOT / "runs/validation/pixel_b20_benchmark_window_public_replay"
-DETECTOR_CONFIG = ROOT / "configs/standard_w36.json"
+DETECTOR_CONFIG = ROOT / "configs/benchmarks/legacy_w36.json"
 
 # Use the frozen detector package for every implementation it contains.  This is
 # also the package used by the accepted W36 FC001 run.
@@ -38,14 +38,14 @@ DETECTOR_CONFIG = ROOT / "configs/standard_w36.json"
 sys.path.insert(0, str(ROOT / "scripts"))
 import fc001_validation_detection as fc  # noqa: E402
 from harvest_bounded_event_aggregation import build_bounded_events  # noqa: E402
-from lr_cusum import paper  # noqa: E402
-from lr_cusum.baselines import fpol_bocd_detect, is_decrease, recusum_detect  # noqa: E402
-from lr_cusum.cusum_nrt_adapter import admitted, scan_nrt  # noqa: E402
-from lr_cusum.detection import stable_seed  # noqa: E402
-from lr_cusum.validation_closure import classical_lower_cusum_events, maximum_drop_events  # noqa: E402
+from windowed_cusum.detector import paper  # noqa: E402
+from windowed_cusum.benchmarks.baselines import fpol_bocd_detect, is_decrease, recusum_detect  # noqa: E402
+from windowed_cusum.benchmarks.cusum_nrt_adapter import admitted, scan_nrt  # noqa: E402
+from windowed_cusum.detector.detection import stable_seed  # noqa: E402
+from windowed_cusum.evaluation.validation_closure import classical_lower_cusum_events, maximum_drop_events  # noqa: E402
 
 
-from lr_cusum import window_geometry as GEOMETRY
+from windowed_cusum.detector import window_geometry as GEOMETRY
 
 
 CONFIGS = {

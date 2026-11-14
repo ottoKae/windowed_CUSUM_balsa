@@ -33,7 +33,7 @@ def main():
     assert (len(refs), len(cohort), len(pairs)) == (1049, 459, 590)
     assert json.loads(axes_path.read_text())["sample_ids"] == cohort and index.shape == (5000,459)
     paths = [old.REFERENCES, draws_path, axes_path, Path(__file__), OLD_CODE / "score.py",
-             OLD_CODE / "common.py", Path(EVAL.__file__), ROOT / "src/lr_cusum/event_scoring.py"]
+             OLD_CODE / "common.py", Path(EVAL.__file__), ROOT / "src/windowed_cusum/evaluation/event_scoring.py"]
     summary, counts, matches, histories, yearly, multiplicity = [], {}, {}, {}, [], []
     for method, label in old.METHODS.items():
         path = old.OUT / "methods" / method / "reports.parquet"

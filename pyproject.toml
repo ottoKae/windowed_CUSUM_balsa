@@ -38,14 +38,11 @@ replay = [
   "shapely>=2.0",
 ]
 
-[project.scripts]
-windowed-cusum = "lr_cusum.cli:main"
-
 [tool.setuptools]
 package-dir = {"" = "src"}
 license-files = ["LICENSE", "docs/third_party/*LICENSE.txt"]
 
 [tool.setuptools.packages.find]
 where = ["src"]
-include = ["lr_cusum", "lr_cusum.*"]
-exclude = ["hd-grits", "hd-grits.*"]
+include = ["windowed_cusum", "windowed_cusum.*"]
+exclude = ["archive", "archive.*"]

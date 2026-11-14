@@ -52,7 +52,7 @@ def main():
     paths = [SOURCE / name for name in ("master_values.npy", "master_units.parquet", "validation_membership.parquet",
              "validation/pixel_events.parquet", "validation/pixel_execution.parquet", "validation/source_members.parquet")]
     paths += [CONFIG, REFERENCE, Path(__file__), Path(engine.__file__), Path(engine.geometry.__file__),
-              ROOT / "src/lr_cusum/core.py", ROOT / "src/lr_cusum/temporal_nulls.py", Path(TDA.__file__),
+              ROOT / "src/windowed_cusum/detector/core.py", ROOT / "src/windowed_cusum/detector/temporal_nulls.py", Path(TDA.__file__),
               Path(TDA.preparation.__file__), Path(TDA.baseline.__file__)]
     protected = {str(p.relative_to(ROOT)): sha(p) for p in paths}
     save(OUT / "input_manifest.json", dict(input_sha256=protected, stands=459, references=1049,

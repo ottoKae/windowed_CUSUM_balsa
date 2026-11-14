@@ -19,7 +19,7 @@ def main():
     pairs = score.evaluation.original_pairs(refs)
     assert (len(refs), len(cohort), len(pairs)) == (1049, 459, 590)
     paths = [reference_path, Path(__file__), Path(score.__file__), Path(score.evaluation.__file__),
-             score.ROOT / "src/lr_cusum/event_scoring.py"]
+             score.ROOT / "src/windowed_cusum/evaluation/event_scoring.py"]
     summaries, counts = [], []
     reference_counts = refs.groupby(["sample_id", "reference_month"]).size()
     for variant in score.VARIANTS:

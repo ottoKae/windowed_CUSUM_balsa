@@ -43,7 +43,7 @@ def main():
     counts = {"full": evaluation.stand_counts(refs, baseline_reports, matches_by["full"], cohort)}
     paths = [ref_path, draws_path, axes_path, baseline_reports_path,
              OLD / "summary.csv", OLD / "paired_effects.csv", Path(__file__),
-             Path(evaluation.__file__), ROOT / "src/lr_cusum/event_scoring.py"]
+             Path(evaluation.__file__), ROOT / "src/windowed_cusum/evaluation/event_scoring.py"]
     summaries, effects = [], []
     for name, source in SOURCES.items():
         reports = pd.read_parquet(source)

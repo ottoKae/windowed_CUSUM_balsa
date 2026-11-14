@@ -2,7 +2,7 @@
 import numpy as np
 import pandas as pd
 
-from .ccdc_adapter import virtual_collection, read_pixels
+from windowed_cusum.benchmarks.ccdc_adapter import virtual_collection, read_pixels
 
 YEAR_MS = 365.25 * 86400000
 

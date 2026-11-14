@@ -38,7 +38,7 @@ def main():
     assert json.loads((RUN/"audit/receipt.json").read_text())["status"] == "passed"
     if args.stage != "temporal":
         gate = json.loads((RUN/"synthetic/implementation_gate.json").read_text())
-        assert gate["status"] == "passed" and gate["production_sha256"] == digest(ROOT/"src/lr_cusum/star_segmentation.py")
+        assert gate["status"] == "passed" and gate["production_sha256"] == digest(ROOT/"src/windowed_cusum/stand/star_segmentation.py")
     if args.stage == "baseline":
         baseline()
     elif args.stage == "temporal":
@@ -68,7 +68,7 @@ def baseline():
         cstr=replay["parity"].to_dict("records"), eligibility_equal=True))
     write_json(directory/"receipt.json",dict(status="completed", variant="full", n_nodes=len(nodes),
         n_parents=len(result["reports"]), n_children=len(replay["tables"]["rounds"]),
-        seconds=perf_counter()-start, production_sha256=digest(ROOT/"src/lr_cusum/star_segmentation.py")))
+        seconds=perf_counter()-start, production_sha256=digest(ROOT/"src/windowed_cusum/stand/star_segmentation.py")))
 
 
 def eligibility_matrix(variant, values):

@@ -1,6 +1,6 @@
 """Auditable component engine for the Windowed CUSUM ablation experiment.
 
-This module deliberately does not replace :func:`lr_cusum.core.lr_cusum`.
+This module deliberately does not replace :func:`windowed_cusum.detector.core.lr_cusum`.
 Instead, it evaluates the production mathematical primitives once for a global
 trajectory and once for the common sliding-window geometry, records every gate
 needed by the experiment, and derives detector variants by Boolean selection.
@@ -21,7 +21,7 @@ from typing import Mapping
 import numpy as np
 import pandas as pd
 
-from .core import _calendar_align, bootstrap_confidence, cusum_amplitude, generate_windows
+from windowed_cusum.detector.core import _calendar_align, bootstrap_confidence, cusum_amplitude, generate_windows
 
 
 @dataclass(frozen=True)

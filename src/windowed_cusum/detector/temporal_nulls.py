@@ -10,7 +10,7 @@ import hashlib
 
 import numpy as np
 
-from .core import bootstrap_confidence, cusum_amplitude
+from windowed_cusum.detector.core import bootstrap_confidence, cusum_amplitude
 
 try:
     from numba import njit

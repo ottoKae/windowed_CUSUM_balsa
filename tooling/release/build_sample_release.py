@@ -220,7 +220,7 @@ def build(output, private_bridge):
     engine.mkdir(parents=True)
     (engine / "__init__.py").write_text('"""Frozen scoring engine for the sample release."""\n', encoding="utf-8")
     for name in ENGINE_FILES:
-        shutil.copyfile(ROOT / "src/lr_cusum" / name, engine / name)
+        shutil.copyfile(ROOT / "src/archive/lr_cusum" / name, engine / name)
     shutil.copyfile(ROOT / "LICENSE", replay_dir / "CODE_LICENSE.txt")
     shutil.copyfile(Path(__file__).with_name("replay_sample_release.py"), replay_dir / "replay.py")
     (replay_dir / "requirements.txt").write_text("numpy==2.4.3\npandas==2.3.3\nscipy==1.17.1\n", encoding="utf-8")

@@ -76,7 +76,7 @@ and the additional inputs required by historical experiments and figures.
 
 | Directory | Responsibility |
 |---|---|
-| `src/lr_cusum/` | Numerical methods, matching, temporal nulls and STP |
+| `src/windowed_cusum/` | Numerical methods, matching, temporal nulls and STP |
 | `scripts/run_current_pipeline.py` | Current detector -> TDA -> STP entry |
 | `scripts/experiments/` | Experiment index, supplied-report scoring and aggregate checks |
 | `tooling/diagnostics/` | Selected frozen experiment implementations and dependencies |
@@ -87,10 +87,11 @@ and the additional inputs required by historical experiments and figures.
 | `manuscript_JAG/` | Paper, supplement, bibliography and seven final figures |
 | `tests/` | Tests of actual detector, aggregation, matching and release boundaries |
 
-Original implementation paths are retained to preserve imports and provenance.
-Use the experiment/figure indexes instead of choosing the newest dated filename.
-The old `python -m lr_cusum paper` CLI is a historical B20 compatibility interface,
-not the current pipeline.
+The numerical package is organized into `detector/`, `stand/`, `evaluation/`
+and `benchmarks/`; see [the source guide](src/README.md). The current pipeline
+command remains unchanged. Selected experiment and figure adapters keep their
+original paths for provenance. Superseded source code is retained only in the
+author's local `src/archive/`, outside installation and public export.
 
 ## Tests, publication and citation
 

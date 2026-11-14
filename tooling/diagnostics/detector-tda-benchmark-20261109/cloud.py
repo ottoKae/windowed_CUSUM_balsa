@@ -11,9 +11,9 @@ import pandas as pd
 from common import ROOT, SOURCE, MONTHS, load_inputs, save_detector, digest
 
 sys.path.insert(0, str(ROOT / "src"))
-from lr_cusum.ccdc_adapter import segment_candidates
-from lr_cusum.structural_breakpoint_adapter import structural_events
-from lr_cusum.ewmacd_adapter import ewma_trace
+from windowed_cusum.benchmarks.ccdc_adapter import segment_candidates
+from windowed_cusum.benchmarks.structural_breakpoint_adapter import structural_events
+from windowed_cusum.benchmarks.ewmacd_adapter import ewma_trace
 
 OLD_INPUTS = ROOT / "runs/validation/existing_labels_w36_20260927_v1/inputs"
 CLOUD = ROOT / "runs/validation/pixel_b20_benchmark_window_20261004_cloud_v1"
@@ -140,7 +140,7 @@ def run_cloud_method(method, parameters, units, values, cached_units, cached_pos
             "This is retrospective fitted-support eligibility, not exact online monitoring opportunity."
         )
         coverage_type = "retrospective_fitted_support"
-        adapter = ROOT / "src/lr_cusum/ccdc_adapter.py"
+        adapter = ROOT / "src/windowed_cusum/benchmarks/ccdc_adapter.py"
     else:
         contract = (
             "Successful full-record fit and finite current observation; at least 12 valid "
@@ -148,7 +148,7 @@ def run_cloud_method(method, parameters, units, values, cached_units, cached_pos
             "including and after it. Spacing counts samples, not calendar months."
         )
         coverage_type = "retrospective_structural_search_support"
-        adapter = ROOT / "src/lr_cusum/structural_breakpoint_adapter.py"
+        adapter = ROOT / "src/windowed_cusum/benchmarks/structural_breakpoint_adapter.py"
     frozen_adapter_hash = next(v for k, v in cloud_config["files"].items() if Path(k).name == adapter.name)
     if digest(adapter) != frozen_adapter_hash:
         raise ValueError(f"Cached {method} algorithm adapter no longer matches its frozen source")
@@ -234,7 +234,7 @@ def run_monitor(family, units, values, cached_units, cached_positions, common_so
                 replay.append(dict(unit_id=cached_units.iloc[int(record.trajectory_index)].unit_id,
                                    change_time=record.month, score=float(record.score)))
         comparison_columns = ["unit_id", "change_time", "score"]
-        extra_sources = [ROOT / "src/lr_cusum/ewmacd_adapter.py", ROOT / "scripts/run_pixel_b20_ewmacd_monitor.py"]
+        extra_sources = [ROOT / "src/windowed_cusum/benchmarks/ewmacd_adapter.py", ROOT / "scripts/run_pixel_b20_ewmacd_monitor.py"]
     if completed != expected_jobs:
         raise ValueError(f"{family}: completed cache jobs differ from eligibility records")
     actual = pd.DataFrame(replay).sort_values(comparison_columns).reset_index(drop=True)

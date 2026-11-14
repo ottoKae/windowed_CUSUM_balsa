@@ -23,7 +23,7 @@ def main():
     assert (len(refs), len(cohort), len(pairs)) == (1049, 459, 590)
     assert json.loads(axes_path.read_text())["sample_ids"] == cohort and indices.shape == (5000,459)
     paths = [reference_path, draws_path, axes_path, Path(__file__), Path(score.__file__),
-             Path(score.evaluation.__file__), score.ROOT / "src/lr_cusum/event_scoring.py"]
+             Path(score.evaluation.__file__), score.ROOT / "src/windowed_cusum/evaluation/event_scoring.py"]
     summaries, counts, stand_tables = [], {}, []
     for variant in score.VARIANTS:
         base = (score.FROZEN / "variants" / score.REUSED[variant]

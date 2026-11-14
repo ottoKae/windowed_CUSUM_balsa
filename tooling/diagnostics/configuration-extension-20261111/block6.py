@@ -26,7 +26,7 @@ CONFIG = ROOT / "configs/firstpost_w36_d12_s12_b20_20261030_v2.json"
 REFERENCE = ROOT / "runs/validation/balsa_sts_range_evaluation_20261102_v1/reference_semantics.csv"
 sys.path[:0] = [str(ROOT / "src"), str(ROOT / "tooling/diagnostics/balsa-national-firstpost-20261030")]
 import detector_engine as engine
-from lr_cusum.temporal_nulls import calendar_block_permutation_score
+from windowed_cusum.detector.temporal_nulls import calendar_block_permutation_score
 
 BLOCK_LENGTH = 6
 
@@ -55,7 +55,7 @@ def main():
              SOURCE / "validation/pixel_execution.parquet", SOURCE / "validation/source_members.parquet",
              OLD / "pixel_events.parquet", OLD / "pixel_execution.parquet", FROZEN / "octa/reports.parquet",
              FROZEN / "octa/monthly_activity.parquet", tda_path, Path(engine.__file__),
-             ROOT / "src/lr_cusum/temporal_nulls.py", ROOT / "src/lr_cusum/window_geometry.py", Path(__file__)]
+             ROOT / "src/windowed_cusum/detector/temporal_nulls.py", ROOT / "src/windowed_cusum/detector/window_geometry.py", Path(__file__)]
     inputs = {str(p.relative_to(ROOT)): sha(p) for p in paths}
     archived_events = pd.read_parquet(OLD / "pixel_events.parquet")
     archived_events = archived_events.loc[archived_events.unit_id.isin(units.unit_id)]

@@ -17,7 +17,7 @@ from scipy.stats import beta
 
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / "src"))
-from lr_cusum import star_segmentation as stars
+from windowed_cusum.stand import star_segmentation as stars
 
 OUT = ROOT / "runs/validation/balsa_results_optimization_20261105_v1/synthetic"
 
@@ -28,7 +28,7 @@ def main():
     parser.add_argument("--workers", type=int, default=4)
     args = parser.parse_args()
     gate = json.loads((args.out / "implementation_gate.json").read_text(encoding="utf-8"))
-    if gate["status"] != "passed" or gate["production_sha256"] != digest(ROOT / "src/lr_cusum/star_segmentation.py"):
+    if gate["status"] != "passed" or gate["production_sha256"] != digest(ROOT / "src/windowed_cusum/stand/star_segmentation.py"):
         raise ValueError("P1a must pass on the current production implementation")
     args.out.mkdir(parents=True, exist_ok=True)
     cases = make_cases()
@@ -42,7 +42,7 @@ def main():
     pd.concat(inputs, ignore_index=True).to_parquet(args.out / "inputs.parquet", index=False)
     pd.DataFrame(truth).to_parquet(args.out / "truth.parquet", index=False)
     code = {str(p.relative_to(ROOT)): digest(p) for p in
-            (Path(__file__), ROOT / "src/lr_cusum/star_segmentation.py")}
+            (Path(__file__), ROOT / "src/windowed_cusum/stand/star_segmentation.py")}
     receipt_path = args.out / "receipt.json"
     if receipt_path.exists():
         prior = json.loads(receipt_path.read_text())

@@ -14,10 +14,10 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from lr_cusum.core import cusum_amplitude  # noqa: E402
-from lr_cusum.detection import stable_seed  # noqa: E402
-from lr_cusum.paper import PaperDetectionConfig  # noqa: E402
-from lr_cusum.temporal_nulls import NullModelConfig, iid_permutation_score  # noqa: E402
+from windowed_cusum.detector.core import cusum_amplitude  # noqa: E402
+from windowed_cusum.detector.detection import stable_seed  # noqa: E402
+from windowed_cusum.detector.paper import PaperDetectionConfig  # noqa: E402
+from windowed_cusum.detector.temporal_nulls import NullModelConfig, iid_permutation_score  # noqa: E402
 
 
 @dataclass(frozen=True)
