@@ -1,56 +1,48 @@
-# Repository guide
+# What belongs where
 
-The public snapshot exposes the current first-post W36 → TDA → STP code, selected
-synthetic checks, and the approved manuscript assets. The author workspace also
-contains private data and earlier experiments; those are not copied wholesale.
+The public repository contains the method, its tests, the paper and compact result tables. Large numerical data are distributed through [Zenodo](https://doi.org/10.5281/zenodo.24223182). The author's workspace also holds earlier experiments and source imagery; a public checkout does not include those folders.
 
-| Responsibility | Location |
+## Keep and publish
+
+| Location | Purpose |
 |---|---|
-| Current algorithm, callable interfaces and replay limits | [ALGORITHM.md](ALGORITHM.md) |
-| Numerical library | `src/windowed_cusum/` |
-| Current supplied-data workflow | `scripts/run_current_pipeline.py` |
-| Common report evaluation and summary-table checks | `scripts/experiments/` |
-| Public experiment summaries and provenance | `results/summary/` |
-| Current first-post adapter | `tooling/diagnostics/balsa-national-firstpost-20261030/detector_engine.py` |
-| Current TDA/STP adapters | `tooling/diagnostics/harvest-inventory-20261104/` — selected Python files only |
-| Current figure renderers and their preserved helpers | [source_spec.json](../provenance/figures/source_spec.json) |
-| Synthetic inputs and schemas | [data guide](../data/README.md) |
-| Selected tests and disposable output | [tests guide](../tests/README.md), `.test-tmp/<run-id>/` |
-| TeX, approved figures and readable PDFs | `manuscript_JAG/` |
-| Public selection, hashes and release preparation | [PUBLIC_RELEASE.md](PUBLIC_RELEASE.md) |
+| `src/windowed_cusum/` | Current numerical package: detector, stand aggregation, evaluation, benchmarks |
+| `scripts/`, selected `tooling/diagnostics/` and `analysis/workflows/` files | Pipeline, experiment and figure implementations |
+| `configs/` | Settings, experiment catalogue and dependency versions |
+| `tests/`, `data/demo/`, `data/schemas/` | Reusable tests, synthetic examples and format descriptions |
+| `results/summary/` | Current paper's 22 aggregate tables and their sources |
+| `dataset/` | Documentation and citation for the Zenodo deposit |
+| `manuscript_JAG/` | Current TeX, bibliography, readable PDFs and seven final figures |
+| `provenance/`, selected `docs/` | Figure bindings, source credits and use instructions |
 
-The selected algorithm files retain their original diagnostic-directory paths.
-Existing imports, tests and provenance depend on those paths. Their dependencies
-are included explicitly; other diagnostics and execution outputs remain local.
-The figure helpers likewise retain their original `scripts/figures/`,
-`analysis/workflows/` and diagnostic paths.
+Dated filenames are not a reason to archive code. Some helpers still supply TDA assembly, STP and figure rendering. Their original paths remain in use and are recorded in the [algorithm](ALGORITHM.md), [experiment](../scripts/experiments/README.md) and [figure](FIGURES.md) indexes.
 
-For maintenance, separate the current callable functions from historical replay
-commands: the supplied-data runner calls `detector_engine.initialize/batch`,
-`tda.aggregate_frames`, and `windowed_cusum.stand.star_segmentation.segment`. TDA currently
-reuses `prepare_phases`, `temporal_edges` and `assemble_hflag` from the dated
-helpers listed in the algorithm guide. Those files are live dependencies, not
-disposable diagnostics. Keep their frozen source signatures intact when fixing
-public input/output interfaces. Relocating them requires output-parity checks
-and an explicit update of their callers and provenance.
+## Keep locally and ignore
 
-The installed package has four groups: `detector`, `stand`, `evaluation`, and
-`benchmarks`; [src/README.md](../src/README.md) explains their roles. Earlier
-W36+B20 entry points and the original source tree are archived locally in
-`src/archive/`. They are neither installed nor included in the public export.
-Reused numerical helpers remain in the current package when the detector,
-experiments or figures still depend on them.
+| Location in the author workspace | Why it is retained |
+|---|---|
+| `src/archive/`, `archive/`, `manuscript_JAG/archive/` | Retired implementations, old builds and earlier manuscripts |
+| Unlisted `data/` folders | Downloaded arrays, source imagery, extraction caches and private records |
+| `runs/`, unlisted `results/` folders | Detailed computation outputs, frozen ledgers and earlier experiment results |
+| Unlisted `docs/`, `tooling/`, `tests/` files | Historical plans, diagnostics and tests for retired workflows |
+| `deliverables/`, `dist/` | Earlier delivery packages, release snapshots and the isolated publication checkout |
+| `.qa/`, `.hallmark/`, local editor/service settings | Local review material and environment configuration |
 
-The public export omits raw data, real row-level tables, exact geometry, private
-experiment documents/results, PPTX sources and archives. Public figure source
-mappings may describe private dependencies without distributing them. The main
-and supplementary PDFs are readable directly; TeX compilation additionally
-requires the official CAS template described in the release guide.
+Keep frozen inputs and evidence where recorded scripts expect them. Do not move a historical result merely to make the root directory look smaller. New acceptance reports belong in an ignored `data/private/<review-name>/` directory; new test scratch data belong in `.test-tmp/<run-id>/`.
 
-`configs/public_export.json` defines the public files. The default-deny
-`.gitignore` is generated from that selection; ignore rules do not untrack
-previously committed files. The fresh export contains no `.git` directory and
-does not inherit the author repository's history. Preserve local scientific
-records and compatibility paths when maintaining the author workspace.
+## Delete only disposable products
 
-Current experiment entry points and aggregate tables are indexed in [scripts/experiments](../scripts/experiments/README.md). Only selected summaries are public; per-stand outputs remain private.
+Completed pytest working directories containing generated fixtures, Python bytecode caches and superseded synthetic demo outputs can be removed once their checks have finished. Keep test source files, intentional demo inputs and test expectations. A file containing `test`, `review` or `tmp` in its name may still be scientific evidence.
+
+Real-data parity reports and manual-review evidence found inside a temporary directory should be preserved before cleanup. Active environments, uncertain folders and paths that cannot be read are left alone. Maintenance receipts record exactly what was removed or relocated.
+
+## How publication is controlled
+
+[`configs/public_export.json`](../configs/public_export.json) selects files individually. The generated `.gitignore` ignores everything else, including newly downloaded data and future temporary outputs. Update the selection first, then run:
+
+```sh
+python tooling/release/update_public_ignore.py
+python tooling/release/export_public.py --output dist/public-review
+```
+
+Use a new output directory. Inspect and test that clean snapshot before publishing it. Ignore rules do not remove already tracked files or old Git history; the author workspace's full Git history is not used as the public release. See [publication instructions](PUBLIC_RELEASE.md) and [data/privacy boundaries](PRIVACY.md).

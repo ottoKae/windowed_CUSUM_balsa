@@ -1,38 +1,11 @@
-# Public-release policy
+# Public release scope
 
-Current scope: 2026-11-13. The owner-authorized snapshot includes the current
-first-post W36 → TDA → STP implementation, selected dependencies and tests,
-synthetic examples and schemas, figure-rendering code, and the unchanged author
-TeX, bibliography, main/supplementary PDFs and seven approved figure PDFs.
-This file supersedes the earlier source-only manuscript selection.
+The GitHub release contains the current windowed CuSum ? TDA ? STP implementation, its required helpers, synthetic examples, selected tests, aggregate results, manuscript and seven approved figures. Exact file selection is maintained in `configs/public_export.json`; the exported `PUBLIC_FILES.json` records the distributed file hashes.
 
-The exact file selection is in `configs/public_export.json`. Approved PDF paths
-and SHA-256 hashes are recorded there; no other PDF or binary is admitted by
-extension alone. The exported `PUBLIC_FILES.json` records the distributed bytes.
-Preserving the original Python paths supports existing imports and provenance.
+Real stand boundaries, monthly VV/VH arrays, harvest references and frozen detection/TDA/STP products are published separately as [Zenodo V1.0.0](https://doi.org/10.5281/zenodo.24223182), under CC BY-NC-SA 4.0. They are not duplicated in GitHub. The code uses MIT; third-party notices remain in their respective files.
 
-The following remain local:
+Original PlanetScope imagery, raw SAR bursts, private interpretation notes, credentials, local caches, editable artwork and historical archives remain local. The approved paper and figures include author information and illustrated study locations. Their publication does not release the underlying commercial imagery.
 
-- raw Sentinel-1/S1-GRiTS stores, optical source imagery and basemap caches;
-- real pixel series, exact inventory geometry, row-level research tables and
-  private interpretation/review records;
-- private experiment documents, run receipts and result directories;
-- editable PPTX sources, archives and the partial local CAS template bundle.
+Older paths needed by current imports or recorded experiments remain intact. Files are selected by their role and dependencies, not by whether their names contain a date or the word `diagnostic`.
 
-Providing the approved rendered figures does not authorize redistribution of
-their underlying imagery or data. Figure source specifications describe private
-dependencies so readers can trace construction without receiving those inputs.
-Synthetic `DEMO_STAND_*` identifiers refer to invented sequences. No real
-row-level data package or download is part of this snapshot.
-
-Original code uses [MIT](../LICENSE). [DATA_LICENSE](../DATA_LICENSE) applies to
-the material it covers and does not grant rights over private source data,
-third-party imagery, basemaps, papers or templates. Retain third-party notices.
-The official CAS template must be obtained separately under its own terms; see
-the [release guide](../docs/PUBLIC_RELEASE.md).
-
-The default-deny `.gitignore` is generated from the allowlist; it does not remove
-previously tracked files. Publication preparation uses a fresh export without
-`.git`, so the author repository's historical objects and their metadata do not
-enter the candidate. Existing history is retained locally. Exporting does not
-push, change repository visibility, rewrite history or deposit research data.
+The author workspace exports a clean snapshot without its `.git` history. Ignore rules alone do not retract files that were already published. The release procedure verifies the selected files and approved PDF hashes before publication; see [the release guide](../docs/PUBLIC_RELEASE.md).

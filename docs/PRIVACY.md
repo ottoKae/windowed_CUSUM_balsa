@@ -5,9 +5,12 @@ regenerated from that selection with `python tooling/release/update_public_ignor
 Unlisted files stay local. Do not force-add private files or upload the whole
 research directory as a ZIP.
 
-Excluded: raw imagery, real individual trajectories/references, precise source
+Excluded from GitHub: raw imagery, individual trajectories/references, source
 geometry, interpretation notes, private experiment receipts, archives, PPTX,
 credentials, environment files, caches and local service configuration.
+The reviewed numerical dataset, references and stand boundaries are available
+separately on [Zenodo](https://doi.org/10.5281/zenodo.24223182) under CC BY-NC-SA 4.0;
+Git exclusion does not make those published records private.
 Included: author-approved paper content and final figures, code, invented examples,
 schemas and checked aggregate summaries. The paper itself includes author details
 and illustrated case locations; excluding raw data does not conceal information

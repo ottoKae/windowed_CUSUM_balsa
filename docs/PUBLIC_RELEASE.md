@@ -3,8 +3,9 @@
 The current selection contains the numerical library, the original first-post
 W36/TDA/STP dependency chain, current figure renderers/helpers, synthetic examples,
 schemas, selected tests, and the author TeX, bibliography, main/supplementary PDFs
-and seven approved figure PDFs, plus current experiment sources and 16 checked
-aggregate result tables. It does not distribute raw data, real row-level
+and seven approved figure PDFs, plus current experiment sources and 22 checked
+aggregate result tables. The numerical study dataset is published separately on
+Zenodo (see the data guide). GitHub does not distribute raw data, real row-level
 tables, exact geometry, private experiment records, PPTX sources or
 archives. The manuscript content and scientific results are unchanged by this
 organization task.

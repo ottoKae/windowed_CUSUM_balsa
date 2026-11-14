@@ -8,6 +8,15 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[2]
 SOURCE = ROOT / "runs/validation/results_refresh_20261111_v1"
+CONTEXT_SOURCE = ROOT / "runs/figures/harvest_context_20261113_v17_final/source_data"
+CONTEXT_TABLES = {
+    "national_canton_annual_reports.csv": "annual_canton_reports.csv",
+    "national_canton_quarterly_reports.csv": "quarterly_canton_reports.csv",
+    "national_canton_ranking.csv": "canton_ranking.csv",
+    "national_canton_classes.csv": "canton_color_classes.csv",
+    "national_climate_interval_distributions.csv": "interval_distributions.csv",
+    "national_climate_interval_summary.csv": "interval_group_summary.csv",
+}
 TABLES = {
     "table03_components.csv": "components/summary.csv",
     "table03_adjacent_effects.csv": "components/adjacent_effects.csv",
@@ -43,12 +52,13 @@ def main():
     destination = ROOT / "results/summary"
     destination.mkdir(parents=True, exist_ok=True)
     records = {}
-    for name, relative in TABLES.items():
-        path = SOURCE / relative
+    sources = {name: SOURCE / relative for name, relative in TABLES.items()}
+    sources.update({name: CONTEXT_SOURCE / relative for name, relative in CONTEXT_TABLES.items()})
+    for name, path in sources.items():
         frame = pd.read_csv(path)
         forbidden = {"sample_id", "unit_id", "event_id", "prediction_id", "geometry", "longitude", "latitude", "reviewer", "evidence_notes"}
         if forbidden.intersection(frame.columns):
-            raise ValueError(f"Individual-record fields in {relative}")
+            raise ValueError(f"Individual-record fields in {path.relative_to(ROOT)}")
         shutil.copyfile(path, destination / name)
         records[name] = dict(source=path.relative_to(ROOT).as_posix(), rows=len(frame),
                              sha256=hashlib.sha256(path.read_bytes()).hexdigest())
@@ -83,7 +93,7 @@ def main():
                  "tooling/release/prepare_reviewer_materials.py", "tooling/release/update_public_ignore.py"]:
         selected[name] = name
     config["scope"] = "Current algorithm and experimental sources, synthetic examples, aggregate results, tests, manuscript and reviewed publication PDFs. No real individual records or raw imagery."
-    config_path.write_text(json.dumps(config, indent=2) + "\n", encoding="utf-8")
+    config_path.write_text(json.dumps(config, indent=2) + "\n", encoding="utf-8", newline="\n")
     print(f"Prepared {len(records)} aggregate tables and indexed {len(catalog)} experiment groups")
 
 

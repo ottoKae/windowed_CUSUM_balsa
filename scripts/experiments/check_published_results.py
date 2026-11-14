@@ -1,5 +1,6 @@
 """Verify published aggregate metrics without accessing individual study records."""
 import json
+import hashlib
 from pathlib import Path
 
 import numpy as np
@@ -10,6 +11,9 @@ ROOT = Path(__file__).resolve().parents[2]
 
 def main():
     folder = ROOT / "results/summary"
+    for name, source in json.loads((folder / "SOURCES.json").read_text()).items():
+        assert hashlib.sha256((folder / name).read_bytes()).hexdigest() == source["sha256"], name
+        assert len(pd.read_csv(folder / name)) == source["rows"], name
     for name, expected in [("table03_components.csv", 5), ("table04_configuration.csv", 17),
                            ("table05_benchmarks.csv", 14), ("temporal_blocks.csv", 5)]:
         frame = pd.read_csv(folder / name)
@@ -31,6 +35,20 @@ def main():
         baselines.append(pd.read_csv(folder / filename).set_index("variant_id").loc[key])
     for row in baselines:
         assert (row.n_reports, row.n_matches, row.n_original_pairs_retained) == (1208, 945, 495)
+    annual = pd.read_csv(folder / "national_canton_annual_reports.csv").set_index("year")
+    quarterly = pd.read_csv(folder / "national_canton_quarterly_reports.csv").set_index("quarter")
+    for frame in [annual, quarterly]:
+        np.testing.assert_array_equal(frame.drop(columns="National").sum(axis=1), frame.National)
+        assert frame.National.sum() == 6303
+    quarterly.index = pd.PeriodIndex(quarterly.index, freq="Q").year
+    pd.testing.assert_frame_equal(quarterly.groupby(level=0).sum(), annual, check_names=False)
+    climate = pd.read_csv(folder / "national_climate_interval_summary.csv").set_index("group")
+    bins = pd.read_csv(folder / "national_climate_interval_distributions.csv")
+    for group, summary in climate.iterrows():
+        counts = bins.loc[bins.group.eq(group), "n_intervals"]
+        assert counts.sum() == summary.n_intervals, group
+    assert climate.loc["All", "n_intervals"] == 3372
+    assert pd.read_csv(folder / "national_canton_ranking.csv").reports.sum() == 6303
     print(json.dumps(dict(status="passed", components=5, configurations=17, benchmarks=14,
                           matching="reference_pm1_interval_overlap", individual_records_accessed=False)))
 

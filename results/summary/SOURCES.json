@@ -78,5 +78,35 @@
     "source": "runs/validation/results_refresh_20261111_v1/histories/stp_partition_counts.csv",
     "rows": 3,
     "sha256": "4b0af683502428e14766f1b6fe033a95108a24211c6788327a29836ca78a88a7"
+  },
+  "national_canton_annual_reports.csv": {
+    "source": "runs/figures/harvest_context_20261113_v17_final/source_data/annual_canton_reports.csv",
+    "rows": 9,
+    "sha256": "84d36776456c553913b92f28eefa8743302e676e1b9b1926895e77dc50d1b8ea"
+  },
+  "national_canton_quarterly_reports.csv": {
+    "source": "runs/figures/harvest_context_20261113_v17_final/source_data/quarterly_canton_reports.csv",
+    "rows": 36,
+    "sha256": "9295815d8cb3042f32e91c2dab6e9f1d7cdb28f14936821f27e0f05dab01d854"
+  },
+  "national_canton_ranking.csv": {
+    "source": "runs/figures/harvest_context_20261113_v17_final/source_data/canton_ranking.csv",
+    "rows": 72,
+    "sha256": "43906baa08d45ad95145c4eeaaf48287ae83431404a9093b1c04cee8478a0335"
+  },
+  "national_canton_classes.csv": {
+    "source": "runs/figures/harvest_context_20261113_v17_final/source_data/canton_color_classes.csv",
+    "rows": 7,
+    "sha256": "2fd3cf8d125d29f1d85b62596f760302a9e990e43d0f9a770991dc031564edf0"
+  },
+  "national_climate_interval_distributions.csv": {
+    "source": "runs/figures/harvest_context_20261113_v17_final/source_data/interval_distributions.csv",
+    "rows": 144,
+    "sha256": "828c2143163d3113c636a68e8a0e271839be8890d12f92801f9874c919ed023b"
+  },
+  "national_climate_interval_summary.csv": {
+    "source": "runs/figures/harvest_context_20261113_v17_final/source_data/interval_group_summary.csv",
+    "rows": 4,
+    "sha256": "f3cc0f42056db2b2d780c9cbc9e03fefff49b36ae0377af00a1c96ad1dcb7b2d"
   }
 }

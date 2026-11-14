@@ -67,6 +67,7 @@
 !/JAG-manuscript.code-workspace
 !/LICENSE
 !/README.md
+!/README_ZH.md
 !/analysis/workflows/build_population_s1_signature_figure_native.py
 !/analysis/workflows/build_population_s1_signature_figure_v10.py
 !/analysis/workflows/build_population_s1_signature_figure_v11.py
@@ -147,6 +148,12 @@
 !/results/summary/backscatter_aligned_curve.csv
 !/results/summary/backscatter_signatures.csv
 !/results/summary/national_annual_reports.csv
+!/results/summary/national_canton_annual_reports.csv
+!/results/summary/national_canton_classes.csv
+!/results/summary/national_canton_quarterly_reports.csv
+!/results/summary/national_canton_ranking.csv
+!/results/summary/national_climate_interval_distributions.csv
+!/results/summary/national_climate_interval_summary.csv
 !/results/summary/national_metrics.csv
 !/results/summary/national_stand_count_distribution.csv
 !/results/summary/national_stp_counts.csv

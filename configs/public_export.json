@@ -243,7 +243,14 @@
     "tests/test_detector_tda_recusum.py": "tests/test_detector_tda_recusum.py",
     "tests/test_detector_tda_local.py": "tests/test_detector_tda_local.py",
     "tests/test_benchmark_extension.py": "tests/test_benchmark_extension.py",
-    "tests/test_public_entry_imports.py": "tests/test_public_entry_imports.py"
+    "tests/test_public_entry_imports.py": "tests/test_public_entry_imports.py",
+    "README_ZH.md": "README_ZH.md",
+    "results/summary/national_canton_annual_reports.csv": "results/summary/national_canton_annual_reports.csv",
+    "results/summary/national_canton_classes.csv": "results/summary/national_canton_classes.csv",
+    "results/summary/national_canton_quarterly_reports.csv": "results/summary/national_canton_quarterly_reports.csv",
+    "results/summary/national_canton_ranking.csv": "results/summary/national_canton_ranking.csv",
+    "results/summary/national_climate_interval_distributions.csv": "results/summary/national_climate_interval_distributions.csv",
+    "results/summary/national_climate_interval_summary.csv": "results/summary/national_climate_interval_summary.csv"
   },
   "approved_pdfs": {
     "manuscript_JAG/figures/fig01_study_area.pdf": "f6f95c3f2cbfd6a3163d6bdf84adc0429878dc05292ec191af07d16afd18b4f1",
