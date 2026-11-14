@@ -21,3 +21,6 @@ provenance; they are not downloadable datasets in this public repository.
 Compiling the manuscript reuses these PDFs and does not require their raw inputs.
 Rendering every figure from scratch requires the documented source assets; some
 renderers reuse existing artwork rather than rebuilding it from sensor data.
+Figure 1's original rendering commands also require Windows Arial fonts. Its
+helpers can be imported on other platforms; this does not guarantee identical
+figure rendering without the original fonts and artwork.

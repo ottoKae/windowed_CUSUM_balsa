@@ -1,6 +1,7 @@
 """Load experiment entries in isolated processes, without private data or old imports."""
 from pathlib import Path
 import json
+import os
 import subprocess
 import sys
 
@@ -43,5 +44,6 @@ if hasattr(module, 'DETECTOR_CONFIG'):
     assert module.DETECTOR_CONFIG.is_file(), module.DETECTOR_CONFIG
 """
     result = subprocess.run([sys.executable, "-I", "-c", code, str(ROOT), str(ROOT / relative)],
-                            capture_output=True, text=True, timeout=60)
+                            capture_output=True, text=True, timeout=60,
+                            env={k: v for k, v in os.environ.items() if k.upper() != "WINDIR"})
     assert result.returncode == 0, result.stderr

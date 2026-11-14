@@ -33,7 +33,6 @@ SCORES = ROOT / "runs/validation/jag_reference_score_closeout_20261015_v1/scorin
 INVENTORY = ROOT / "data/local/paper_v1/inventory/balsa_validated.parquet"
 SHAPE = ROOT.parent / "LR-CuSum_v100/shp/balsa_polygons/FC001_PLANTACION_FORESTAL_2025_A_BALSA/FC001_PLANTACION_FORESTAL_2025_A_BALSA_ID.shp"
 OLD_REF = ROOT.parent / "LR-CuSum_v100/outputs/balsa_validation_closure_v2/reference_events.parquet"
-FONT = Path(os.environ["WINDIR"]) / "Fonts/arial.ttf"
 EXTENT = (-81.20287031905998, -75.06919372793989, -5.145511022719896, 1.5992886867201852)
 SVG_RECT = (18.61625, 18.61625, 256.29, 281.960219)
 EXPECTED_PDF = "20d7564041475c1ef61db9f9cb2e831f24bc93f494a9424a3762acd8d4ba0484"
@@ -141,6 +140,7 @@ def read_stands() -> tuple[pd.DataFrame, pd.DataFrame, set[int], dict]:
 
 
 def main() -> None:
+    FONT = Path(os.environ["WINDIR"]) / "Fonts/arial.ttf"
     assert digest(OLD / "study_area_bursts.pdf") == EXPECTED_PDF
     assert digest(OLD / "study_area_bursts.svg") == EXPECTED_SVG
     assert FONT.exists(), "Existing Arial font is required for the new legend."
