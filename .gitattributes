@@ -1,7 +1,7 @@
 # Preserve the exact bytes recorded by PUBLIC_FILES.json on every platform.
 # This disables newline conversion without disabling ordinary text diffs.
 * -text
-* whitespace=blank-at-eol,-blank-at-eof,space-before-tab
+* whitespace=blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
 
 # Elsevier CAS template files are vendored verbatim.
 manuscript/cas-common.sty -whitespace

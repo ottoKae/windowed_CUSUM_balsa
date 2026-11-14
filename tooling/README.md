@@ -1,47 +1,46 @@
 # Repository tooling
 
-| Path | Purpose |
+The public snapshot retains selected tools and algorithm dependencies at their
+original paths. The [algorithm guide](../docs/ALGORITHM.md) maps the current
+first-post W36 → TDA → STP implementation and its required input tables.
+
+| Path | Responsibility |
 |---|---|
-| `catalogs/build_sample_catalog.py` | Build a private, searchable collection of existing interpretation records and public schema/cohort summaries |
-| `catalogs/build_figure_provenance.py` | Trace actual TeX figure inclusions to assets, receipts, scripts and input versions |
-| `release/export_public.py` | Create a fresh public source export from an explicit allowlist |
-| `release/prepare_public_aggregates.py` | Copy non-identifying final-score summaries with source hashes |
-| `diagnostics/<run-id>/` | Ignored author-side one-off checks, review helpers and execution receipts |
+| `release/export_public.py` | Build a fresh allowlisted candidate or verify an exported `PUBLIC_FILES.json` |
+| `diagnostics/balsa-national-firstpost-20261030/detector_engine.py` | Current first-post pixel detector adapter |
+| `diagnostics/harvest-inventory-20261104/tda.py` | Current TDA supplied-table interface and frozen inventory adapter |
+| `diagnostics/harvest-inventory-20261104/stp.py` | Current STP adapter with frozen calibration and RNG continuation |
+| Selected episode, baseline and release helpers | Existing imports required by the unchanged TDA implementation |
+| Selected figure diagnostic scripts | Current figure renderers and their preserved helpers |
 
-Run helpers from the repository root. Catalogues preserve original files and
-scientific identities; they do not re-detect events or re-score samples.
+Only explicitly selected Python files are public. Other diagnostics, cataloguing
+work, review helpers and execution receipts remain local. Importing a retained
+helper does not publish its private inputs. Some historical release helpers are
+retained because the current algorithm imports them, not because their old data
+packages are included or should be rebuilt.
+
+Run release commands from the repository root:
 
 ```sh
-python tooling/catalogs/build_sample_catalog.py --help
-python tooling/release/export_public.py --help
+python tooling/release/export_public.py --output dist/public_repository_20261113
 ```
 
-For example, choose a fresh public candidate directory:
+Choose a fresh destination for each candidate. The allowlist is
+`configs/public_export.json`; approved PDF paths have exact hashes. The exporter
+writes the public file inventory without copying `.git` or old repository
+history. It does not upload anything. In the exported directory:
 
 ```sh
-python tooling/release/export_public.py --output dist/public_repository_NEW_VERSION
+python tooling/release/export_public.py --verify .
 ```
 
-This export command and its source mappings are **author-workspace tools**. The
-source-only public clone intentionally lacks the archived source locations and
-private inputs used to assemble a release; it is not a re-export workspace.
-Readers can install the package, run the synthetic demo and use the included code
-without running these assembly helpers.
+An exported checkout does not contain the private inputs used to assemble or
+replay author-side research outputs. Readers can inspect the implementation and
+run selected synthetic tests without those inputs. Full workflow and figure
+replay remain separate operations with the boundaries documented in the
+[release guide](../docs/PUBLIC_RELEASE.md).
 
-On the author workstation, `python tooling/catalogs/build_figure_provenance.py`
-refreshes the figure index without rendering. It requires the original manuscript
-assets and receipts; a source-only public export intentionally omits those inputs.
-
-Use the exporter's output option to choose a new destination. Never copy the
-entire author workspace to GitHub: it contains private inputs, historical review
-records and licensed assets. The exporter writes `PUBLIC_FILES.json` and checks
-the selected text files for accidental private filesystem paths.
-
-The older `organize_w36.py`, `package_artifacts.py`, `write_readme.py` and related
-October 4 helpers describe a completed migration/release. They are not an
-idempotent current cleanup command. In particular, rerunning old packaging can
-select historical exports or real capsules. Keep their historical receipts;
-use the explicit exporter for the current public source candidate.
-
-Reusable tests belong in `tests/`, not in diagnostics. Disposable test output
-belongs in `.test-tmp/<run-id>/`; final verification receipts belong in `runs/`.
+Reusable tests belong in `tests/`; disposable output belongs in
+`.test-tmp/<run-id>/`. Preserve scientific acceptance receipts and historical
+records locally. Old organization/packaging scripts describe their original
+migrations and are not current cleanup commands.

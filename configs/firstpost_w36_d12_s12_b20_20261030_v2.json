@@ -1,0 +1,70 @@
+{
+  "protocol_id": "W36_D12_S12_B20_FIRSTPOST_V2_20261030",
+  "detector": {
+    "bands": [
+      "VV_dB"
+    ],
+    "window_length": 36,
+    "step": 12,
+    "minimum_observations": 12,
+    "alpha": 0.025,
+    "permutations": 3999,
+    "refine_low": 0.015,
+    "refine_high": 0.035,
+    "refined_permutations": 19999,
+    "candidate_seed": 20260820,
+    "start_year": 2017,
+    "end_year": 2025
+  },
+  "geometry": {
+    "window_months": 36,
+    "decision_months": 12,
+    "stride_months": 12
+  },
+  "input": {
+    "calendar_start": "2016-01",
+    "calendar_end": "2026-06",
+    "report_start": "2017-01",
+    "report_end": "2025-12",
+    "mask": "joint_VV_VH_valid_and_n_obs_positive",
+    "spatial_support": "frozen_whole_native_master_cells; centre_membership; no_fallback"
+  },
+  "aggregation": {
+    "method": "B20_FIRSTPOST_V2",
+    "months": 3,
+    "support_numerator": 1,
+    "support_denominator": 5,
+    "fixed_master_grid_denominator": true,
+    "ranking": [
+      "remaining_unique_pixels_desc",
+      "remaining_unique_pixel_month_nodes_desc",
+      "window_start_month_asc"
+    ],
+    "representative_month": "floor(median(unique_pixel_month_node_ordinals)+0.5)",
+    "source_reassignment": false,
+    "context_policy": "clip_without_padding"
+  },
+  "evaluation": {
+    "catalogue_reference": "R0_frozen_conditional_diagnostic",
+    "tolerances_months": [
+      1,
+      2,
+      3
+    ],
+    "precision": null,
+    "population_F1": null,
+    "old307_weights_transferred": false,
+    "national_precision_inferred_from_old_sample": false,
+    "legacy_display_tolerance_months": 3,
+    "legacy_display_chosen_after_results": true
+  },
+  "date_policy": {
+    "candidate": "first_valid_observation_after_first_CUSUM_maximum",
+    "left_segment": "through_peak_inclusive",
+    "right_segment": "from_next_finite_observation",
+    "central_and_reporting_gates": "use_corrected_candidate_month",
+    "no_next_observation": "reject",
+    "missing_months": "keep_calendar; never_add_one_literal_month",
+    "physical_onset_guaranteed": false
+  }
+}

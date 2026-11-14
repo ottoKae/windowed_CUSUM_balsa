@@ -1,6 +1,9 @@
 """Keep private records and stale files out of the explicit public export."""
 import importlib.util
+import hashlib
+import json
 from pathlib import Path
+import subprocess
 
 import pytest
 
@@ -61,3 +64,38 @@ def test_privacy_checks_include_metadata_workflows_and_suffix_free_text(tmp_path
     source = tmp_path / "source.txt"
     source.write_text("token: " + "ghp_" + "a" * 30, encoding="utf-8")
     assert module.privacy_findings({name: source}) == {name: ["credential-like content"]}
+
+
+def test_only_reviewed_pdf_bytes_are_exported_and_verified(tmp_path):
+    pdf = tmp_path / 'figure.pdf'
+    pdf.write_bytes(b'%PDF-1.4\nsynthetic publication fixture\xff')
+    config = {'files': {'figure.pdf': 'figure.pdf', 'configs/public_export.json': 'config.json'},
+              'approved_pdfs': {'figure.pdf': hashlib.sha256(pdf.read_bytes()).hexdigest()}}
+    (tmp_path / 'config.json').write_text(json.dumps(config), encoding='utf-8')
+    output = tmp_path / 'dist/public'
+    module.export(tmp_path, output, config)
+    assert module.verify(output)['manifest_verified']
+    pdf.write_bytes(pdf.read_bytes() + b'changed')
+    with pytest.raises(ValueError, match='PDF not approved'):
+        module.export(tmp_path, tmp_path / 'dist/changed', config)
+    with pytest.raises(ValueError, match='PDF not approved'):
+        module.export(tmp_path, tmp_path / 'dist/unreviewed', {'files': {'figure.pdf': 'figure.pdf'}})
+
+
+def test_editable_binary_is_not_covered_by_pdf_approval(tmp_path):
+    editable = tmp_path / 'layout.pptx'
+    editable.write_bytes(b'PK\x03\x04\xff')
+    assert module.privacy_findings({'layout.pptx': editable})
+
+
+def test_git_checkout_rejects_unlisted_tracked_files_but_allows_local_outputs(tmp_path):
+    (tmp_path / "source.txt").write_text("public")
+    output = tmp_path / "dist/public"
+    module.export(tmp_path, output, {"files": {"README.md": "source.txt"}})
+    subprocess.run(["git", "init", str(output)], check=True, capture_output=True)
+    subprocess.run(["git", "-C", str(output), "add", "README.md", "PUBLIC_FILES.json"], check=True)
+    (output / "local_output.txt").write_text("invented local output")
+    assert module.verify(output)["manifest_verified"]
+    subprocess.run(["git", "-C", str(output), "add", "local_output.txt"], check=True)
+    with pytest.raises(ValueError, match="Tracked files outside public manifest"):
+        module.verify(output)

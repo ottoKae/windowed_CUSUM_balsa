@@ -1,0 +1,155 @@
+% !TeX root = ../main.tex
+\section{Methodology}
+\label{sec:methods}
+
+Reconstructing rotational harvesting from decadal SAR records requires identifying successive stand-replacing canopy removals and resolving their spatial and temporal patterns. Three characteristics of short-rotation plantations guide our methodological design. First, harvesting recurs on the same land, requiring fixed spatial units across which successive management cycles can be tracked. Second, repeated harvesting and rapid regrowth continuously alter canopy structure, rendering a single long-term baseline inadequate for detecting subsequent harvests. Third, harvesting often progresses asynchronously within a stand over several months; collapsing a stand into a single averaged trajectory obscures this progression, whereas treating each pixel independently fragments a single harvest into multiple events.
+
+To address these requirements, we developed a four-stage framework (Fig.~\ref{fig:workflow}a--d): (1) organizing Sentinel-1 observations into track-consistent spatial time series (STS) at 30~m pixel locations; (2) detecting persistent negative backscatter shifts at the pixel level using windowed CuSum (Fig.~\ref{fig:workflow}a,b); (3) consolidating pixelwise detections into stand-level harvest events via temporal detection aggregation (TDA; Fig.~\ref{fig:workflow}c) while resolving intra-event harvesting progression via spatial timing partitioning (STP; Fig.~\ref{fig:workflow}d); and (4) evaluating event recovery and dating accuracy against independent reference records before mapping national harvest dynamics.
+
+\begin{figure*}[pos=!htbp]
+    \centering
+    \includegraphics[width=\linewidth]{figures/fig02_workflow.pdf}
+    \caption{Overview of the rotational harvest mapping framework (Stand~22301). (a) Pixelwise windowed CuSum detection (Pixel~17) with 36-month context windows, 12-month decision intervals, and reference harvests (dashed lines). (b) Latest detection month per 30~m pixel (2017--2025). (c) Stand-level harvest events (TDA1--TDA3; shaded spans) consolidated from monthly detected-pixel counts (bars). (d) Intra-event timing groups (STP1--STP2) within the 2024 harvest event.}
+    \label{fig:workflow}
+\end{figure*}
+
+% --------------------------------------------------
+\subsection{Spatial time-series construction}
+\label{sec:s1_timeseries_representation}
+
+We represented each plantation stand as a set of spatial time series (STS) that link track-consistent monthly Sentinel-1 trajectories to fixed 30~m grid cells~\citep{Guo2025SpatialAssociation} (Fig.~\ref{fig:sts_construction}a--c). Retaining pixel-level trajectories rather than averaging across stand polygons preserves the temporal evidence needed for change detection alongside the spatial layout needed to capture progressive harvesting within stands.
+
+\begin{figure*}[pos=!htbp]
+    \centering
+    \includegraphics[width=\linewidth]{figures/fig03_sts_construction.pdf}
+    \caption{Construction of 30~m spatial time series (STS) from Sentinel-1 RTC bursts. (a) RTC burst archive indexed to MGRS tiles by relative orbit (step~1). (b) Track-specific monthly spatiotemporal data cubes (step~2). (c) Pixelwise monthly VV trajectories extracted within stand polygons (step~3).}
+    \label{fig:sts_construction}
+\end{figure*}
+
+Using the S1-GRiTS framework (Section~\ref{sec:satellitedata}), burst-level RTC-S1 images were organized by relative orbit on MGRS-aligned 30~m grids. For each grid cell and ascending track, valid linear-power $\gamma^{0}$ observations within each calendar month were summarized by their median and converted to decibels (dB). Constructing each trajectory from a single relative orbit prevents radiometric shifts caused by mixing viewing geometries over time~\citep{Navacchi2023RTCOrbit}. Where adjacent tracks or grid zones overlapped, a single trajectory with the greatest number of jointly valid VV and VH months was retained at each location throughout the entire record.
+
+Grid cells whose centres fell within a plantation polygon were assigned to that stand $s$, forming a fixed member set $\mathcal{U}_s$ of size $N_s=|\mathcal{U}_s|$. All pixel trajectories were aligned to a uniform 126-month calendar from January 2016 to June 2026 without interpolating missing months. Monthly VV backscatter in dB, denoted $x_{u,t}$ for pixel $u\in\mathcal{U}_s$ and month $t$, served as the primary detection variable, while VH was retained for polarization sensitivity analyses.
+
+% --------------------------------------------------
+\subsection{Pixelwise windowed CuSum detection}
+\label{sec:windowed_cusum}
+
+\label{sec:windowed_cusum_windows}
+\label{sec:windowed_cusum_candidate}
+\label{sec:windowed_cusum_permutation}
+
+Because backscatter levels and seasonal or environmental variability evolve across successive rotations, windowed CuSum adapts locally at two levels (Fig.~\ref{fig:windowed_cusum_concept}): overlapping windows repeatedly renew the temporal reference as stands harvest and regrow, while a window-specific permutation test evaluates each candidate shift against the variability of that same local window. Unlike recursive segmentation~\citep{Ygorra2023ReCuSum}, later detections do not depend on hard partitioning at earlier change points.
+
+\begin{figure*}[pos=!htbp]
+    \centering
+    \includegraphics[width=\linewidth]{figures/fig04_windowed_cusum_concept.pdf}
+    \caption{Principle of pixelwise windowed CuSum (Pixel~5, Stand~8655). (a) Monthly VV trajectory with overlapping 36-month context windows, central 12-month decision intervals, and reference harvests. (b,c) VV observations and pre-/post-shift means in two consecutive windows. (d,e) Cumulative deviations $C_k$ and full ranges $Q$, where the candidate falls outside the decision interval in (d) ($Q=14.38$) but enters testing in (e) ($Q=17.42$). (f) Permutation null distribution of $Q$, comparing observed $Q$ against the 97.5th percentile ($Q^{\mathrm{perm}}_{0.975}=12.76$).}
+    \label{fig:windowed_cusum_concept}
+\end{figure*}
+
+To avoid edge effects where pre- or post-change observations are sparse, we separated the window used for change estimation from the interval eligible for event reporting. Each context window $\mathcal{W}_j$ spanned $W$ calendar months and contained a central decision interval $\mathcal{D}_j$ of $D$ months flanked by $(W-D)/2$ months of context on each side, advancing in steps of $S$ months. All valid months (finite VV and VH observations) within $\mathcal{W}_j$ contributed to CUSUM calculation, provided at least 12 valid months were present, whereas a candidate shift was admitted only if its estimated date fell within $\mathcal{D}_j$. The baseline configuration used $W=36$, $D=12$, and $S=12$ months (Fig.~\ref{fig:windowed_cusum_concept}a), placing non-overlapping annual decision intervals across 2017--2025 so that each reporting year was evaluated against observations from the preceding, current, and following years (with the 2025 window clipped at June 2026, spanning 30 months).
+
+Within context window $\mathcal{W}_j$, let $t_1<\cdots<t_n$ denote the $n$ valid calendar months for pixel $u$, $z_i=x_{u,t_i}$ the corresponding backscatter values, and $\bar{z}=n^{-1}\sum_{i=1}^{n}z_i$ the local window mean. Cumulative residuals $C_k$ and their full range $Q$ were computed as:
+\begin{equation}
+    \begin{aligned}
+        C_k &= \sum_{i=1}^{k}(z_i-\bar z), \qquad k=1,\ldots,n,\\
+        Q   &= \max_{1\leq k\leq n}C_k - \min_{1\leq k\leq n}C_k.
+    \end{aligned}
+    \label{eq:cusum_amplitude}
+\end{equation}
+Canopy removal produces higher backscatter before the transition and lower backscatter afterward, causing $C_k$ to rise to a peak before declining (Fig.~\ref{fig:windowed_cusum_concept}b--e). We located the earliest global maximum $k^{*}$ and assigned the candidate harvest month $\hat{\tau}_{u,j}$ to the next valid observation:
+\begin{equation}
+    \begin{aligned}
+        k^{*} &= \operatorname*{arg\,max}_{1\leq k\leq n} C_k,\\
+        \hat{\tau}_{u,j} &= t_{k^{*}+1}, \qquad k^{*}<n.
+    \end{aligned}
+    \label{eq:candidate_date}
+\end{equation}
+Partitioning the series into pre-change ($z_1,\ldots,z_{k^{*}}$) and post-change ($z_{k^{*}+1},\ldots,z_n$) segments, a candidate proceeded to statistical testing when $k^{*}<n$, $\hat{\tau}_{u,j}\in\mathcal{D}_j$, and the post-change mean was lower than the pre-change mean.
+
+To account for differences in background noise across stands and growth stages, each qualifying candidate's range $Q$ was evaluated by randomly shuffling the $n$ valid observations within $\mathcal{W}_j$ $B$ times and recomputing the range $Q_b^{\mathrm{perm}}$ via Eq.~\eqref{eq:cusum_amplitude} (Fig.~\ref{fig:windowed_cusum_concept}f):
+\begin{equation}
+    p_{\mathrm{perm}}
+    =
+    \frac{
+        1+\sum_{b=1}^{B}
+        \mathbf{1}\!\left\{
+            Q_b^{\mathrm{perm}}\geq Q
+        \right\}
+    }{B+1},
+    \label{eq:permutation_pvalue}
+\end{equation}
+where $\mathbf{1}\{\cdot\}$ is the indicator function~\citep{PhipsonSmyth2010Permutation}. Candidates were evaluated using $B=3{,}999$ permutations (refined to $19{,}999$ when initial $p_{\mathrm{perm}}\in[0.015,0.035]$) and accepted when $p_{\mathrm{perm}}\leq\alpha_{\mathrm{ts}}$, with $\alpha_{\mathrm{ts}}=0.025$. Non-overlapping annual decision intervals yielded at most one accepted detection per pixel per reporting year.
+
+% ---------------------------------------------------------------------------
+\subsection{Stand-level event aggregation and harvest-history mapping}
+\label{sec:stand_history_reconstruction}
+
+\label{sec:tda}
+\label{sec:stp}
+\label{sec:harvest_histories}
+
+Because harvesting across a plantation stand often spans multiple pixels and consecutive months, we aggregated pixelwise detections into stand-level harvest events using temporal detection aggregation (TDA) and resolved intra-stand harvesting progression using spatial timing partitioning (STP).
+
+To prevent missing SAR observations from artificially splitting an ongoing harvest event, TDA classified each stand $s$ and month $t$ into one of three states based on the number of pixels with accepted detections ($A_{s,t}$) and the number of evaluable pixels with valid observations in that month ($V_{s,t}$):
+\begin{equation}
+    \mathrm{State}_{s,t} =
+    \begin{cases}
+        \text{active}, & A_{s,t}\geq 1,\\
+        \text{observed non-detection}, & A_{s,t}=0,\; V_{s,t}\geq 0.5N_s,\\
+        \text{unknown}, & \text{otherwise}.
+    \end{cases}
+    \label{eq:monthly_activity_state}
+\end{equation}
+Consecutive active months were grouped together, and adjacent active groups separated by a single observed non-detection month were merged. At least two consecutive observed non-detection months were required to separate distinct harvest events. A temporally resolved group was retained as a stand-level detected event when contributing pixels accounted for at least 20\% of the stand's fixed membership $N_s$ (counting each pixel once). Each stand-level event was assigned a representative harvest date equal to the rounded median detection month across its contributing pixel detections.
+
+Within large stands, progressive harvesting can create distinct spatial sub-blocks felled months apart during a single stand-level event (Fig.~\ref{fig:workflow}d). Where a detected event met minimum size criteria ($N_s\geq 25$ and at least 15 contributing pixels), STP tested whether pixel first-detection months exhibited significant spatial clustering. Edge-sharing contributing pixels within the dominant tile--track group were connected into initial timing zones if their first-detection months differed by at most $\delta\in\{0,1,2\}$ months. Letting $J_\delta$ denote the number of adjacent pixel pairs crossing zone boundaries, we permuted first-detection months across pixel locations 999 times (mean $\mu_\delta$, standard deviation $\sigma_\delta$) to compute the standardized boundary-crossing statistic:
+\begin{equation}
+    \begin{aligned}
+        T_{\mathrm{obs}} &= \min_{\delta\in\{0,1,2\}} \frac{J_\delta-\mu_\delta}{\sigma_\delta},\\
+        p_{\mathrm{sp}}  &= \frac{1+\sum_{b=1}^{999}\mathbf{1}\!\left\{T_b\leq T_{\mathrm{obs}}\right\}}{1000}.
+    \end{aligned}
+    \label{eq:spatial_organization}
+\end{equation}
+Significantly fewer boundary crossings than random ($T_{\mathrm{obs}}<0$, $p_{\mathrm{sp}}\leq 0.05$) indicated spatially coherent harvesting progression. At the optimal tolerance $\delta$, zones smaller than three pixels were merged into the temporally nearest zone, and zones were split into distinct intra-event timing groups where ordered median zone dates differed by more than two months, provided each resulting group represented at least 20\% of $N_s$. STP thus reveals spatial harvesting progression within a stand-level event without inflating the stand's total harvest count.
+
+Across 2017--2025, stand harvest frequency was defined as the number of detected stand-level events, and inter-harvest intervals were computed between the first detection months of consecutive events in stands with two or more detections. National patterns were summarized across administrative cantons, 10-km hexagonal grids (using modal three-month interval bins), and 1-km K\"oppen--Geiger climate zones~\citep{Beck2023KoppenGeiger}.
+
+% =========================================================
+\subsection{Experimental design and accuracy assessment}
+\label{sec:experimental_evaluation}
+
+\label{sec:evaluation_reference}
+\label{sec:report_history_evaluation}
+\label{sec:configuration_component}
+\label{sec:benchmark_comparison}
+
+We evaluated the physical SAR signal of harvesting, the contribution and sensitivity of windowed CuSum components, and performance relative to established time-series change detectors across the 459 dated reference stands (1,049 reference harvest events during 2017--2025).
+
+First, to characterize C-band backscatter responses to harvesting, observations were aligned to each reference harvest month (month $0$). For pixels with at least six valid VV and VH observations during months $-12$ to $-3$ (pre-harvest baseline) and at least two during months $0$ to $+2$, harvest-induced change was calculated as the post-harvest median minus the pre-harvest median. Stands with at least 50\% qualifying member pixels were retained (978 events), summarized by within-event pixel medians from $-12$ to $+12$ months, and compared against the pooled monthly backscatter distribution across all 3,498 inventory stands. Uncertainty was quantified via 5,000 spatial-block bootstrap resamples across 61 spatial blocks.
+
+Second, all detector configurations were evaluated at the stand level after applying identical TDA aggregation rules. A detected stand-level event matched a reference harvest event within the same stand if its first-to-last detection span overlapped a $\pm1$-month window around the reference month, using one-to-one assignment that maximized total matches. Pooling matched pairs ($M$), detected events ($N_{\mathrm{det}}$), and reference records ($N_{\mathrm{ref}}$) across all 459 reference stands, agreement was quantified by precision, recall, and F1:
+\begin{equation}
+    \begin{aligned}
+        P_{\mathrm{ref}} &= \frac{M}{N_{\mathrm{det}}}, \qquad
+        R_{\mathrm{ref}} = \frac{M}{N_{\mathrm{ref}}},\\
+        F_{1,\mathrm{ref}} &= \frac{2M}{N_{\mathrm{det}}+N_{\mathrm{ref}}}.
+    \end{aligned}
+    \label{eq:reference_agreement_metrics}
+\end{equation}
+Because optical interpretation may miss cloud-obscured harvests, these metrics measure agreement with documented reference records rather than absolute ground truth. To directly evaluate multi-rotation reconstruction, we also computed the recovery rate of all 590 chronologically adjacent reference event pairs ($R_{\mathrm{pair}}$), requiring both consecutive harvests in a stand to match distinct detected events:
+\begin{equation}
+    R_{\mathrm{pair}}
+    =
+    \frac{
+        \sum_s\sum_{k=1}^{n_s-1} m_{s,k}m_{s,k+1}
+    }{
+        \sum_s(n_s-1)
+    },
+    \label{eq:reference_pair_retention}
+\end{equation}
+where $n_s$ is the number of reference harvests in stand $s$ and $m_{s,k}\in\{0,1\}$ indicates whether the $k$th harvest was matched. Dating accuracy on commonly matched events was assessed via the mean absolute error (MAE) between representative detection months and reference months.
+
+Third, progressive ablation quantified the incremental effect ($\Delta F_{1,\mathrm{ref}}$) of starting from a single full-record CuSum and sequentially adding overlapping windows ($W=36, S=12$), central decision-interval admission ($D=12$), negative-shift screening, and permutation testing ($\alpha_{\mathrm{ts}}=0.025$). Configuration sensitivity further tested context lengths ($W\in\{24,36,48,60\}$ months), search schedules ($(D,S)\in\{(12,12),(12,6),(6,6)\}$ and $W=24, D=S=6$), polarizations (VV, VH, union, and $\pm2$-month intersection), significance thresholds ($\alpha_{\mathrm{ts}}\in\{0.005,0.01,0.025,0.05,0.10\}$), and 3--6 month calendar-block permutations that preserve short-range temporal autocorrelation.
+
+Finally, we benchmarked windowed CuSum against 13 external detector configurations applied to the same pixel trajectories and TDA rules: maximum monthly decline, classical lower CuSum~\citep{Page1954CUSUM}, raw and decrease-filtered monthly CuSum NRT~\citep{Ygorra2024CuSumNRT}, raw, decrease-filtered, and first-post adaptations of recursive ReCuSum~\citep{Ygorra2023ReCuSum}, a dual-polarization Bayesian online change detection (BOCD) prototype~\citep{Bottani2026f-pol_BOCD}, original and expanded CCDC configurations~\citep{Zhu2014CCDC,Bullock2022CCDC_S1}, structural-change breakpoints, BFAST Monitor~\citep{Verbesselt2012BFASTMonitor}, and EWMACD~\citep{Brooks2014EWMACD}. Between-configuration $F_{1,\mathrm{ref}}$ differences in both ablation and benchmark experiments were evaluated using 5,000 paired stand-level bootstrap resamples (with Bonferroni-adjusted 97.5\% confidence intervals for the two primary contrasts against monthly CuSum NRT and original CCDC, and 95\% intervals elsewhere). Exact parameter settings and deterministic tie-breaking rules for all detectors are provided in the accompanying open-source repository (Data and code availability).

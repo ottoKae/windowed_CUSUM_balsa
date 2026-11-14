@@ -1,8 +1,12 @@
 # Data sources and redistribution status
 
+## Dataset release update (2026-11-14)
+
+The owner has authorized preparation of the FC001 balsa boundaries, reference records and numerical SAR trajectories for a separate V1.0.0 Zenodo dataset. The official FC001 2025 resource metadata specifies CC BY-NC-SA 4.0; see [the current licence and attribution record](../dataset/LICENSES.md). The GitHub code export still excludes individual data records. The historical release decisions below do not supersede this update.
+
 ## Find data and interpretation records (2026-10-15)
 
-Start with [DATA_CATALOG.csv](DATA_CATALOG.csv). Each row identifies a source
+Start with `DATA_CATALOG.csv` (author-local). Each row identifies a source
 family, its scientific role, version, local retrieval entry and public metadata.
 Paths are relative to the repository. An ignored path identifies a local input;
 it does not promise that the input is included in a downloaded public export.
@@ -14,8 +18,8 @@ resolved by existing manifests and evidence records, not copied into this repo.
 
 All identified visual-interpretation workflows are indexed in
 `data/private/sample_collection_20261015_v1/`. See the
-[sample schema](../data/schemas/sample_collection.md) and
-[public cohort summary](../data/public/sample_collection_summary.json).
+`../data/schemas/sample_collection.md` (author-local) and
+`../data/public/sample_collection_summary.json` (author-local).
 The collection retains the original sources, revisions, review notes, event
 identities, report links, sampling roles and probability weights. It combines
 retrieval, not scientific denominators: a repeated reading or relationship check

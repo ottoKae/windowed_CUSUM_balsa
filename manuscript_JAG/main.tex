@@ -1,0 +1,125 @@
+% Load float before the class loads hyperref, avoiding duplicate float anchors.
+\RequirePackage{float}
+\documentclass[a4paper,fleqn]{cas-sc}
+
+\usepackage[authoryear]{natbib}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{threeparttable}
+\usepackage{graphicx}
+\usepackage{multirow}
+\usepackage{lineno}
+\usepackage[section]{placeins}
+\usepackage{xcolor}
+\usepackage{setspace}
+
+\ExplSyntaxOn
+\cs_new_eq:NN \lr_cusum_original_make_tbl_caption:nn \__make_tbl_caption:nn
+\cs_set:Npn \__make_tbl_caption:nn #1#2
+  {
+    \group_begin:
+      \skip_set:Nn \l_tbl_abovecap_skip {3pt}
+      \setstretch{1.5}
+      \lr_cusum_original_make_tbl_caption:nn {#1} {#2}
+    \group_end:
+  }
+\cs_new_eq:NN \lr_cusum_original_make_fig_caption:nn \__make_fig_caption:nn
+\cs_set:Npn \__make_fig_caption:nn #1#2
+  {
+    \group_begin:
+      \skip_set:Nn \l_fig_abovecap_skip {3pt}
+      \setstretch{1.5}
+      \lr_cusum_original_make_fig_caption:nn {#1} {#2}
+    \group_end:
+  }
+\ExplSyntaxOff
+
+\begin{document}
+\linenumbers
+
+\let\WriteBookmarks\relax
+\def\floatpagepagefraction{1}
+\def\textpagefraction{.001}
+
+\shorttitle{Mapping rotational harvesting in Ecuadorian balsa plantations}
+\shortauthors{Rao et al.}
+
+\author[1]{Keyi Rao}[orcid=0000-0001-8443-9819]\fnmark[1]
+\credit{Conceptualization, Methodology, Software, Visualization, Data curation, Formal analysis, Project administration, Writing -- original draft}
+
+\author[1]{Shixin Dong}[orcid=0009-0005-7299-5312]\fnmark[1]
+\credit{Methodology, Software, Visualization, Validation, Writing -- original draft}
+
+\author[2]{Zhongwen Hu}[orcid=0000-0003-2689-3196]
+\credit{Validation, Funding acquisition, Writing -- review and editing}
+
+\author[3,4]{Cesar Ivan Alvarez}[orcid=0000-0001-5629-0893]
+\credit{Conceptualization, Methodology, Writing -- review and editing}
+
+\author[5]{Yuanyong Dian}[orcid=0000-0002-4957-3681]
+\credit{Validation, Writing -- review and editing}
+
+\author[1]{Ruixin Fang}[orcid=0000-0002-1429-632X]
+\ead{fangrx@whu.edu.cn}
+\credit{Supervision, Resources, Writing -- review and editing}
+
+\author[1]{Zhaocong Wu}[orcid=0000-0003-2435-5538]\cormark[1]
+\ead{zcwoo@whu.edu.cn}
+\credit{Conceptualization, Supervision, Funding acquisition}
+
+\affiliation[1]{organization={School of Remote Sensing and Information Engineering, Wuhan University},
+  addressline={No. 299 Bayi Road, Wuchang District}, city={Wuhan}, postcode={430072},
+  state={Hubei}, country={China}}
+\affiliation[2]{organization={School of Architecture and Urban Planning and MNR Key Laboratory for Geo-Environmental Monitoring of Great Bay Area, Shenzhen University},
+  addressline={No. 3688 Nanhai Avenue, Nanshan District}, city={Shenzhen},
+  postcode={518060}, state={Guangdong}, country={China}}
+\affiliation[3]{organization={College of Horticulture and Forestry Sciences, Huazhong Agricultural University},
+  addressline={No. 1 Shizishan Street, Hongshan District}, city={Wuhan}, postcode={430070},
+  state={Hubei}, country={China}}
+\affiliation[4]{organization={Institute of Geography, Faculty of Applied Informatics, University of Augsburg},
+  addressline={Universit\"atsstra\ss e 12}, city={Augsburg}, postcode={86159}, country={Germany}}
+\affiliation[5]{organization={Maestr\'ia en Sistemas de Informaci\'on Geogr\'afica, Topograf\'ia Automatizada y Fotogrametr\'ia Digital, Universidad Cat\'olica de Santiago de Guayaquil},
+  city={Guayaquil}, country={Ecuador}}
+
+\cortext[cor1]{Corresponding author}
+\fntext[fn1]{These authors contributed equally to this work.}
+
+\title[mode=title]{Mapping rotational harvesting from decadal Sentinel-1 time series with windowed CuSum: A case study of Ecuadorian balsa plantations}
+
+\begin{abstract}
+  Balsa (\textit{Ochroma pyramidale}) plantations produce lightweight core material for wind-turbine blades on short rotations, yet persistent tropical cloud cover obscures these harvest--regrowth cycles in optical imagery, hindering stand-turnover tracking. Here, we developed a retrospective framework combining \textit{windowed CuSum} with spatiotemporal aggregation to reconstruct multi-rotation harvest histories from decadal Sentinel-1 synthetic aperture radar (SAR) observations. First, terrain-corrected Sentinel-1 bursts are organized into track-consistent monthly data cubes to extract spatial time series at fixed 30~m pixels. Second, overlapping context windows renew local baselines across rotations, and central decision-interval admission paired with window-specific permutation testing isolates canopy-loss shifts. Third, spatiotemporal aggregation bridges pixel-to-stand scale mismatches from asynchronous felling, consolidating staggered pixel detections into discrete stand-level harvests and resolving intra-stand cutting progression. Reference-aligned analysis of paired observations showed median pre-to-post declines of 1.45~dB in VV and 1.40~dB in VH, despite substantial overlap in pooled backscatter distributions. Evaluated against 1,049 reference harvests from 459 stands in mainland Ecuador, windowed CuSum achieved the highest F1 (0.837; precision: 0.782, recall: 0.901) among 14 detector configurations, outperforming adapted ReCuSum (0.789) and CCDC (0.734) and raising consecutive harvest-pair recovery from 65.6\% to 83.9\%, with local windowing driving recall and screening securing precision. Applied across 3,364 evaluable stands, the framework identified 6,303 harvests (2017--2025), revealing repeated felling in 59.6\% of stands, a 34-month median turnover interval, concentration within five cantons (67.6\%), and a 2022 cutting surge. Decadal SAR time series thus advance tropical plantation monitoring to multi-rotation lifecycle reconstruction for sustainable forestry management.
+\end{abstract}
+
+\begin{highlights}
+  \item Decadal Sentinel-1 SAR reconstructs multi-rotation balsa harvest histories
+  \item Overlapping windows and central intervals renew baselines without split errors
+  \item Two-stage spatiotemporal aggregation bridges asynchronous pixel-to-stand scales
+  \item Windowed CuSum reaches 0.837 F1 and recovers 83.9\% of consecutive harvest pairs
+  \item Nearly 60\% of balsa stands harvested repeatedly with a 34-month median cycle
+\end{highlights}
+
+\begin{keywords}
+  Sentinel-1 SAR \sep
+  Windowed CuSum \sep
+  Spatial time series \sep
+  Rotational harvesting \sep
+  Short-rotation plantation \sep
+  Balsa (\textit{Ochroma pyramidale})
+\end{keywords}
+
+\maketitle
+\doublespacing
+
+\input{sections/01_introduction}
+\input{sections/02_materials}
+\input{sections/03_methods}
+\input{sections/04_results}
+\input{sections/05_discussion}
+\input{sections/06_conclusion}
+\input{sections/07_declarations}
+
+\printcredits
+\bibliographystyle{cas-model2-names}
+\bibliography{references}
+
+\end{document}

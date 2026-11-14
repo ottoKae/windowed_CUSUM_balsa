@@ -1,4 +1,4 @@
-"""Command-line interface for the frozen paper protocol and legacy detector."""
+"""Historical detectors; use scripts/run_current_pipeline.py for current first-post/TDA/STP."""
 from __future__ import annotations
 
 import argparse
@@ -39,14 +39,14 @@ def build_parser() -> argparse.ArgumentParser:
 
     paper = modes.add_parser(
         "paper",
-        help="Run the frozen N1 Windowed CUSUM manuscript protocol.",
+        help="Run the historical N1 detector, not the current first-post/TDA/STP pipeline.",
     )
     _common(paper)
     paper.add_argument(
         "--config",
         type=Path,
         required=True,
-        help="Explicit protocol JSON; use configs/standard_w36.json for the current standard.",
+        help="Explicit historical protocol JSON (for example configs/standard_w36.json).",
     )
 
     legacy = modes.add_parser(

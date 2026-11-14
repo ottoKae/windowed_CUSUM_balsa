@@ -1,0 +1,484 @@
+\begin{thebibliography}{43}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+\providecommand{\url}[1]{\texttt{#1}}
+\providecommand{\href}[2]{#2}
+\providecommand{\path}[1]{#1}
+\providecommand{\DOIprefix}{doi:}
+\providecommand{\ArXivprefix}{arXiv:}
+\providecommand{\URLprefix}{URL: }
+\providecommand{\Pubmedprefix}{pmid:}
+\providecommand{\doi}[1]{\href{http://dx.doi.org/#1}{\path{#1}}}
+\providecommand{\Pubmed}[1]{\href{pmid:#1}{\path{#1}}}
+\providecommand{\bibinfo}[2]{#2}
+\ifx\xfnm\relax \def\xfnm[#1]{\unskip,\space#1}\fi
+%Type = Article
+\bibitem[{Alvarez-Mendoza et~al.(2019)Alvarez-Mendoza, Teodoro and
+  Ramirez-Cando}]{AlvarezMendoza2019CirrusEcuador}
+\bibinfo{author}{Alvarez-Mendoza, C.I.}, \bibinfo{author}{Teodoro, A.},
+  \bibinfo{author}{Ramirez-Cando, L.}, \bibinfo{year}{2019}.
+\newblock \bibinfo{title}{Improving {NDVI} by removing cirrus clouds with
+  optical remote sensing data from {Landsat-8} -- a case study in {Quito,
+  Ecuador}}.
+\newblock \bibinfo{journal}{Remote Sensing Applications: Society and
+  Environment} \bibinfo{volume}{13}, \bibinfo{pages}{257--274}.
+\newblock \DOIprefix\doi{10.1016/j.rsase.2018.11.008}.
+%Type = Article
+\bibitem[{Balling et~al.(2023)Balling, Herold and Reiche}]{Balling2023Texture}
+\bibinfo{author}{Balling, J.}, \bibinfo{author}{Herold, M.},
+  \bibinfo{author}{Reiche, J.}, \bibinfo{year}{2023}.
+\newblock \bibinfo{title}{How textural features can improve {SAR}-based
+  tropical forest disturbance mapping}.
+\newblock \bibinfo{journal}{International Journal of Applied Earth Observation
+  and Geoinformation} \bibinfo{volume}{124}, \bibinfo{pages}{103492}.
+\newblock \DOIprefix\doi{10.1016/j.jag.2023.103492}.
+%Type = Article
+\bibitem[{Beck et~al.(2023)Beck, McVicar, Vergopolan, Berg, Lutsko, Dufour,
+  Zeng, Jiang, van Dijk and Miralles}]{Beck2023KoppenGeiger}
+\bibinfo{author}{Beck, H.E.}, \bibinfo{author}{McVicar, T.R.},
+  \bibinfo{author}{Vergopolan, N.}, \bibinfo{author}{Berg, A.},
+  \bibinfo{author}{Lutsko, N.J.}, \bibinfo{author}{Dufour, A.},
+  \bibinfo{author}{Zeng, Z.}, \bibinfo{author}{Jiang, X.}, \bibinfo{author}{van
+  Dijk, A.I.J.M.}, \bibinfo{author}{Miralles, D.G.}, \bibinfo{year}{2023}.
+\newblock \bibinfo{title}{High-resolution (1 km) {K{\"o}ppen--Geiger} maps for
+  1901--2099 based on constrained {CMIP6} projections}.
+\newblock \bibinfo{journal}{Scientific Data} \bibinfo{volume}{10},
+  \bibinfo{pages}{724}.
+\newblock \DOIprefix\doi{10.1038/s41597-023-02549-6}.
+%Type = Article
+\bibitem[{Bendix et~al.(2006)Bendix, Rollenbeck, G{\"o}ttlicher and
+  Cermak}]{Bendix2006EcuadorClouds}
+\bibinfo{author}{Bendix, J.}, \bibinfo{author}{Rollenbeck, R.},
+  \bibinfo{author}{G{\"o}ttlicher, D.}, \bibinfo{author}{Cermak, J.},
+  \bibinfo{year}{2006}.
+\newblock \bibinfo{title}{Cloud occurrence and cloud properties in {Ecuador}}.
+\newblock \bibinfo{journal}{Climate Research} \bibinfo{volume}{30},
+  \bibinfo{pages}{133--147}.
+\newblock \DOIprefix\doi{10.3354/cr030133}.
+%Type = Article
+\bibitem[{Borrega and Gibson(2015)}]{Borrega2015Balsa_mechanics}
+\bibinfo{author}{Borrega, M.}, \bibinfo{author}{Gibson, L.J.},
+  \bibinfo{year}{2015}.
+\newblock \bibinfo{title}{Mechanics of balsa ({Ochroma pyramidale}) wood}.
+\newblock \bibinfo{journal}{Mechanics of Materials} \bibinfo{volume}{84},
+  \bibinfo{pages}{75--90}.
+\newblock \DOIprefix\doi{10.1016/j.mechmat.2015.01.014}.
+%Type = Article
+\bibitem[{Bottani et~al.(2026)Bottani, Ferro-Famil, {Le Toan}, {Doblas Prieto},
+  Mermoz and Koleck}]{Bottani2026f-pol_BOCD}
+\bibinfo{author}{Bottani, M.}, \bibinfo{author}{Ferro-Famil, L.},
+  \bibinfo{author}{{Le Toan}, T.}, \bibinfo{author}{{Doblas Prieto}, J.},
+  \bibinfo{author}{Mermoz, S.}, \bibinfo{author}{Koleck, T.},
+  \bibinfo{year}{2026}.
+\newblock \bibinfo{title}{{Bayesian} polarimetric detector for improved forest
+  loss monitoring using dual-polarization {Sentinel-1} data}.
+\newblock \bibinfo{journal}{ISPRS Journal of Photogrammetry and Remote Sensing}
+  \bibinfo{volume}{237}, \bibinfo{pages}{94--112}.
+\newblock \DOIprefix\doi{10.1016/j.isprsjprs.2026.04.028}.
+%Type = Article
+\bibitem[{Brooks et~al.(2014)Brooks, Wynne, Thomas, Blinn and
+  Coulston}]{Brooks2014EWMACD}
+\bibinfo{author}{Brooks, E.B.}, \bibinfo{author}{Wynne, R.H.},
+  \bibinfo{author}{Thomas, V.A.}, \bibinfo{author}{Blinn, C.E.},
+  \bibinfo{author}{Coulston, J.W.}, \bibinfo{year}{2014}.
+\newblock \bibinfo{title}{On-the-fly massively multitemporal change detection
+  using statistical quality control charts and {Landsat} data}.
+\newblock \bibinfo{journal}{IEEE Transactions on Geoscience and Remote Sensing}
+  \bibinfo{volume}{52}, \bibinfo{pages}{3316--3332}.
+\newblock \DOIprefix\doi{10.1109/TGRS.2013.2272545}.
+%Type = Article
+\bibitem[{Bullock et~al.(2022)Bullock, Healey, Yang, Houborg, Gorelick, Tang
+  and Andrianirina}]{Bullock2022CCDC_S1}
+\bibinfo{author}{Bullock, E.L.}, \bibinfo{author}{Healey, S.P.},
+  \bibinfo{author}{Yang, Z.}, \bibinfo{author}{Houborg, R.},
+  \bibinfo{author}{Gorelick, N.}, \bibinfo{author}{Tang, X.},
+  \bibinfo{author}{Andrianirina, C.}, \bibinfo{year}{2022}.
+\newblock \bibinfo{title}{Timeliness in forest change monitoring: A new
+  assessment framework demonstrated using {Sentinel-1} and a continuous change
+  detection algorithm}.
+\newblock \bibinfo{journal}{Remote Sensing of Environment}
+  \bibinfo{volume}{276}, \bibinfo{pages}{113043}.
+\newblock \DOIprefix\doi{10.1016/j.rse.2022.113043}.
+%Type = Article
+\bibitem[{Ca{\~n}adas-L{\'o}pez et~al.(2019)Ca{\~n}adas-L{\'o}pez, Rade-Loor,
+  Siegmund-Schultze, Moreira-Mu{\~n}oz, Vargas-Hern{\'a}ndez and
+  Wehenkel}]{CanadasLopez2019BalsaGrowth}
+\bibinfo{author}{Ca{\~n}adas-L{\'o}pez, {\'A}.}, \bibinfo{author}{Rade-Loor,
+  D.}, \bibinfo{author}{Siegmund-Schultze, M.},
+  \bibinfo{author}{Moreira-Mu{\~n}oz, G.},
+  \bibinfo{author}{Vargas-Hern{\'a}ndez, J.J.}, \bibinfo{author}{Wehenkel, C.},
+  \bibinfo{year}{2019}.
+\newblock \bibinfo{title}{Growth and yield models for balsa wood plantations in
+  the coastal lowlands of {Ecuador}}.
+\newblock \bibinfo{journal}{Forests} \bibinfo{volume}{10},
+  \bibinfo{pages}{733}.
+\newblock \DOIprefix\doi{10.3390/f10090733}.
+%Type = Article
+\bibitem[{Cort{\'e}s and Hern{\'a}ndez(2023)}]{Cortes2023PlantationHarvesting}
+\bibinfo{author}{Cort{\'e}s, L.}, \bibinfo{author}{Hern{\'a}ndez, J.},
+  \bibinfo{year}{2023}.
+\newblock \bibinfo{title}{Revealing spatiotemporal dynamics of forest
+  plantation harvesting practices at landscape level using satellite time
+  series data}.
+\newblock \bibinfo{journal}{Forestry: An International Journal of Forest
+  Research} \bibinfo{volume}{96}, \bibinfo{pages}{217--227}.
+\newblock \DOIprefix\doi{10.1093/forestry/cpac040}.
+%Type = Article
+\bibitem[{Doblas et~al.(2020)Doblas, Carneiro, Shimabukuro, Sant'Anna and
+  Arag{\~a}o}]{Doblas2020Rainfall}
+\bibinfo{author}{Doblas, J.}, \bibinfo{author}{Carneiro, A.},
+  \bibinfo{author}{Shimabukuro, Y.}, \bibinfo{author}{Sant'Anna, S.},
+  \bibinfo{author}{Arag{\~a}o, L.}, \bibinfo{year}{2020}.
+\newblock \bibinfo{title}{Assessment of rainfall influence on {Sentinel-1} time
+  series on {Amazonian} tropical forests aiming deforestation detection
+  improvement}.
+\newblock \bibinfo{journal}{The International Archives of the Photogrammetry,
+  Remote Sensing and Spatial Information Sciences}
+  \bibinfo{volume}{XLII-3/W12-2020}, \bibinfo{pages}{493--498}.
+\newblock \DOIprefix\doi{10.5194/isprs-archives-XLII-3-W12-2020-493-2020}.
+%Type = Misc
+\bibitem[{{European Space Agency} and {Airbus}(2022)}]{ESA2022CopernicusDEM}
+\bibinfo{author}{{European Space Agency}}, \bibinfo{author}{{Airbus}},
+  \bibinfo{year}{2022}.
+\newblock \bibinfo{title}{{Copernicus DEM}}.
+\newblock \bibinfo{howpublished}{European Space Agency}.
+\newblock \DOIprefix\doi{10.5270/ESA-c5d3d65}. \bibinfo{note}{dataset}.
+%Type = Article
+\bibitem[{Flores-Anderson et~al.(2023)Flores-Anderson, Cardille, Azad,
+  Cherrington, Zhang and Wilson}]{FloresAnderson2023TropicalCloudFreeOptical}
+\bibinfo{author}{Flores-Anderson, A.I.}, \bibinfo{author}{Cardille, J.},
+  \bibinfo{author}{Azad, K.}, \bibinfo{author}{Cherrington, E.},
+  \bibinfo{author}{Zhang, Y.}, \bibinfo{author}{Wilson, S.},
+  \bibinfo{year}{2023}.
+\newblock \bibinfo{title}{Spatial and temporal availability of cloud-free
+  optical observations in the tropics to monitor deforestation}.
+\newblock \bibinfo{journal}{Scientific Data} \bibinfo{volume}{10},
+  \bibinfo{pages}{550}.
+\newblock \DOIprefix\doi{10.1038/s41597-023-02439-x}.
+%Type = Article
+\bibitem[{Gonz{\'a}lez~Osorio et~al.(2010)Gonz{\'a}lez~Osorio,
+  Cervantes~Molina, Torres~Navarrete, S{\'a}nchez~Fonseca and
+  Simba}]{GonzalezOsorio2010Balsa}
+\bibinfo{author}{Gonz{\'a}lez~Osorio, B.}, \bibinfo{author}{Cervantes~Molina,
+  X.}, \bibinfo{author}{Torres~Navarrete, E.},
+  \bibinfo{author}{S{\'a}nchez~Fonseca, C.}, \bibinfo{author}{Simba, L.},
+  \bibinfo{year}{2010}.
+\newblock \bibinfo{title}{Caracterizaci{\'o}n del cultivo de balsa ({Ochroma
+  pyramidale}) en la provincia de {Los R{\'i}os} -- {Ecuador}}.
+\newblock \bibinfo{journal}{Ciencia y Tecnolog{\'i}a} \bibinfo{volume}{3},
+  \bibinfo{pages}{7--11}.
+\newblock \DOIprefix\doi{10.18779/cyt.v3i2.94}.
+%Type = Article
+\bibitem[{Guo et~al.(2025)Guo, Zhang, Ye, Wang, Yang and
+  Tang}]{Guo2025SpatialAssociation}
+\bibinfo{author}{Guo, J.}, \bibinfo{author}{Zhang, H.}, \bibinfo{author}{Ye,
+  X.}, \bibinfo{author}{Wang, H.}, \bibinfo{author}{Yang, Y.},
+  \bibinfo{author}{Tang, G.}, \bibinfo{year}{2025}.
+\newblock \bibinfo{title}{Spatial association measures for time series with
+  fixed spatial locations}.
+\newblock \bibinfo{journal}{International Journal of Geographical Information
+  Science} \bibinfo{volume}{39}, \bibinfo{pages}{1320--1344}.
+\newblock \DOIprefix\doi{10.1080/13658816.2024.2445185}.
+%Type = Article
+\bibitem[{Huang et~al.(2026)Huang, Wei, Ding, Liang, Wu, Chen and
+  You}]{Huang2026EucalyptusAge}
+\bibinfo{author}{Huang, J.}, \bibinfo{author}{Wei, H.}, \bibinfo{author}{Ding,
+  J.}, \bibinfo{author}{Liang, Y.}, \bibinfo{author}{Wu, Z.},
+  \bibinfo{author}{Chen, J.}, \bibinfo{author}{You, H.}, \bibinfo{year}{2026}.
+\newblock \bibinfo{title}{Estimating the age of {Eucalyptus} plantations using
+  monthly {Harmonized Landsat--Sentinel} imagery and a {LandTrendr}-based
+  workflow}.
+\newblock \bibinfo{journal}{Annals of Forest Science} \bibinfo{volume}{83},
+  \bibinfo{pages}{23}.
+\newblock \DOIprefix\doi{10.1186/s13595-026-01339-5}.
+%Type = Misc
+\bibitem[{Karger et~al.(2021)Karger, Conrad, B{\"o}hner, Kawohl, Kreft,
+  Soria-Auza, Zimmermann, Linder and Kessler}]{Karger2021CHELSAv21}
+\bibinfo{author}{Karger, D.N.}, \bibinfo{author}{Conrad, O.},
+  \bibinfo{author}{B{\"o}hner, J.}, \bibinfo{author}{Kawohl, T.},
+  \bibinfo{author}{Kreft, H.}, \bibinfo{author}{Soria-Auza, R.W.},
+  \bibinfo{author}{Zimmermann, N.E.}, \bibinfo{author}{Linder, H.P.},
+  \bibinfo{author}{Kessler, M.}, \bibinfo{year}{2021}.
+\newblock \bibinfo{title}{{CHELSA V2.1} (current)}.
+\newblock \bibinfo{howpublished}{EnviDat}.
+\newblock \DOIprefix\doi{10.16904/envidat.228.v2.1}. \bibinfo{note}{dataset,
+  version 2.1}.
+%Type = Article
+\bibitem[{Kennedy et~al.(2010)Kennedy, Yang and Cohen}]{Kennedy2010LandTrendr}
+\bibinfo{author}{Kennedy, R.E.}, \bibinfo{author}{Yang, Z.},
+  \bibinfo{author}{Cohen, W.B.}, \bibinfo{year}{2010}.
+\newblock \bibinfo{title}{Detecting trends in forest disturbance and recovery
+  using yearly {Landsat} time series: 1. {LandTrendr}---temporal segmentation
+  algorithms}.
+\newblock \bibinfo{journal}{Remote Sensing of Environment}
+  \bibinfo{volume}{114}, \bibinfo{pages}{2897--2910}.
+\newblock \DOIprefix\doi{10.1016/j.rse.2010.07.008}.
+%Type = Article
+\bibitem[{McMahon and Jackson(2019)}]{McMahon2019EucalyptusRotations}
+\bibinfo{author}{McMahon, D.E.}, \bibinfo{author}{Jackson, R.B.},
+  \bibinfo{year}{2019}.
+\newblock \bibinfo{title}{Management intensification maintains wood production
+  over multiple harvests in tropical {{\textit{Eucalyptus}}} plantations}.
+\newblock \bibinfo{journal}{Ecological Applications} \bibinfo{volume}{29},
+  \bibinfo{pages}{e01879}.
+\newblock \DOIprefix\doi{10.1002/eap.1879}.
+%Type = Article
+\bibitem[{Mercier et~al.(2026)Mercier, Betbeder, Mortier, Barbier, Ploton,
+  Cornu and Couteron}]{Mercier2026SmallLogging}
+\bibinfo{author}{Mercier, A.}, \bibinfo{author}{Betbeder, J.},
+  \bibinfo{author}{Mortier, F.}, \bibinfo{author}{Barbier, N.},
+  \bibinfo{author}{Ploton, P.}, \bibinfo{author}{Cornu, G.},
+  \bibinfo{author}{Couteron, P.}, \bibinfo{year}{2026}.
+\newblock \bibinfo{title}{Mapping small-sized logging disturbances in tropical
+  forests using {Sentinel-1} time series and an extensive ground truth
+  dataset}.
+\newblock \bibinfo{journal}{Frontiers in Remote Sensing} \bibinfo{volume}{7},
+  \bibinfo{pages}{1659305}.
+\newblock \DOIprefix\doi{10.3389/frsen.2026.1659305}.
+%Type = Misc
+\bibitem[{{Ministerio de Agricultura y Ganader{\'i}a}(2025)}]{MAGGeoportal}
+\bibinfo{author}{{Ministerio de Agricultura y Ganader{\'i}a}},
+  \bibinfo{year}{2025}.
+\newblock \bibinfo{title}{{FC001\_PLANTACION\_FORESTAL\_2025}}.
+\newblock \bibinfo{howpublished}{Commercial forest plantation inventory for
+  mainland Ecuador, Geoportal del Agro Ecuatoriano}.
+\newblock \URLprefix \url{http://geoportal.agricultura.gob.ec/}.
+  \bibinfo{note}{downloaded in April 2026}.
+%Type = Misc
+\bibitem[{{NASA/JPL/OPERA}(2023)}]{opera2023rtc}
+\bibinfo{author}{{NASA/JPL/OPERA}}, \bibinfo{year}{2023}.
+\newblock \bibinfo{title}{{OPERA} radiometric terrain corrected {SAR}
+  backscatter from {Sentinel-1} validated product (version 1)}.
+\newblock \bibinfo{howpublished}{NASA Alaska Satellite Facility Distributed
+  Active Archive Center}.
+\newblock \URLprefix
+  \url{https://www.earthdata.nasa.gov/data/catalog/asf-opera-l2-rtc-s1-v1-1},
+  \DOIprefix\doi{10.5067/SNWG/OPERA_L2_RTC-S1_V1}. \bibinfo{note}{data set}.
+%Type = Article
+\bibitem[{Navacchi et~al.(2023)Navacchi, Cao, Bauer-Marschallinger, Snoeij,
+  Small and Wagner}]{Navacchi2023RTCOrbit}
+\bibinfo{author}{Navacchi, C.}, \bibinfo{author}{Cao, S.},
+  \bibinfo{author}{Bauer-Marschallinger, B.}, \bibinfo{author}{Snoeij, P.},
+  \bibinfo{author}{Small, D.}, \bibinfo{author}{Wagner, W.},
+  \bibinfo{year}{2023}.
+\newblock \bibinfo{title}{Utilising {Sentinel-1}'s orbital stability for
+  efficient pre-processing of radiometric terrain corrected gamma nought
+  backscatter}.
+\newblock \bibinfo{journal}{Sensors} \bibinfo{volume}{23},
+  \bibinfo{pages}{6072}.
+\newblock \DOIprefix\doi{10.3390/s23136072}.
+%Type = Article
+\bibitem[{Ochoa-Brito et~al.(2023)Ochoa-Brito, Ghosh and
+  Hijmans}]{OchoaBrito2023EcuadorCropland}
+\bibinfo{author}{Ochoa-Brito, J.I.}, \bibinfo{author}{Ghosh, A.},
+  \bibinfo{author}{Hijmans, R.J.}, \bibinfo{year}{2023}.
+\newblock \bibinfo{title}{Cropland expansion in {Ecuador} between 2000 and
+  2016}.
+\newblock \bibinfo{journal}{PLOS ONE} \bibinfo{volume}{18},
+  \bibinfo{pages}{e0291753}.
+\newblock \DOIprefix\doi{10.1371/journal.pone.0291753}.
+%Type = Article
+\bibitem[{Page(1954)}]{Page1954CUSUM}
+\bibinfo{author}{Page, E.S.}, \bibinfo{year}{1954}.
+\newblock \bibinfo{title}{Continuous inspection schemes}.
+\newblock \bibinfo{journal}{Biometrika} \bibinfo{volume}{41},
+  \bibinfo{pages}{100--115}.
+\newblock \DOIprefix\doi{10.1093/biomet/41.1-2.100}.
+%Type = Article
+\bibitem[{Phipson and Smyth(2010)}]{PhipsonSmyth2010Permutation}
+\bibinfo{author}{Phipson, B.}, \bibinfo{author}{Smyth, G.K.},
+  \bibinfo{year}{2010}.
+\newblock \bibinfo{title}{Permutation {P}-values should never be zero:
+  Calculating exact {P}-values when permutations are randomly drawn}.
+\newblock \bibinfo{journal}{Statistical Applications in Genetics and Molecular
+  Biology} \bibinfo{volume}{9}, \bibinfo{pages}{Article 39}.
+\newblock \DOIprefix\doi{10.2202/1544-6115.1585}.
+%Type = Manual
+\bibitem[{{Planet Labs PBC}(2024)}]{Planet2024Basemaps}
+\bibinfo{author}{{Planet Labs PBC}}, \bibinfo{year}{2024}.
+\newblock \bibinfo{title}{{PlanetScope} Basemaps Technical Specification}.
+\newblock \bibinfo{organization}{Planet Labs PBC}.
+\newblock \URLprefix
+  \url{https://assets.planet.com/products/basemap/planet-basemaps-product-specifications.pdf}.
+%Type = Article
+\bibitem[{Quegan and Yu(2001)}]{Quegan2001Speckle}
+\bibinfo{author}{Quegan, S.}, \bibinfo{author}{Yu, J.J.}, \bibinfo{year}{2001}.
+\newblock \bibinfo{title}{Filtering of multichannel {SAR} images}.
+\newblock \bibinfo{journal}{IEEE Transactions on Geoscience and Remote Sensing}
+  \bibinfo{volume}{39}, \bibinfo{pages}{2373--2379}.
+\newblock \DOIprefix\doi{10.1109/36.964973}.
+%Type = Article
+\bibitem[{Reiche et~al.(2021)Reiche, Mullissa, Slagter, Gou, Tsendbazar,
+  Odongo-Braun, Vollrath, Weisse, Stolle, Pickens, Donchyts, Clinton, Gorelick
+  and Herold}]{Reiche2021CongoAlerts}
+\bibinfo{author}{Reiche, J.}, \bibinfo{author}{Mullissa, A.},
+  \bibinfo{author}{Slagter, B.}, \bibinfo{author}{Gou, Y.},
+  \bibinfo{author}{Tsendbazar, N.E.}, \bibinfo{author}{Odongo-Braun, C.},
+  \bibinfo{author}{Vollrath, A.}, \bibinfo{author}{Weisse, M.J.},
+  \bibinfo{author}{Stolle, F.}, \bibinfo{author}{Pickens, A.},
+  \bibinfo{author}{Donchyts, G.}, \bibinfo{author}{Clinton, N.},
+  \bibinfo{author}{Gorelick, N.}, \bibinfo{author}{Herold, M.},
+  \bibinfo{year}{2021}.
+\newblock \bibinfo{title}{Forest disturbance alerts for the {Congo Basin} using
+  {Sentinel-1}}.
+\newblock \bibinfo{journal}{Environmental Research Letters}
+  \bibinfo{volume}{16}, \bibinfo{pages}{024005}.
+\newblock \DOIprefix\doi{10.1088/1748-9326/abd0a8}.
+%Type = Article
+\bibitem[{Ruiz-Ramos et~al.(2020)Ruiz-Ramos, Marino, Boardman and
+  Suarez}]{RuizRamos2020CUSUMSMC}
+\bibinfo{author}{Ruiz-Ramos, J.}, \bibinfo{author}{Marino, A.},
+  \bibinfo{author}{Boardman, C.}, \bibinfo{author}{Suarez, J.},
+  \bibinfo{year}{2020}.
+\newblock \bibinfo{title}{Continuous forest monitoring using cumulative sums of
+  {Sentinel-1} timeseries}.
+\newblock \bibinfo{journal}{Remote Sensing} \bibinfo{volume}{12},
+  \bibinfo{pages}{3061}.
+\newblock \DOIprefix\doi{10.3390/rs12183061}.
+%Type = Article
+\bibitem[{Sabir et~al.(2024)Sabir, Khati, Lavalle and
+  Srivastava}]{Sabir2024AdaptiveCuSUM}
+\bibinfo{author}{Sabir, A.}, \bibinfo{author}{Khati, U.},
+  \bibinfo{author}{Lavalle, M.}, \bibinfo{author}{Srivastava, H.S.},
+  \bibinfo{year}{2024}.
+\newblock \bibinfo{title}{Adapting {CuSUM} algorithm for site-specific forest
+  conditions to detect tropical deforestation}.
+\newblock \bibinfo{journal}{Remote Sensing} \bibinfo{volume}{16},
+  \bibinfo{pages}{3871}.
+\newblock \DOIprefix\doi{10.3390/rs16203871}.
+%Type = Article
+\bibitem[{Santoro and Cartus(2018)}]{Santoro2018SARBiomass}
+\bibinfo{author}{Santoro, M.}, \bibinfo{author}{Cartus, O.},
+  \bibinfo{year}{2018}.
+\newblock \bibinfo{title}{Research pathways of forest above-ground biomass
+  estimation based on {SAR} backscatter and interferometric {SAR}
+  observations}.
+\newblock \bibinfo{journal}{Remote Sensing} \bibinfo{volume}{10},
+  \bibinfo{pages}{608}.
+\newblock \DOIprefix\doi{10.3390/rs10040608}.
+%Type = Article
+\bibitem[{Small(2011)}]{Small2011RTC}
+\bibinfo{author}{Small, D.}, \bibinfo{year}{2011}.
+\newblock \bibinfo{title}{Flattening gamma: Radiometric terrain correction for
+  {SAR} imagery}.
+\newblock \bibinfo{journal}{IEEE Transactions on Geoscience and Remote Sensing}
+  \bibinfo{volume}{49}, \bibinfo{pages}{3081--3093}.
+\newblock \DOIprefix\doi{10.1109/TGRS.2011.2120616}.
+%Type = Article
+\bibitem[{Spracklen and Spracklen(2021)}]{Spracklen2021Acacia}
+\bibinfo{author}{Spracklen, B.}, \bibinfo{author}{Spracklen, D.V.},
+  \bibinfo{year}{2021}.
+\newblock \bibinfo{title}{Synergistic use of {Sentinel-1} and {Sentinel-2} to
+  map natural forest and {Acacia} plantation and stand ages in {North-Central
+  Vietnam}}.
+\newblock \bibinfo{journal}{Remote Sensing} \bibinfo{volume}{13},
+  \bibinfo{pages}{185}.
+\newblock \DOIprefix\doi{10.3390/rs13020185}.
+%Type = Article
+\bibitem[{Torres et~al.(2012)Torres, Snoeij, Geudtner, Bibby, Davidson, Attema,
+  Potin, Rommen, Floury, Brown et~al.}]{Torres2012S1}
+\bibinfo{author}{Torres, R.}, \bibinfo{author}{Snoeij, P.},
+  \bibinfo{author}{Geudtner, D.}, \bibinfo{author}{Bibby, D.},
+  \bibinfo{author}{Davidson, M.}, \bibinfo{author}{Attema, E.},
+  \bibinfo{author}{Potin, P.}, \bibinfo{author}{Rommen, B.},
+  \bibinfo{author}{Floury, N.}, \bibinfo{author}{Brown, M.}, et~al.,
+  \bibinfo{year}{2012}.
+\newblock \bibinfo{title}{{GMES} {Sentinel-1} mission}.
+\newblock \bibinfo{journal}{Remote Sensing of Environment}
+  \bibinfo{volume}{120}, \bibinfo{pages}{9--24}.
+\newblock \DOIprefix\doi{10.1016/j.rse.2011.05.028}.
+%Type = Article
+\bibitem[{Verbesselt et~al.(2012)Verbesselt, Zeileis and
+  Herold}]{Verbesselt2012BFASTMonitor}
+\bibinfo{author}{Verbesselt, J.}, \bibinfo{author}{Zeileis, A.},
+  \bibinfo{author}{Herold, M.}, \bibinfo{year}{2012}.
+\newblock \bibinfo{title}{Near real-time disturbance detection using satellite
+  image time series}.
+\newblock \bibinfo{journal}{Remote Sensing of Environment}
+  \bibinfo{volume}{123}, \bibinfo{pages}{98--108}.
+\newblock \DOIprefix\doi{10.1016/j.rse.2012.02.022}.
+%Type = Article
+\bibitem[{van~der Woude et~al.(2024)van~der Woude, Reiche, Sterck, Nabuurs, Vos
+  and Herold}]{VanDerWoude2024ManagementDisturbance}
+\bibinfo{author}{van~der Woude, S.}, \bibinfo{author}{Reiche, J.},
+  \bibinfo{author}{Sterck, F.}, \bibinfo{author}{Nabuurs, G.J.},
+  \bibinfo{author}{Vos, M.}, \bibinfo{author}{Herold, M.},
+  \bibinfo{year}{2024}.
+\newblock \bibinfo{title}{Sensitivity of {Sentinel-1} backscatter to
+  management-related disturbances in temperate forests}.
+\newblock \bibinfo{journal}{Remote Sensing} \bibinfo{volume}{16},
+  \bibinfo{pages}{1553}.
+\newblock \DOIprefix\doi{10.3390/rs16091553}.
+%Type = Article
+\bibitem[{Ygorra et~al.(2024)Ygorra, Frappart, Wigneron, Catry, Pillot, Pfefer,
+  Courtalon and Riazanoff}]{Ygorra2024CuSumNRT}
+\bibinfo{author}{Ygorra, B.}, \bibinfo{author}{Frappart, F.},
+  \bibinfo{author}{Wigneron, J.P.}, \bibinfo{author}{Catry, T.},
+  \bibinfo{author}{Pillot, B.}, \bibinfo{author}{Pfefer, A.},
+  \bibinfo{author}{Courtalon, J.}, \bibinfo{author}{Riazanoff, S.},
+  \bibinfo{year}{2024}.
+\newblock \bibinfo{title}{A near-real-time tropical deforestation monitoring
+  algorithm based on the {CuSum} change detection method}.
+\newblock \bibinfo{journal}{Frontiers in Remote Sensing} \bibinfo{volume}{5},
+  \bibinfo{pages}{1416550}.
+\newblock \DOIprefix\doi{10.3389/frsen.2024.1416550}.
+%Type = Article
+\bibitem[{Ygorra et~al.(2021)Ygorra, Frappart, Wigneron, Moisy, Catry, Baup,
+  Hamunyela and Riazanoff}]{Ygorra2021CuSum}
+\bibinfo{author}{Ygorra, B.}, \bibinfo{author}{Frappart, F.},
+  \bibinfo{author}{Wigneron, J.P.}, \bibinfo{author}{Moisy, C.},
+  \bibinfo{author}{Catry, T.}, \bibinfo{author}{Baup, F.},
+  \bibinfo{author}{Hamunyela, E.}, \bibinfo{author}{Riazanoff, S.},
+  \bibinfo{year}{2021}.
+\newblock \bibinfo{title}{Monitoring loss of tropical forest cover from
+  {Sentinel-1} time-series: A {CuSum}-based approach}.
+\newblock \bibinfo{journal}{International Journal of Applied Earth Observation
+  and Geoinformation} \bibinfo{volume}{103}, \bibinfo{pages}{102532}.
+\newblock \DOIprefix\doi{10.1016/j.jag.2021.102532}.
+%Type = Article
+\bibitem[{Ygorra et~al.(2023)Ygorra, Frappart, Wigneron, Moisy, Catry, Pillot,
+  Courtalon, Kharlanova and Riazanoff}]{Ygorra2023ReCuSum}
+\bibinfo{author}{Ygorra, B.}, \bibinfo{author}{Frappart, F.},
+  \bibinfo{author}{Wigneron, J.P.}, \bibinfo{author}{Moisy, C.},
+  \bibinfo{author}{Catry, T.}, \bibinfo{author}{Pillot, B.},
+  \bibinfo{author}{Courtalon, J.}, \bibinfo{author}{Kharlanova, A.},
+  \bibinfo{author}{Riazanoff, S.}, \bibinfo{year}{2023}.
+\newblock \bibinfo{title}{{ReCuSum}: A polyvalent method to monitor tropical
+  forest disturbances}.
+\newblock \bibinfo{journal}{ISPRS Journal of Photogrammetry and Remote Sensing}
+  \bibinfo{volume}{203}, \bibinfo{pages}{358--372}.
+\newblock \DOIprefix\doi{10.1016/j.isprsjprs.2023.08.006}.
+%Type = Article
+\bibitem[{Yuan et~al.(2026)Yuan, Yang, Zhu, Zhang, Wei, Liu, Li, Wu and
+  Chen}]{Yuan2026BalsaWaterUse}
+\bibinfo{author}{Yuan, X.}, \bibinfo{author}{Yang, B.}, \bibinfo{author}{Zhu,
+  X.}, \bibinfo{author}{Zhang, P.}, \bibinfo{author}{Wei, L.},
+  \bibinfo{author}{Liu, W.}, \bibinfo{author}{Li, X.}, \bibinfo{author}{Wu,
+  J.}, \bibinfo{author}{Chen, Y.}, \bibinfo{year}{2026}.
+\newblock \bibinfo{title}{Unraveling the age-dependent water use strategy and
+  its drivers in fast-growing balsa wood ({Ochroma lagopus}) plantations}.
+\newblock \bibinfo{journal}{Agricultural and Forest Meteorology}
+  \bibinfo{volume}{386}, \bibinfo{pages}{111243}.
+\newblock \DOIprefix\doi{10.1016/j.agrformet.2026.111243}.
+%Type = Article
+\bibitem[{Zhao et~al.(2022)Zhao, Sun, Zhong, Meng, Huang, Zeng, Wang, Li and
+  Wang}]{Zhao2022MonthlyHarvest}
+\bibinfo{author}{Zhao, F.}, \bibinfo{author}{Sun, R.}, \bibinfo{author}{Zhong,
+  L.}, \bibinfo{author}{Meng, R.}, \bibinfo{author}{Huang, C.},
+  \bibinfo{author}{Zeng, X.}, \bibinfo{author}{Wang, M.}, \bibinfo{author}{Li,
+  Y.}, \bibinfo{author}{Wang, Z.}, \bibinfo{year}{2022}.
+\newblock \bibinfo{title}{Monthly mapping of forest harvesting using dense time
+  series {Sentinel-1 SAR} imagery and deep learning}.
+\newblock \bibinfo{journal}{Remote Sensing of Environment}
+  \bibinfo{volume}{269}, \bibinfo{pages}{112822}.
+\newblock \DOIprefix\doi{10.1016/j.rse.2021.112822}.
+%Type = Article
+\bibitem[{Zhu and Woodcock(2014)}]{Zhu2014CCDC}
+\bibinfo{author}{Zhu, Z.}, \bibinfo{author}{Woodcock, C.E.},
+  \bibinfo{year}{2014}.
+\newblock \bibinfo{title}{Continuous change detection and classification of
+  land cover using all available {Landsat} data}.
+\newblock \bibinfo{journal}{Remote Sensing of Environment}
+  \bibinfo{volume}{144}, \bibinfo{pages}{152--171}.
+\newblock \DOIprefix\doi{10.1016/j.rse.2014.01.011}.
+
+\end{thebibliography}

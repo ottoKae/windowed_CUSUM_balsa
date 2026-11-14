@@ -1,0 +1,82 @@
+{
+  "table03_components.csv": {
+    "source": "runs/validation/results_refresh_20261111_v1/components/summary.csv",
+    "rows": 5,
+    "sha256": "953f2e03356fd7ef9667159fbcfa315f40cb7161d3cc665279461416b19ebaf4"
+  },
+  "table03_adjacent_effects.csv": {
+    "source": "runs/validation/results_refresh_20261111_v1/components/adjacent_effects.csv",
+    "rows": 4,
+    "sha256": "60ac65f95fc5d036fade35d0f50ec29cb4c135ab7accb4c068e9617ce5764d7c"
+  },
+  "table04_configuration.csv": {
+    "source": "runs/validation/results_refresh_20261111_v1/configuration/evaluation/summary.csv",
+    "rows": 17,
+    "sha256": "a821739e4ebeaf477594372942eaee147e86683c885e2b1b976c96d462aa894c"
+  },
+  "table04_paired_effects.csv": {
+    "source": "runs/validation/results_refresh_20261111_v1/configuration/evaluation/paired_effects.csv",
+    "rows": 17,
+    "sha256": "fcf26f2c22b40691a08234977d0b4b98f2d3709c07dab9fe2f05b905b40b4492"
+  },
+  "table05_benchmarks.csv": {
+    "source": "runs/validation/results_refresh_20261111_v1/benchmark/summary.csv",
+    "rows": 14,
+    "sha256": "8bda19a09d080e45359b5983e7b908c91407aeb4609cb230a0a5831bc2713c57"
+  },
+  "table05_primary_contrasts.csv": {
+    "source": "runs/validation/results_refresh_20261111_v1/benchmark/primary_contrasts.csv",
+    "rows": 2,
+    "sha256": "0d261d7171daf809388a0d686331a272ced979ee354f39564cc3f6bc151c1d9c"
+  },
+  "table05_paired_effects.csv": {
+    "source": "runs/validation/results_refresh_20261111_v1/benchmark/paired_effects.csv",
+    "rows": 13,
+    "sha256": "4a948944a08e11fe5ace06bf869e695801d8bc8555cc795415d35c3b9132126b"
+  },
+  "temporal_blocks.csv": {
+    "source": "runs/validation/results_refresh_20261111_v1/blocks/evaluation/summary.csv",
+    "rows": 5,
+    "sha256": "e8db0283160becb7074084a079e6fda1d18407e70470a05eb7279dcb3db23852"
+  },
+  "temporal_blocks_effects.csv": {
+    "source": "runs/validation/results_refresh_20261111_v1/blocks/evaluation/paired_effects.csv",
+    "rows": 7,
+    "sha256": "664d9759666f2d2bad264e979d2cb160ebfbbd313506985fb3a3da845f1dbbfb"
+  },
+  "backscatter_signatures.csv": {
+    "source": "runs/validation/results_refresh_20261111_v1/signatures/summary.csv",
+    "rows": 2,
+    "sha256": "12f4cb5116dc55e58d5b2a789accec530307e17cdda14b9a7262dfbefb53b9f7"
+  },
+  "backscatter_absolute.csv": {
+    "source": "runs/validation/results_refresh_20261111_v1/signatures/absolute_backscatter_summary.csv",
+    "rows": 2,
+    "sha256": "ecb2ceb0f65b87c885d7c3d86fdb5857bcbf52eb4fb602bc9b401242f8cd94eb"
+  },
+  "backscatter_aligned_curve.csv": {
+    "source": "runs/validation/results_refresh_20261111_v1/signatures/figure_source_aligned.csv",
+    "rows": 50,
+    "sha256": "3100e67f36de2018b44d9e2860383f2a610e52dcc4349afe0abf0b48994999b6"
+  },
+  "national_metrics.csv": {
+    "source": "runs/validation/results_refresh_20261111_v1/histories/metrics.csv",
+    "rows": 23,
+    "sha256": "7eadef9cfed4b9c2194e51c1ffe0c89d6d7d362d5049a0a172313d11e694e9c6"
+  },
+  "national_annual_reports.csv": {
+    "source": "runs/validation/results_refresh_20261111_v1/histories/annual_reports.csv",
+    "rows": 9,
+    "sha256": "30e6c4d722819cac48adbe6b2df7227112ae0700c3ecb92995c1906907260ee6"
+  },
+  "national_stand_count_distribution.csv": {
+    "source": "runs/validation/results_refresh_20261111_v1/histories/stand_count_distribution.csv",
+    "rows": 10,
+    "sha256": "7d2aa5cf21020d6e7bc158e70767792542b139979aeb1a08d0e303cc6edcb691"
+  },
+  "national_stp_counts.csv": {
+    "source": "runs/validation/results_refresh_20261111_v1/histories/stp_partition_counts.csv",
+    "rows": 3,
+    "sha256": "4b0af683502428e14766f1b6fe033a95108a24211c6788327a29836ca78a88a7"
+  }
+}

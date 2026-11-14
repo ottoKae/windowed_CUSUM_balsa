@@ -10,8 +10,8 @@ import sys
 
 
 ROOT = Path(__file__).resolve().parents[2]
-FORMAL = ROOT / "analysis/workflows/build_population_s1_signature_figure_v11.py"
-INPUTS = ROOT / "data/local/paper_v1/figure_inputs/fig04_population_signatures"
+FORMAL = ROOT / "analysis/workflows/build_population_s1_signature_figure_native.py"
+INPUTS = ROOT / "runs/figures/fig05_native_signatures_20261109_v1/data"
 
 
 def main() -> None:
@@ -21,7 +21,7 @@ def main() -> None:
     parser.add_argument(
         "--build-dir",
         type=Path,
-        default=ROOT / "runs/figure_sources/figure04_population_signatures",
+        default=ROOT / "runs/figures/fig05_native_signatures_20261109_v1",
     )
     args = parser.parse_args()
     subprocess.run(
@@ -36,7 +36,7 @@ def main() -> None:
         cwd=ROOT,
         check=True,
     )
-    source = args.build_dir / "figure_03_population_s1_signatures_v11.pdf"
+    source = args.build_dir / "fig05_population_s1_signatures.pdf"
     args.output.parent.mkdir(parents=True, exist_ok=True)
     shutil.copy2(source, args.output)
     for suffix in (".svg", ".png", ".tiff"):
