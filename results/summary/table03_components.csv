@@ -1,0 +1,6 @@
+variant_id,output_level,matching_rule,n_stands,n_references,n_reports,n_matches,n_unique_references_matched,catalogue_precision,recall,catalogue_f1,n_original_pairs_retained,n_multiref_stands_fully_recovered,n_stands_fully_recovered,own_matched_interval_MAE,own_matched_interval_MedAE,median_span_months,reports_over_12_months,max_span_months
+F0_full_record,octa,reference_pm1_interval_overlap,459,1049,688,557,557,0.809593023255814,0.5309818875119161,0.641335636154289,106,36,84,1.3584905660377358,1.0,4.0,39,46
+F1_local_windows,octa,reference_pm1_interval_overlap,459,1049,2327,999,999,0.4293081220455522,0.9523355576739753,0.591824644549763,551,370,417,1.9927404718693285,1.0,6.0,469,95
+F2_decision_interval,octa,reference_pm1_interval_overlap,459,1049,1843,992,992,0.5382528486163863,0.9456625357483317,0.686030428769018,541,361,410,1.421441774491682,1.0,5.0,248,56
+F3_direction,octa,reference_pm1_interval_overlap,459,1049,1843,992,992,0.5382528486163863,0.9456625357483317,0.686030428769018,541,361,410,1.421441774491682,1.0,5.0,248,56
+F4_permutation,octa,reference_pm1_interval_overlap,459,1049,1208,945,945,0.7822847682119205,0.9008579599618685,0.8373947718210013,495,323,374,1.1818181818181819,1.0,4.0,77,35

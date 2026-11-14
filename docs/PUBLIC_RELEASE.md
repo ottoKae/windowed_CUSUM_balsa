@@ -1,71 +1,74 @@
-# Public source release and GitHub preparation
+# Public snapshot
 
-Prepared: 2026-10-16. Target remote from the author repository:
-`https://github.com/ottoKae/windowed_CUSUM_balsa.git`.
+The current selection contains the numerical library, the original first-post
+W36/TDA/STP dependency chain, current figure renderers/helpers, synthetic examples,
+schemas, selected tests, and the author TeX, bibliography, main/supplementary PDFs
+and seven approved figure PDFs, plus current experiment sources and 22 checked
+aggregate result tables. The numerical study dataset is published separately on
+Zenodo (see the data guide). GitHub does not distribute raw data, real row-level
+tables, exact geometry, private experiment records, PPTX sources or
+archives. The manuscript content and scientific results are unchanged by this
+organization task.
 
-## Contents and reproducibility
+## Selection and history
 
-The public source provides the W36+B20 implementation, frozen configuration,
-synthetic example, input schemas, selected tests, current aggregate score tables,
-benchmark summaries, figure-source provenance and author manuscript TeX/bibliography.
-Read `README.md` first and use the final reference-score directory for current
-precision. Historical result versions are explicitly retained as such.
+`configs/public_export.json` is the explicit allowlist. Its `approved_pdfs`
+section authorizes particular PDF paths and SHA-256 hashes; it is not a blanket
+permission to export PDF files. The generated `PUBLIC_FILES.json` records every
+exported file. The default-deny `.gitignore` follows the public file selection;
+files already tracked by Git need separate index handling.
 
-Raw imagery, exact geometry, real review rows, private sample databases, local
-capsules and run caches are not part of this source snapshot. Real numerical
-replay requires the matching separately available inputs. A prepared local capsule
-is not a deposited public dataset; no download URL or DOI is invented.
+Prepare a fresh candidate from the author workspace:
 
-## Manuscript and figure scope
+```sh
+python tooling/release/export_public.py --output dist/public_repository_20261114
+```
 
-The manuscript text is copied without revision. Some passages and figures still
-describe older configurations; including them here does not synchronize them to
-the current results or establish that the paper is ready for submission.
+The destination must not already exist. Use another fresh name for a subsequent
+candidate. The export contains no `.git` directory or old repository history.
+This boundary matters because historical objects, including earlier PPTX files,
+can retain personal metadata even when those files are absent from the current
+working tree. Existing author history is retained locally. This preparation
+does not push, change repository visibility or rewrite history.
 
-Figure code and input provenance are available in `provenance/figures/`. No figure
-was regenerated for this release. Figure PDF/PPTX binaries and third-party image
-panels are omitted. The source-only manuscript therefore cannot produce the
-complete paper without authorized assets.
+## Verify the public checkout
 
-The partial local CAS template bundle is also omitted. Obtain Elsevier's CAS
-templates from the [official CTAN package](https://ctan.org/pkg/els-cas-templates)
-and retain its license/distribution metadata. The local typesetting environment
-is not an exact-layout reproduction claim, and the project MIT license does not
-replace the CAS license.
-
-## Verify a public checkout
+From the exported directory, using Python 3.12:
 
 ```sh
 python tooling/release/export_public.py --verify .
-python -m pip install ".[io,validation,replay]" -c configs/requirements-reproduce.txt
-python -m pip install pytest geopandas -c configs/requirements-reproduce.txt
+python -m pip install ".[io,validation,geo,figures]" -c configs/requirements-reproduce.txt
+python -m pip install pytest -c configs/requirements-reproduce.txt
+python -I -c "import windowed_cusum; from pathlib import Path; assert 'site-packages' in Path(windowed_cusum.__file__).parts"
 python -c "from pathlib import Path; Path('.test-tmp').mkdir(exist_ok=True)"
 python -I -m pytest tests --import-mode=importlib -q -p no:cacheprovider --basetemp .test-tmp/public-check
-python -I -m lr_cusum paper data/demo/monthly_s1_synthetic.csv .test-tmp/demo_events.csv --config configs/standard_w36.json
+python scripts/run_current_pipeline.py --output .test-tmp/current-demo
+python scripts/experiments/check_published_results.py
 ```
 
-`.github/workflows/ci.yml` runs these checks with read-only repository permissions
-on Python 3.12. It uses the official [checkout](https://github.com/actions/checkout)
-and [setup-python](https://github.com/actions/setup-python) actions. Local checks
-do not imply that GitHub-hosted CI has already run; that occurs after pushing.
+The public checkout contains only selected tests. The STP integration test that
+needs private frozen outputs skips when those inputs are absent. Use a unique
+basetemp for concurrent runs. The example runs the current first-post/TDA/STP
+chain on invented data; it does not reproduce real-data study results.
+CI uses the selected tests and this demonstration; local checks
+do not imply that hosted CI has run.
 
-## Preparing a push
+## Manuscript and figures
 
-The author working tree contains private data and ongoing edits. Assemble a fresh
-allowlisted source export, then initialize a separate Git repository with a new
-publication branch and a clean root commit. This avoids copying the author
-repository's old objects into the prepared release. Verify the exported manifest
-again after Git staging and a
-fresh checkout. Inspect the commit's file list before pushing. The author tree's
-index, active branch and uncommitted manuscript edits must remain unchanged.
+Read `manuscript_JAG/main.pdf` and `manuscript_JAG/supplementary.pdf` directly.
+The seven approved figure PDFs accompany the unchanged TeX. Figure rendering
+from source still requires the private frozen inputs described in
+`provenance/figures/source_spec.json`; supplying finished PDFs does not release
+those inputs. The historical `scripts/figures/build_all.py` is not the current
+seven-figure renderer.
 
-Preparation does not push, merge, tag, create a release or change repository
-visibility. A new root publication branch is independent of the old branches;
-it does not erase or sanitize branches already present on the remote. If an
-existing private repository is made public, those other branches and their
-history are a separate consideration. Do not force-push or automatically merge
-unrelated histories as part of this preparation.
+The partial local CAS class/style bundle remains private. Obtain Elsevier's
+complete CAS template from the [official CTAN package](https://ctan.org/pkg/els-cas-templates)
+and retain its license/distribution metadata before compiling the TeX. The
+project's MIT license does not replace the template's license. A separately
+installed template may produce layout differences from the supplied author PDFs.
 
-The local preparation receipt records the actual commit, branch, remote lookup
-status, file inventory and checks. Authenticate GitHub and refresh the remote refs
-before the eventual ordinary push of the prepared branch.
+For licensing and data boundaries, see the
+[release policy](../provenance/PUBLIC_RELEASE_POLICY.md). The separate V1.0.0 data
+release is available at [Zenodo](https://doi.org/10.5281/zenodo.24223182) under
+CC BY-NC-SA 4.0; software remains MIT-licensed. Data archives stay out of Git.

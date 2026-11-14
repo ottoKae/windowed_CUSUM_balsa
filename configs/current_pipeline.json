@@ -1,0 +1,50 @@
+{
+  "detector": {
+    "bands": [
+      "VV_dB"
+    ],
+    "window_length": 36,
+    "step": 12,
+    "minimum_observations": 12,
+    "alpha": 0.025,
+    "permutations": 3999,
+    "refine_low": 0.015,
+    "refine_high": 0.035,
+    "refined_permutations": 19999,
+    "candidate_seed": 20260820,
+    "start_year": 2017,
+    "end_year": 2025
+  },
+  "geometry": {
+    "window_months": 36,
+    "decision_months": 12,
+    "stride_months": 12
+  },
+  "input": {
+    "calendar_start": "2016-01",
+    "calendar_end": "2026-06",
+    "report_start": "2017-01",
+    "report_end": "2025-12",
+    "mask": "joint_VV_VH_valid_and_n_obs_positive",
+    "spatial_support": "frozen_whole_native_master_cells; centre_membership; no_fallback"
+  },
+  "date_policy": {
+    "candidate": "first_valid_observation_after_first_CUSUM_maximum",
+    "left_segment": "through_peak_inclusive",
+    "right_segment": "from_next_finite_observation",
+    "central_and_reporting_gates": "use_corrected_candidate_month",
+    "no_next_observation": "reject",
+    "missing_months": "keep_calendar; never_add_one_literal_month",
+    "physical_onset_guaranteed": false
+  },
+  "aggregation": {
+    "method": "TDA",
+    "observed_gap_bridge_months": 1,
+    "minimum_distinct_pixel_fraction": 0.2,
+    "stp": "conditional; child groups do not add parent events"
+  },
+  "evaluation": {
+    "matching": "one-to-one overlap of TDA detection range and reference month +/-1 month",
+    "stand_bootstrap_replicates": 5000
+  }
+}

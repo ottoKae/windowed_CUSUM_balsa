@@ -8,6 +8,7 @@ import json
 from pathlib import Path
 import re
 import shutil
+import subprocess
 
 ROOT = Path(__file__).resolve().parents[2]
 CONFIG = ROOT / "configs/public_export.json"
@@ -51,21 +52,24 @@ def collect_files(root: Path, config: dict) -> dict[str, Path]:
     return files
 
 
-def privacy_findings(files: dict[str, Path], path_exemptions=()) -> dict[str, list[str]]:
+def privacy_findings(files: dict[str, Path], path_exemptions=(), approved_pdfs=None) -> dict[str, list[str]]:
     findings = {}
     for name, path in files.items():
-        # This source-only release contains text, including suffix-free licenses,
-        # CFF, workflows and style files; do not leave those out of the scan.
+        # Only the author's reviewed publication PDFs bypass the text scanner.
+        if path.suffix.lower() == '.pdf':
+            if (approved_pdfs or {}).get(name) != hashlib.sha256(path.read_bytes()).hexdigest():
+                findings[name] = ['PDF not approved at this content hash']
+            continue
         try:
             text = path.read_text(encoding="utf-8-sig")
         except UnicodeDecodeError:
-            findings[name] = ["non-UTF-8 content in source-only export"]
+            findings[name] = ["unapproved binary or non-UTF-8 content"]
             continue
         problems = []
         if SECRET.search(text):
             problems.append("credential-like content")
         # The privacy validators themselves contain search expressions, not records.
-        if name not in {"src/lr_cusum/capsule.py", "tooling/release/export_public.py"}:
+        if name != "tooling/release/export_public.py":
             if ABSOLUTE_PATH.search(text) and name not in path_exemptions:
                 problems.append("machine-specific absolute path")
             if PRIVATE_RECORD.search(text):
@@ -87,7 +91,7 @@ def export(root: Path, output: Path, config: dict) -> dict:
     if output.exists():
         raise FileExistsError("Refusing stale or nonempty export; choose a new output directory")
     files = collect_files(root, config)
-    findings = privacy_findings(files, config.get("absolute_path_exemptions", []))
+    findings = privacy_findings(files, config.get("absolute_path_exemptions", []), config.get("approved_pdfs", {}))
     if findings:
         # Never print matched contents, credentials, or private notes.
         raise ValueError("Public export blocked; file names and categories only: " + json.dumps(findings))
@@ -111,12 +115,20 @@ def verify(directory: Path) -> dict:
     manifest = json.loads((directory / "PUBLIC_FILES.json").read_text(encoding="utf-8"))
     if not isinstance(manifest, dict) or not manifest:
         raise ValueError("Expected a nonempty public-file manifest")
+    if (directory / ".git").exists():
+        tracked = subprocess.run(["git", "-C", str(directory), "ls-files", "-z"],
+                                 check=True, capture_output=True).stdout.decode("utf-8").split("\0")
+        extra = sorted(set(tracked) - set(manifest) - {"", "PUBLIC_FILES.json"})
+        if extra:
+            raise ValueError("Tracked files outside public manifest: " + json.dumps(extra))
     files = collect_files(directory, {"files": {name: name for name in manifest}})
     changed = [name for name, path in files.items()
                if hashlib.sha256(path.read_bytes()).hexdigest() != manifest[name]]
     if changed:
         raise ValueError("Manifest hash mismatch: " + json.dumps(changed))
-    findings = privacy_findings(files)
+    config_path = directory / 'configs/public_export.json'
+    config = json.loads(config_path.read_text(encoding='utf-8')) if config_path.exists() else {}
+    findings = privacy_findings(files, approved_pdfs=config.get('approved_pdfs', {}))
     if findings:
         raise ValueError("Privacy findings (file names and categories only): " + json.dumps(findings))
     return {"file_count": len(files), "manifest_verified": True, "privacy_findings": findings}
@@ -126,7 +138,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     operation = parser.add_mutually_exclusive_group(required=True)
     operation.add_argument("--output", type=Path, help="New author-workspace directory beneath dist; never overwrite an earlier export")
-    operation.add_argument("--verify", type=Path, metavar="DIRECTORY", help="Verify PUBLIC_FILES.json in a source-only public checkout")
+    operation.add_argument("--verify", type=Path, metavar="DIRECTORY", help="Verify PUBLIC_FILES.json in a public checkout")
     parser.add_argument("--config", type=Path, default=CONFIG)
     args = parser.parse_args()
     result = verify(args.verify) if args.verify is not None else export(

@@ -1,0 +1,203 @@
+% !TeX root = supplementary.tex
+% !TeX program = pdflatex
+% Standalone SI: do not input this file from main.tex.
+% Build in this directory: .\build_latex.ps1 -MainFile supplementary.tex -Fast
+% Or: latexmk -pdf -interaction=nonstopmode -halt-on-error supplementary.tex
+% References are self-contained below; no BibTeX pass is required.
+% Use the incremental recipe, not the main manuscript's forced BibTeX clean recipe.
+% Format reference: the user-supplied S1569843223004314 supplementary DOCX.
+% Its single-column title/authors/appendices structure is adapted to A4;
+% neither its scientific content nor its original document is redistributed.
+% Numerical source: runs/landtrendr_annual_20260910_v2/{endpoint.json,
+% annual_summary.csv,paired_contrasts_years0.csv,fold_selections.csv,
+% annual_signal_history_recall.csv}. Values rounded only for presentation.
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{mathptmx}
+\usepackage[margin=25.4mm]{geometry}
+\usepackage{amsmath,graphicx,booktabs,tabularx}
+\usepackage{setspace}
+\usepackage{caption}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xurl}
+\setstretch{1.15}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\setlength{\emergencystretch}{1.5em}
+\captionsetup{font=small,labelfont=bf,justification=raggedright,singlelinecheck=false}
+\renewcommand{\thesection}{S\arabic{section}}
+\renewcommand{\thesubsection}{\thesection.\arabic{subsection}}
+\renewcommand{\thetable}{S\arabic{table}}
+\renewcommand{\thefigure}{S\arabic{figure}}
+\renewcommand{\theequation}{S\arabic{equation}}
+\renewcommand{\thepage}{S\arabic{page}}
+\raggedbottom
+
+\begin{document}
+\begin{center}
+{\Large\bfseries Supplementary material\par}
+\vspace{6pt}
+{\large\bfseries Mapping rotational harvesting from decadal Sentinel-1 time series with windowed CuSum: A case study of Ecuadorian balsa plantations\par}
+\vspace{8pt}
+Keyi Rao\textsuperscript{1,$\dagger$}, Shixin Dong\textsuperscript{1,$\dagger$}, Zhongwen Hu\textsuperscript{2},
+Cesar Ivan Alvarez\textsuperscript{3,4}, Yuanyong Dian\textsuperscript{5}, Ruixin Fang\textsuperscript{1}, Zhaocong Wu\textsuperscript{1,$\ast$}
+\end{center}
+{\small
+\textsuperscript{1}School of Remote Sensing and Information Engineering, Wuhan University, Wuhan, China.\par
+\textsuperscript{2}School of Architecture and Urban Planning and MNR Key Laboratory for Geo-Environmental Monitoring of Great Bay Area, Shenzhen University, Shenzhen, China.\par
+\textsuperscript{3}College of Horticulture and Forestry Sciences, Huazhong Agricultural University, Wuhan, China.\par
+\textsuperscript{4}Institute of Geography, Faculty of Applied Informatics, University of Augsburg, Augsburg, Germany.\par
+\textsuperscript{5}Maestr\'ia en Sistemas de Informaci\'on Geogr\'afica, Topograf\'ia Automatizada y Fotogrametr\'ia Digital, Universidad Cat\'olica de Santiago de Guayaquil, Guayaquil, Ecuador.\par
+\textsuperscript{$\dagger$}These authors contributed equally to this work. \textsuperscript{$\ast$}Corresponding author: \texttt{zcwoo@whu.edu.cn}.\par
+}
+
+\section{Annual LandTrendr comparison}
+\label{sec:si_annual_protocol}
+This supplementary experiment evaluated annual disturbance-year recovery rather than month-level dating. LandTrendr, originally developed for yearly Landsat trajectories (\hyperref[ref:kennedy]{Kennedy et al., 2010}), was applied here to annual Sentinel-1 VV summaries using the official Google Earth Engine implementation (\hyperref[ref:gee]{Google Earth Engine, 2026}). This is an adaptation to SAR, not a test of its original optical configuration.
+
+\subsection{Common observation period and reference endpoint}
+The input comprised 474 track-specific stand trajectories from 462 BALSA polygons. All methods used observations restricted to January 2017--December 2025. For LandTrendr, each annual value was the median of finite monthly VV observations, requiring at least six observed months and observations in both half-years. No missing months were imputed, and tracks were processed separately. All 4,266 track--year combinations passed this coverage rule.
+
+The evaluation period was 2018--2025, with 2017 supplying initial temporal context. Within this period, 965 dated reference events formed 937 positive polygon--years after collapsing multiple events within the same polygon and year. Detections were likewise consolidated to unique polygon--years across tracks. The primary endpoint required exact-year agreement; a secondary analysis allowed one-to-one matching within $\pm1$ year, maximizing the number of matches before minimizing temporal offsets. This annual tolerance is distinct from the main manuscript's monthly matching tolerance.
+
+\subsection{Spatial evaluation and parameter selection}
+The existing partition of 57 spatial blocks into five outer folds was retained. Each method's parameters were selected using only the other four folds and then applied to the held-out fold. Selection maximized exact-year F1, with precision and prespecified complexity/grid-order rules resolving ties. Monthly comparators were rerun under the common observation cutoff and selected for this annual endpoint; their original monthly benchmark scores were not reused. The $\pm1$-year analysis used the same out-of-fold predictions without retuning. These reused spatial folds provide an exploratory supplementary comparison, not a newly collected independent test set.
+
+LandTrendr received negated VV so that increasing fitted values represented decreasing backscatter. Its search crossed maximum segments $\{3,5,7\}$, spike threshold $\{0.9,1.0\}$, and recovery threshold $\{0.25,1.0\}$. Fixed settings were vertex-count overshoot 3, $p$-value threshold 0.1, best-model proportion 0.75, minimum observations 6, and one-year recovery permitted. Twelve fitted configurations were crossed with minimum decline magnitudes $\{0.5,1.0,2.0\}$~dB and maximum durations $\{1,2\}$ years, yielding 72 candidates. Consecutive declining segments were merged into one decline episode; qualifying episodes were assigned to the first year after the episode's starting vertex. All qualifying episodes were retained, rather than only the largest.
+
+All 12 LandTrendr fits completed. For CCDC, 33 of 36 candidate configurations completed; three configurations with persistent Earth Engine errors were excluded consistently from all folds, without excluding polygons or replacing failures with empty predictions. Windowed CuSum selected a 36-month window and 12-month displacement in all five folds for this annual endpoint. This does not replace the 48/12 configuration used for the main retrospective catalogue.
+
+\section{Annual detection results}
+\label{sec:si_annual_results}
+Under exact-year matching, windowed CuSum recovered 805 of 937 positive polygon--years, compared with 276 for LandTrendr (Table~\ref{tab:si_annual_scores}). Their paired F1 difference was $+0.448$ (95\% spatial-block bootstrap interval: 0.401--0.511), based on 5,000 paired resamples of complete blocks (seed 20260829). This supplementary interval is exploratory and is not adjusted for multiple method comparisons.
+
+\begin{table}[!htbp]
+\caption{Out-of-fold annual detection scores on the common 2018--2025 polygon--year endpoint. The two matching tolerances use identical predictions. Scores are conditional on the dated reference catalogue.}
+\label{tab:si_annual_scores}
+\centering\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lrrrrrr@{}}
+\toprule
+& \multicolumn{3}{c}{Exact year} & \multicolumn{3}{c}{$\pm1$ year}\\
+\cmidrule(lr){2-4}\cmidrule(l){5-7}
+Method & Precision & Recall & F1 & Precision & Recall & F1\\
+\midrule
+Windowed CuSum       & 0.842 & 0.859 & 0.851 & 0.882 & 0.900 & 0.891\\
+CCDC VV              & 0.851 & 0.752 & 0.799 & 0.935 & 0.826 & 0.877\\
+ReCuSum (decrease)   & 0.810 & 0.647 & 0.719 & 0.870 & 0.695 & 0.773\\
+NRT (decrease)       & 0.520 & 0.909 & 0.661 & 0.547 & 0.956 & 0.696\\
+Classical CUSUM      & 0.607 & 0.725 & 0.661 & 0.706 & 0.843 & 0.768\\
+BOCD prototype      & 0.923 & 0.475 & 0.627 & 0.979 & 0.504 & 0.665\\
+Maximum monthly drop & 0.486 & 0.818 & 0.610 & 0.527 & 0.886 & 0.661\\
+ReCuSum (raw)        & 0.450 & 0.601 & 0.514 & 0.545 & 0.728 & 0.623\\
+NRT (raw)            & 0.343 & 0.899 & 0.496 & 0.373 & 0.979 & 0.540\\
+LandTrendr annual VV & 0.637 & 0.295 & 0.403 & 0.905 & 0.418 & 0.572\\
+\bottomrule
+\end{tabular*}
+\par\smallskip
+\raggedright\footnotesize
+LandTrendr uses annual VV; the other methods retain monthly inputs and are evaluated after conversion to event years. The BOCD prototype uses VV and VH; the remaining methods use VV. ``Raw'' retains the unfiltered implementation output, whereas ``decrease'' restricts candidates to negative backscatter changes. These labels identify the evaluated implementations, not all possible versions of each algorithm.
+\end{table}
+
+With the tolerance widened to $\pm1$ year, LandTrendr matched 392 reference polygon--years: precision increased from 0.637 to 0.905, but recall remained 0.418. Windowed CuSum matched 843, with precision 0.882 and recall 0.900. The increased scores reflect more permissive matching of unchanged predictions, not improved detection or demonstrated month-level timing. Precision measures agreement among reported detections; recall measures coverage of the reference histories. Both are needed because high recall can coexist with many unmatched detections, as illustrated by the NRT results. Conversely, high precision alone can accompany substantial omission.
+
+\section{Signal-duration diagnosis and interpretation}
+\label{sec:si_signal_diagnosis}
+A descriptive analysis aligned monthly VV to independently dated events. Median backscatter was calculated for months $-3$ to $-1$, 0 to 2, and 3 to 5 relative to each event, with at least two finite observations per interval. Early and late changes were computed relative to the pre-event median within each track and summarized across tracks. An early decline of at least 1~dB was classed as persistent if the late decline also reached 1~dB, and as recovered otherwise. Recovery refers to the backscatter signal, not independently verified canopy regeneration. Polygon--years with conflicting event categories were retained as mixed, and insufficiently observed cases were not forced into either class.
+
+\begin{table}[!htbp]
+\caption{Exact-year recall by descriptive VV response. Numerators are matched positive polygon--years; denominators are the reference support within each row. Repeated years from a polygon are not independent replicates.}
+\label{tab:si_signal_recall}
+\centering\small
+\setlength{\tabcolsep}{5pt}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lrr@{}}
+\toprule
+Reference signal category & Windowed CuSum & LandTrendr\\
+\midrule
+Early drop, subsequently recovered & 87/101 (0.861) & 14/101 (0.139)\\
+Persistent drop                   & 485/527 (0.920) & 184/527 (0.349)\\
+No clear early drop               & 206/266 (0.774) & 76/266 (0.286)\\
+Mixed within year                 & 15/15 (1.000) & 2/15 (0.133)\\
+Insufficient or censored          & 12/28 (0.429) & 0/28 (0.000)\\
+\bottomrule
+\end{tabular*}
+\end{table}
+
+The particularly low LandTrendr recall for short-lived VV drops is consistent with annual summarization obscuring some within-year disturbances (Table~\ref{tab:si_signal_recall}). However, performance also differed for persistent drops. Because temporal representation, segmentation and event-admission rules all differ, this is not a controlled attribution of the entire performance gap to annual aggregation. The results support retaining monthly observations for the present SAR task; they do not establish that LandTrendr is generally unsuitable for plantation monitoring.
+
+The annual and monthly scores should not be read as a direct improvement over one another: the reference unit, reporting years, temporal tolerance and selected parameters differ. Furthermore, an unmatched prediction is not necessarily a false disturbance when reference histories are incomplete. Accordingly, all reported precision values describe agreement with this catalogue rather than independently verified national harvest precision.
+
+% Extend this file with further \section entries and Table/Figure S-numbering.
+% Keep draft placeholders in comments, not in the compiled submission.
+% Reproducibility entry point: scripts/run_benchmarks.py --protocol annual-landtrendr.
+% Frozen settings: configs/landtrendr_annual_v1.json.
+% OOF provenance: runs/landtrendr_annual_20260910_v2/oof_source_ledger.csv.
+\section{Temporal detection aggregation diagnostics}
+\label{sec:si_tda_diagnostics}
+Temporal detection aggregation (TDA) reports spanning more than 12 months were flagged for inspection but were not rejected solely on this basis. The span was calculated from the first to the last contributing detection month, including both endpoints.
+
+\section{Acceptance-threshold and temporal-null sensitivity}
+\label{sec:si_detector_sensitivity}
+
+These comparisons used the 459 reference stands and 1,049 harvest records from the monthly evaluation. Pixel detections entered the same TDA procedure. Within each stand, a reference month $\pm1$ month was matched one-to-one to an overlapping first--last detection range. Confidence intervals used the same 5,000 paired stand-level bootstrap resamples as the main analysis.
+
+\subsection{Acceptance threshold}
+
+Acceptance thresholds were applied to a common set of scores computed from 19,999 unrestricted permutations. At $\alpha_{\mathrm{ts}}=0.025$, the accepted detections matched those from the baseline's adaptive scoring procedure. Table~\ref{tab:si_acceptance_threshold} therefore varies the threshold while retaining the same score precision. The highest F1 estimate was 0.847 at $\alpha_{\mathrm{ts}}=0.01$, with a paired difference of $+0.009$ from the baseline (95\% CI: $-0.001$ to $+0.019$). Increasing the threshold to 0.10 raised recall to 0.928 and reduced precision to 0.710.
+
+\begin{table}[!htbp]
+    \centering\small
+    \setlength{\tabcolsep}{3pt}
+    \caption{Acceptance-threshold sensitivity for VV with $W=36$ and $D=S=12$, evaluated on 1,049 reference records from 459 stands. $N_{\mathrm{det}}$ and $M$ denote TDA reports and matched reference records. Matching required overlap between a TDA detection range and the reference month $\pm1$ month, with one-to-one assignment within each stand. $\Delta F_{1,\mathrm{ref}}$ denotes each alternative minus the baseline, with 95\% percentile intervals from 5,000 paired stand-level bootstrap resamples. Bold values mark column maxima for precision, recall, and F1.}
+    \label{tab:si_acceptance_threshold}
+    \begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lrrrrrc@{}}
+        \toprule
+        Configuration & $N_{\mathrm{det}}$ & $M$ & $P_{\mathrm{ref}}$ & $R_{\mathrm{ref}}$ & $F_{1,\mathrm{ref}}$ & $\Delta F_{1,\mathrm{ref}}$ (95\% CI) \\
+        \midrule
+        $\alpha_{\mathrm{ts}}=0.025$ (baseline) & 1,208 & 945 & 0.782 & 0.901 & 0.837 & -- \\
+        \midrule
+        $\alpha_{\mathrm{ts}}=0.005$ & 1,010 & 865 & \textbf{0.856} & 0.825 & 0.840 & $+0.003$ [$-0.011$, $+0.016$] \\
+        $\alpha_{\mathrm{ts}}=0.01$ & 1,089 & 905 & 0.831 & 0.863 & \textbf{0.847} & $+0.009$ [$-0.001$, $+0.019$] \\
+        $\alpha_{\mathrm{ts}}=0.05$ & 1,276 & 964 & 0.755 & 0.919 & 0.829 & $-0.008$ [$-0.015$, $-0.001$] \\
+        $\alpha_{\mathrm{ts}}=0.10$ & 1,371 & 973 & 0.710 & \textbf{0.928} & 0.804 & $-0.033$ [$-0.043$, $-0.023$] \\
+        \bottomrule
+    \end{tabular*}
+\end{table}
+
+\subsection{Calendar-block permutation}
+
+Calendar blocks of three to six months were defined before removing missing values, and finite observations retained their within-block order. Each replicate used a randomized block origin, retained partial edge blocks, and permuted block order. Geometry, candidate dates, observation eligibility, the acceptance threshold, and TDA rules were unchanged. All four block lengths used 3,999 initial permutations and 19,999 permutations for initial scores in $[0.015,0.035]$.
+
+As block length increased from three to six months, matched reference records decreased from 679 to 416, 94, and 16, and recall decreased from 0.647 to 0.397, 0.090, and 0.015 (Table~\ref{tab:si_temporal_null}). Corresponding F1 values were 0.744, 0.550, 0.163, and 0.030. Precision was highest for four-month blocks (0.895). All four configurations had lower F1 than unrestricted permutation, with paired confidence intervals excluding zero.
+
+Accepted pixel detections decreased from 21,039 with three-month blocks to 11,875, 4,410, and 1,216 with four-, five-, and six-month blocks. For six-month blocks, 520 of 543 temporal components fell below the fixed 20\% stand-support threshold, leaving 23 TDA reports. Thus, reduced pixel-level acceptance was followed by further exclusion during stand-level aggregation.
+
+The randomized block origin produced 12--13, 9--10, 8, and 6--7 blocks within a complete 36-month context for block lengths of three, four, five, and six months, respectively. The terminal context contained 30 months. These comparisons characterize sensitivity within a short context, including long-block stress conditions. In two illustrative candidates, scores increased from 0.00275 and 0.002 with three-month blocks to 0.052 and 0.0405 with six-month blocks. Enumeration over all block orders and starting offsets also rejected both candidates. The examples are consistent with longer blocks retaining high- and low-backscatter sequences that reduce separation from the permutation background.
+
+\begin{table}[!htbp]
+    \centering\small
+    \setlength{\tabcolsep}{3pt}
+    \caption{Temporal-null sensitivity for VV with $W=36$, $D=S=12$, and $\alpha_{\mathrm{ts}}=0.025$, evaluated on 1,049 reference records from 459 stands. Matching required overlap between a TDA detection range and the reference month $\pm1$ month, with one-to-one assignment within each stand. $\Delta F_{1,\mathrm{ref}}$ denotes each alternative minus unrestricted permutation, with 95\% percentile intervals from 5,000 paired stand-level bootstrap resamples. Bold values mark column maxima for precision, recall, and F1.}
+    \label{tab:si_temporal_null}
+    \begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lrrrrrc@{}}
+        \toprule
+        Configuration & $N_{\mathrm{det}}$ & $M$ & $P_{\mathrm{ref}}$ & $R_{\mathrm{ref}}$ & $F_{1,\mathrm{ref}}$ & $\Delta F_{1,\mathrm{ref}}$ (95\% CI) \\
+        \midrule
+        Unrestricted (baseline) & 1,208 & 945 & 0.782 & \textbf{0.901} & \textbf{0.837} & -- \\
+        Three-month blocks & 776 & 679 & 0.875 & 0.647 & 0.744 & $-0.093$ [$-0.114$, $-0.073$] \\
+        Four-month blocks & 465 & 416 & \textbf{0.895} & 0.397 & 0.550 & $-0.288$ [$-0.320$, $-0.257$] \\
+        Five-month blocks & 107 & 94 & 0.879 & 0.090 & 0.163 & $-0.675$ [$-0.712$, $-0.638$] \\
+        Six-month blocks & 23 & 16 & 0.696 & 0.015 & 0.030 & $-0.808$ [$-0.833$, $-0.780$] \\
+        \bottomrule
+    \end{tabular*}
+\end{table}
+
+\section*{Supplementary references}
+\phantomsection\label{ref:kennedy}
+Kennedy, R.E., Yang, Z., Cohen, W.B., 2010. Detecting trends in forest disturbance and recovery using yearly Landsat time series: 1. LandTrendr---Temporal segmentation algorithms. \textit{Remote Sensing of Environment} 114, 2897--2910. \url{https://doi.org/10.1016/j.rse.2010.07.008}.
+
+\phantomsection\label{ref:gee}
+Google Earth Engine, 2026. \textit{ee.Algorithms.TemporalSegmentation.LandTrendr}. API reference (accessed 10 September 2026). \url{https://developers.google.com/earth-engine/apidocs/ee-algorithms-temporalsegmentation-landtrendr}.
+
+\end{document}

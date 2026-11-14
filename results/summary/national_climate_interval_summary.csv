@@ -1,0 +1,5 @@
+group,n_intervals,n_stands,q1,median,q3,modal_bin_left_month,modal_bin_right_month
+All,3372,2005,22.0,34.0,43.0,33,36
+Af,150,105,14.25,35.0,50.0,3,6
+Am,2861,1627,24.0,34.0,42.0,33,36
+Aw,345,261,14.0,35.0,47.0,45,48

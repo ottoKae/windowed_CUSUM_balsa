@@ -10,7 +10,7 @@ versioned scientific records. A change to the algorithm or reference evidence
 requires a new result version; do not overwrite the frozen evidence to make a
 test pass. Manuscript prose and figures remain author-controlled.
 
-Code belongs in `src/lr_cusum/`, entry points in `scripts/`, reusable checks in
+Code belongs in `src/windowed_cusum/`, entry points in `scripts/`, reusable checks in
 `tests/`, and disposable output in `.test-tmp/`. Do not run author-side release or
 sample-collection assembly tools unless their original local inputs are available.
 Readers can verify an existing public snapshot without those inputs:

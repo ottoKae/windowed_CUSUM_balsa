@@ -1,127 +1,73 @@
-﻿# Windowed CUSUM: W36 + B20
+# Mapping rotational harvesting with windowed CuSum
 
-Monthly Sentinel-1 disturbance detection and stand-level harvest-report evaluation
-for Ecuadorian balsa plantations. The frozen detector is **W36 / D12 / S12, VV,
-B20**. The final reference-score release is **2026-10-15**, with **+/-3 months**
-as the primary display and +/-1 and +/-2 months reported alongside it.
+[??](README_ZH.md) ? [Paper](manuscript_JAG/main.pdf) ? [Supplement](manuscript_JAG/supplementary.pdf) ? [Data on Zenodo](https://doi.org/10.5281/zenodo.24223182)
 
-The primary display tolerance was selected after inspection of earlier results.
-Monthly output resolution does not imply one-month dating accuracy. The original
-detector configuration and older +/-2-month evaluation capsule remain intact.
+How can we follow repeated harvests in the same plantation when cloud cover interrupts optical observations? This repository accompanies *Mapping rotational harvesting from decadal Sentinel-1 time series with windowed CuSum: A case study of Ecuadorian balsa plantations*.
 
-## Find the right material
+The method follows fixed 30 m pixels through monthly radar observations. **Windowed CuSum** detects changes against a moving local context. **Temporal detection aggregation (TDA)** brings staggered pixel detections into stand-level reports. **Spatial timing partitioning (STP)** describes timing differences within a report without adding harvest events to the stand history.
 
-| Need | Entry point |
+**Monthly Sentinel-1 VV ? pixel detections ? TDA stand reports ? STP timing groups**
+
+## Read, run, or reproduce
+
+| What you want to do | Where to start |
 |---|---|
-| Layout and version boundaries | [Repository guide](docs/REPOSITORY_GUIDE.md) |
-| Data sources and retrieval | [Data catalogue](provenance/DATA_CATALOG.csv), [source guide](provenance/DATA_SOURCES.md) |
-| Unified visual interpretation records | [Sample schema](data/schemas/sample_collection.md), [data guide](data/README.md) |
-| Current precision and evaluation definition | [Final aggregates](results/final_reference_score_20261015/README.md) |
-| Benchmarks, windows, components and polarization | [W36 result index](results/w36_standard/result_index.csv) |
-| TeX figures and their actual source scripts | [Figure provenance](provenance/figures/README.md) |
-| Author manuscript | [Main TeX](manuscript_JAG_v2/main.tex) |
-| Public export and maintenance | [Tooling guide](tooling/README.md) |
-| GitHub preparation and public checks | [Public release guide](docs/PUBLIC_RELEASE.md) |
-| Software citation | [CITATION.cff](CITATION.cff) |
+| Understand the method | [Algorithm](docs/ALGORITHM.md) and [workflow figure](manuscript_JAG/figures/fig02_workflow.pdf) |
+| Try it without downloading data | Run the example below |
+| Reproduce the reference evaluation | Download the Zenodo data and run the reference commands below |
+| Inspect ablations and benchmarks | [Experiment index](scripts/experiments/README.md) and [result tables](results/README.md) |
+| Find a figure's code and inputs | [Seven-figure index](docs/FIGURES.md) |
 
-## Run the synthetic example
+## Try the complete pipeline
 
-Use Python 3.12 in a fresh environment from this directory:
+Use Python 3.12 in a fresh environment. From the repository root:
 
 ```sh
-python -m venv .venv
-# Activate .venv for your shell, then:
-python -m pip install ".[io,validation,replay]" -c configs/requirements-reproduce.txt
-windowed-cusum paper data/demo/monthly_s1_synthetic.csv demo_events.csv --config configs/standard_w36.json
+python -m pip install ".[io,validation]" -c configs/requirements-reproduce.txt
+python scripts/run_current_pipeline.py --output .test-tmp/first-demo
 ```
 
-This example needs no imagery or account. It exercises the detector; it does not
-reproduce Ecuadorian sample scores. See [tests](tests/README.md) for the checks
-shipped with the public source export.
+This runs the actual detector, TDA and STP on a synthetic plantation. No account or imagery is needed. It produces **72 pixel detections, 2 TDA reports and 4 STP groups**. Open `summary.json`, `pixel_detections.csv`, `tda_events.csv` and `stp_groups.csv` in the output folder. Use a new output folder for each run.
 
-In a public checkout, first verify the distributed bytes without private inputs:
+## Reproduce the balsa reference results
+
+Download the four V1.0.0 archives from [Zenodo](https://doi.org/10.5281/zenodo.24223182) and extract them together into `data/local/zenodo/`. They create a shared `dataset/` folder containing stand boundaries, references, monthly VV/VH arrays and frozen results. Then run:
 
 ```sh
-python tooling/release/export_public.py --verify .
+python scripts/run_current_pipeline.py --input-dir data/local/zenodo/dataset/timeseries/reference_stands --output runs/reference-replay --workers 4 --stp-replay data/local/zenodo/dataset/reproduction/stp_replay
+python scripts/experiments/evaluate_reports.py --references data/local/zenodo/dataset/references/harvest_events.csv --reports current runs/reference-replay/tda_events.csv --draws data/local/zenodo/dataset/reproduction/bootstrap_draws.npy --output runs/reference-score
 ```
 
-For a separately supplied real pixel-input capsule:
+The baseline uses VV, a 36-month context, a central 12-month decision interval, a 12-month stride and a permutation threshold of 0.025. The array calendar spans January 2016?June 2026; the reporting period is 2017?2025. Within each stand, one-to-one matching tests whether a report's first?last detection range overlaps the reference month ?1 month.
 
-```sh
-python scripts/reproduce.py detect --data data/capsules/w36_pixels --output runs/reproduced_w36 --workers 6
-```
+| Reference evaluation | Expected result |
+|---|---:|
+| Stands / reference harvest records | 459 / 1,049 |
+| TDA reports / matched references | 1,208 / 945 |
+| Precision / recall / F1 | 0.782 / 0.901 / 0.837 |
+| Consecutive reference pairs recovered | 495 / 590 |
 
-The capsule must contain `units.parquet`, `membership.parquet`, `series.npz` and
-`manifest.json`. Complete stand membership is required for B20. No public download
-URL or deposited dataset is implied. The author-local input,
-`data/local/standard_w36_v1`, is restricted and excluded from Git.
+Nationwide application covers 3,364 evaluable stands and yields 6,303 TDA reports. See the [dataset guide](dataset/README.md) for the files and the [reproduction guide](docs/REPRODUCIBILITY.md) for input formats, replay settings and tests. Some historical experiments and exact figure redraws require additional archived inputs; their requirements are listed with the scripts.
 
-`scripts/evaluate_standard.py` reproduces the older frozen evaluation capsule
-when available. It does not silently substitute the October 15 reference
-revisions. Use the final aggregate release for current numbers.
+## Find your way around
 
-## Frozen method and current evidence
-
-The context window contains 12 months before a central 12-month decision interval
-and 12 months after it, advancing by 12 months. B20 selects three consecutive
-calendar months, including across year boundaries. At least 20% of each stand's
-fixed master pixels must respond. Each source response is assigned once; the
-response-node median gives the representative month. Reference dates do not select
-windows or representative months.
-
-The frozen detector produced **44,386 pixel responses and 1,266 stand reports**.
-The final evidence retains the original 307 probability samples and weights,
-including unresolved observations.
-
-| Month tolerance | T / F / U | Weighted precision scenario endpoints | Catalogue recall |
-|---|---|---|---|
-| +/-1 | 126 / 167 / 14 | 43.47%--46.19% | 833 / 1,049 (79.41%) |
-| +/-2 | 176 / 117 / 14 | 60.74%--63.47% | 934 / 1,049 (89.04%) |
-| **+/-3 (primary display)** | **202 / 91 / 14** | **69.62%--72.34%** | **955 / 1,049 (91.04%)** |
-
-Scenario endpoints are not confidence limits. The approximate 95% outer interval
-at +/-3 months is 65.17%--76.88%; the final tables contain all tolerances. The
-optimistic endpoint does not establish that all unknown reports could
-simultaneously receive unique event credit.
-
-Probability precision concerns the 1,266-report population. Catalogue recall
-concerns the selectively assembled reference events. **Do not combine them into
-population F1.** The seven reviewed history domains have not yielded a qualified
-complete reference domain. Benchmark catalogue comparisons do not establish their
-report-population precision or overall superiority.
-
-## Directory responsibilities
-
-| Directory | Responsibility |
+| Folder | Contents |
 |---|---|
-| `src/lr_cusum/` | Installed numerical and evaluation implementation |
-| `scripts/` | Replay, evaluation, review and figure entry points |
-| `configs/` | Frozen detector settings and dependency constraints |
-| `data/demo/`, `data/schemas/` | Public synthetic data and data contracts |
-| `data/private/`, `data/local/`, `data/capsules/` | Ignored local samples, inputs and separate capsules |
-| `results/final_reference_score_20261015/` | Current non-identifying precision aggregates |
-| `results/w36_standard/` | Frozen detector comparisons and historical scoring tables |
-| `provenance/` | Source catalogue, rights and figure lineage |
-| `manuscript_JAG_v2/` | Current author-controlled TeX and figure assets |
-| `tests/` | Reusable tests; disposable output goes under `.test-tmp/` |
-| `tooling/` | Cataloguing and release helpers; local diagnostics are ignored |
-| `runs/`, `archive/` | Ignored run evidence and historical implementations |
+| `src/windowed_cusum/` | Detector, stand aggregation, evaluation and benchmark methods |
+| `scripts/` | Pipeline, evaluation and figure entry points |
+| `configs/` | Current settings and experiment catalogue |
+| `results/summary/` | Paper tables and national/climate summaries, with source hashes |
+| `dataset/` | Guide to the separately published Zenodo data |
+| `data/demo/`, `tests/` | Synthetic examples and regression tests |
+| `manuscript_JAG/` | Paper, supplement and seven final figures |
+| `provenance/`, `docs/`, `tooling/` | Source links, instructions and supporting scripts |
 
-The manuscript and some figures still describe historical configurations. They
-are not automatically updated by this cleanup or a reference-score release.
-The figure catalogue records that distinction for every included asset.
+Some dated helper scripts are still used by the current pipeline. Their paths are retained so that imports and recorded experiment versions stay traceable. [Repository guide](docs/REPOSITORY_GUIDE.md) explains what is current, archived or temporary.
 
-## Public release
+To check the published summary tables without rerunning detection:
 
-Publish a fresh allowlisted export, not the entire author working tree.
-`configs/public_export.json` defines the selection; `PUBLIC_FILES.json` in the
-export records hashes. Private review text, exact geometry, source imagery,
-temporary artifacts and archived experiments are excluded. Selected historical
-figure code is retained to preserve its actual implementation and imports.
-Figure assets requiring separate third-party clearance are not automatically
-exported; the source-only manuscript is not a complete typesetting bundle.
+```sh
+python scripts/experiments/check_published_results.py
+```
 
-This work prepares a local release candidate; it does not push to GitHub or
-deposit data. Original software uses [MIT](LICENSE); authorized processed research
-data and aggregates use [CC BY 4.0](DATA_LICENSE). Neither license grants rights
-over source imagery, basemaps, inventory geometry or private review workbooks.
+Code is [MIT licensed](LICENSE). The [V1.0.0 dataset](https://doi.org/10.5281/zenodo.24223182) uses **CC BY-NC-SA 4.0**. Please cite the paper and the data version you use; citation files are provided for the [software](CITATION.cff) and [dataset](dataset/CITATION.cff).

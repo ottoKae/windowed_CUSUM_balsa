@@ -1,0 +1,53 @@
+{
+  "backscatter": {
+    "source_files": [
+      "tooling/diagnostics/balsa-results-optimization-20261105/signatures.py",
+      "tooling/diagnostics/results-refresh-20261111/signatures.py"
+    ],
+    "full_study_inputs": "private frozen records and detector ledgers",
+    "public_evaluation_entry": "scripts/experiments/evaluate_reports.py"
+  },
+  "components": {
+    "source_files": [
+      "tooling/diagnostics/cumulative-components-20261111/compute.py",
+      "tooling/diagnostics/cumulative-components-20261111/range_overlap_pm1.py"
+    ],
+    "full_study_inputs": "private frozen records and detector ledgers",
+    "public_evaluation_entry": "scripts/experiments/evaluate_reports.py"
+  },
+  "configuration": {
+    "source_files": [
+      "tooling/diagnostics/range-primary-20261111/sensitivity.py",
+      "tooling/diagnostics/configuration-extension-20261111/geometry.py",
+      "tooling/diagnostics/configuration-extension-20261111/score.py"
+    ],
+    "full_study_inputs": "private frozen records and detector ledgers",
+    "public_evaluation_entry": "scripts/experiments/evaluate_reports.py"
+  },
+  "temporal_null": {
+    "source_files": [
+      "tooling/diagnostics/block-length-sensitivity-20261111/run_blocks.py",
+      "tooling/diagnostics/block-length-sensitivity-20261111/score.py"
+    ],
+    "full_study_inputs": "private frozen records and detector ledgers",
+    "public_evaluation_entry": "scripts/experiments/evaluate_reports.py"
+  },
+  "benchmarks": {
+    "source_files": [
+      "tooling/diagnostics/detector-tda-benchmark-20261109/local.py",
+      "tooling/diagnostics/detector-tda-benchmark-20261109/recusum.py",
+      "tooling/diagnostics/detector-tda-benchmark-20261109/cloud.py",
+      "tooling/diagnostics/detector-tda-benchmark-20261109/aggregate.py",
+      "tooling/diagnostics/results-refresh-20261111/benchmark.py"
+    ],
+    "full_study_inputs": "private frozen records and detector ledgers",
+    "public_evaluation_entry": "scripts/experiments/evaluate_reports.py"
+  },
+  "national": {
+    "source_files": [
+      "tooling/diagnostics/results-refresh-20261111/histories.py"
+    ],
+    "full_study_inputs": "private frozen records and detector ledgers",
+    "public_evaluation_entry": "scripts/experiments/evaluate_reports.py"
+  }
+}

@@ -1,24 +1,30 @@
-SPDX-License-Identifier: CC-BY-4.0
+SPDX-License-Identifier: CC-BY-NC-SA-4.0
 
 Copyright (c) 2026 Windowed CUSUM data contributors
 
-The owner-authorized processed scientific reproducibility package (science,
-profile B), pixel-level extension (pixels, profile C), and study-generated
-aggregate result tables are licensed under the Creative Commons Attribution
-4.0 International License.
+Dataset V1.0.0, including its research compilation, reference annotations,
+numerical SAR derivatives, analytical outputs and documentation, is licensed
+under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International.
 
 Full, governing license terms:
-https://creativecommons.org/licenses/by/4.0/legalcode
+https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode
 
 License summary:
-https://creativecommons.org/licenses/by/4.0/
+https://creativecommons.org/licenses/by-nc-sa/4.0/
 
-Provide appropriate credit, retain the license link, and indicate changes as
-required by that license. Citation metadata accompany each data release.
-The material is provided without warranties under the license terms.
+Give appropriate credit, retain the license link, indicate changes, use the
+material for noncommercial purposes, and share adaptations under the same
+license. The material is provided without warranties under the license terms.
 
-This grant does not cover original Sentinel-1 products, official source
-geometries, original S1-GRiTS catalog/Zarr, third-party static layers,
-administrative vectors, Esri basemaps, commercial optical imagery, third-party
-papers, or third-party software. These are excluded or retain their own terms.
-Software licensing is specified separately in LICENSE and retained notices.
+FC001 source geometries and selected attributes retain Ecuador MAG/SPF's
+CC BY-NC-SA 4.0 terms. See dataset/LICENSES.md in the data release for source
+attributions, metadata evidence and a description of the research modifications.
+
+Underlying Copernicus Sentinel and NASA/JPL/OPERA data retain their own notices
+and existing permissions. This grant does not restrict public-domain material
+or revoke any prior license already granted for separately released material.
+Raw commercial optical imagery and other excluded third-party materials are
+not licensed or supplied by this data release.
+
+Software remains licensed separately under MIT, subject to retained third-party
+software notices; see LICENSE.
