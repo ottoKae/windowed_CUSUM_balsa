@@ -20,7 +20,7 @@ DEFAULT_RSCRIPT = Path(shutil.which("Rscript") or "Rscript")
 DEFAULT_R_LIBRARY = ROOT / "runs/benchmark_extension_dependencies_20260912/R-library"
 sys.path.insert(0, str(ROOT / "scripts"))
 import fc001_validation_detection as fc  # noqa: E402
-from harvest_bounded_event_aggregation import build_bounded_events  # noqa: E402
+from windowed_cusum.stand.harvest_bounded_event_aggregation import build_bounded_events  # noqa: E402
 
 METHOD = "bfast_hist2_h025_a005"
 YEARS = tuple(range(2019, 2026))

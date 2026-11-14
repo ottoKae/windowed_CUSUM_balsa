@@ -163,6 +163,7 @@
 !/scripts/experiments/README.md
 !/scripts/experiments/check_published_results.py
 !/scripts/experiments/evaluate_reports.py
+!/scripts/fc001_validation_detection.py
 !/scripts/figures/_common.py
 !/scripts/figures/build_fig1.py
 !/scripts/figures/build_harvest_pixel_cases.py
@@ -217,11 +218,15 @@
 !/src/windowed_cusum/stand/harvest_quarter_aggregation.py
 !/src/windowed_cusum/stand/star_segmentation.py
 !/tests/README.md
+!/tests/test_benchmark_extension.py
 !/tests/test_current_pipeline.py
+!/tests/test_detector_tda_local.py
+!/tests/test_detector_tda_recusum.py
 !/tests/test_harvest_episode_assembly.py
 !/tests/test_harvest_episode_relations.py
 !/tests/test_harvest_inventory_stp.py
 !/tests/test_harvest_inventory_tda.py
+!/tests/test_public_entry_imports.py
 !/tests/test_public_export.py
 !/tests/test_report_evaluation_entry.py
 !/tests/test_stp_production_gate.py
@@ -235,6 +240,7 @@
 !/tooling/diagnostics/balsa-national-firstpost-20261030/detector_engine.py
 !/tooling/diagnostics/balsa-range-evaluation-20261102/evaluate_ranges.py
 !/tooling/diagnostics/balsa-research-v3-20261031/controls/recusum_adapter.py
+!/tooling/diagnostics/balsa-research-v3-20261031/controls/run_controls.py
 !/tooling/diagnostics/balsa-results-ablation-20261101/finalize.py
 !/tooling/diagnostics/balsa-results-ablation-20261101/polarization/detector_adapter.py
 !/tooling/diagnostics/balsa-results-ablation-20261101/polarization/run_polarization.py

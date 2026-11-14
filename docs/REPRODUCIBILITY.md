@@ -75,6 +75,11 @@ limits. This command does not tune detectors or invent missing reference events.
 
 ## Figures and manuscript
 
+Install `.[geo,figures]` with `-c configs/requirements-reproduce.txt` for figure
+scripts. The figure extra includes the PDF, PowerPoint and image libraries used
+by the existing renderers; the constraints retain PyMuPDF 1.26.7 from the
+original drawing environment.
+
 The seven final PDFs are readable without raw inputs. Their scripts, dependencies
 and commands are listed in `manuscript_JAG/figure_sources/FIGURE_BUILDERS.csv`.
 Some figures require private imagery/geometry; Figures 1-4 also retain frozen
@@ -84,3 +89,17 @@ summaries, but do not replace all private figure inputs.
 
 See `manuscript_JAG/BUILDING.md` for the official CAS template and TeX build.
 Building TeX reuses approved figures; it does not run experiments or redraw figures.
+
+## Source layout and historical receipts
+
+The installed package is `windowed_cusum`; the current pipeline and dataset
+commands above keep their existing names and input columns. The package layout
+is described in [src/README.md](../src/README.md). Original dataset code manifests
+retain their frozen filenames and hashes; they are provenance records, not
+Python import paths.
+
+Some dated author-side scripts check exact historical source hashes before
+replaying old experiments. Those checks require the matching source snapshot
+and private caches. Use the supplied-data pipeline and `verify_dataset_v1.py`
+to check a new run against the released products; do not edit historical
+receipts to accommodate a source reorganization.

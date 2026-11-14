@@ -37,7 +37,7 @@ DETECTOR_CONFIG = ROOT / "configs/benchmarks/legacy_w36.json"
 
 sys.path.insert(0, str(ROOT / "scripts"))
 import fc001_validation_detection as fc  # noqa: E402
-from harvest_bounded_event_aggregation import build_bounded_events  # noqa: E402
+from windowed_cusum.stand.harvest_bounded_event_aggregation import build_bounded_events  # noqa: E402
 from windowed_cusum.detector import paper  # noqa: E402
 from windowed_cusum.benchmarks.baselines import fpol_bocd_detect, is_decrease, recusum_detect  # noqa: E402
 from windowed_cusum.benchmarks.cusum_nrt_adapter import admitted, scan_nrt  # noqa: E402

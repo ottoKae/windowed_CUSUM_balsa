@@ -16,7 +16,7 @@ INPUTS = ROOT / "runs/validation/existing_labels_w36_20260927_v1/inputs"
 DEFAULT_RUN = ROOT / "runs/validation/pixel_b20_benchmark_window_20261004_ewmacd_v1"
 sys.path.insert(0, str(ROOT / "scripts")); sys.path.insert(0, str(ROOT / "src"))
 import fc001_validation_detection as fc  # noqa: E402
-from harvest_bounded_event_aggregation import build_bounded_events  # noqa: E402
+from windowed_cusum.stand.harvest_bounded_event_aggregation import build_bounded_events  # noqa: E402
 from windowed_cusum.benchmarks.ewmacd_adapter import run_ewmacd, ewma_trace  # noqa: E402
 
 METHOD = "ewmacd_hist2_l03_p1"

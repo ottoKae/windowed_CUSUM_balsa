@@ -23,6 +23,11 @@ private frozen output directory is absent. Where those inputs are available, it
 still performs the original parity checks. Synthetic tests do not need those
 artifacts and do not reproduce the paper's real-data results.
 
+`test_public_entry_imports.py` loads experiment and figure entries in separate
+processes. It checks transitive helpers and configuration paths without private
+inputs or the retired `lr_cusum` package. Local comparator tests also exercise
+recursive dates, missing-month support and cloud-output parsing offline.
+
 CI also runs `scripts/run_current_pipeline.py`, exercising the actual first-post
 W36 → TDA → STP chain on invented pixels, and checks the published aggregate
 tables with `scripts/experiments/check_published_results.py`. Historical source
