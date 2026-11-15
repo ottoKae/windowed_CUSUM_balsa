@@ -17,3 +17,10 @@ manuscript_JAG_v2/cas-sc.cls -whitespace
 *.png binary
 *.tif binary
 *.tiff binary
+
+# Preserve upstream CAS formatting.
+manuscript_JAG/cas-*.cls -whitespace
+manuscript_JAG/cas-common.sty -whitespace
+manuscript_JAG/cas-model2-names.bst -whitespace
+docs/third_party/els-cas-templates/* -whitespace
+*.zip binary

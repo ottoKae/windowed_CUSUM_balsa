@@ -26,6 +26,7 @@
 !/manuscript_JAG/figure_sources/
 !/manuscript_JAG/figures/
 !/manuscript_JAG/sections/
+!/manuscript_JAG/thumbnails/
 !/provenance/figures/
 !/results/summary/
 !/scripts/experiments/
@@ -34,6 +35,7 @@
 !/tooling/catalogs/
 !/tooling/diagnostics/
 !/tooling/release/
+!/docs/third_party/els-cas-templates/
 !/src/windowed_cusum/benchmarks/
 !/src/windowed_cusum/detector/
 !/src/windowed_cusum/evaluation/
@@ -108,9 +110,17 @@
 !/docs/REPOSITORY_GUIDE.md
 !/docs/REPRODUCIBILITY.md
 !/docs/third_party/CuSum_NRT_LICENSE.txt
+!/docs/third_party/els-cas-templates/PROVENANCE.txt
+!/docs/third_party/els-cas-templates/README
+!/docs/third_party/els-cas-templates/els-cas-templates-2.4.zip
+!/docs/third_party/els-cas-templates/manifest.txt
 !/manuscript_JAG/BUILDING.md
 !/manuscript_JAG/README.md
 !/manuscript_JAG/build_latex.ps1
+!/manuscript_JAG/cas-common.sty
+!/manuscript_JAG/cas-dc.cls
+!/manuscript_JAG/cas-model2-names.bst
+!/manuscript_JAG/cas-sc.cls
 !/manuscript_JAG/figure_sources/FIGURE_BUILDERS.csv
 !/manuscript_JAG/figure_sources/README.md
 !/manuscript_JAG/figures/README.md
@@ -134,6 +144,12 @@
 !/manuscript_JAG/sections/07_declarations.tex
 !/manuscript_JAG/supplementary.pdf
 !/manuscript_JAG/supplementary.tex
+!/manuscript_JAG/thumbnails/cas-email.jpeg
+!/manuscript_JAG/thumbnails/cas-facebook.jpeg
+!/manuscript_JAG/thumbnails/cas-gplus.jpeg
+!/manuscript_JAG/thumbnails/cas-linkedin.jpeg
+!/manuscript_JAG/thumbnails/cas-twitter.jpeg
+!/manuscript_JAG/thumbnails/cas-url.jpeg
 !/provenance/DATA_SOURCES.md
 !/provenance/PUBLIC_RELEASE_POLICY.md
 !/provenance/figures/FIG1_CURRENT.md

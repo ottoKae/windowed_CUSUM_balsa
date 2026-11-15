@@ -45,27 +45,27 @@
 \shortauthors{Rao et al.}
 
 \author[1]{Keyi Rao}[orcid=0000-0001-8443-9819]\fnmark[1]
-\credit{Conceptualization, Methodology, Software, Visualization, Data curation, Formal analysis, Project administration, Writing -- original draft}
+\credit{Conceptualization, Methodology, Software, Validation, Visualization, Data curation, Formal analysis, Project administration, Writing -- original draft}
 
 \author[1]{Shixin Dong}[orcid=0009-0005-7299-5312]\fnmark[1]
-\credit{Methodology, Software, Visualization, Validation, Writing -- original draft}
+\credit{Methodology, Software, Validation, Writing -- original draft}
 
 \author[2]{Zhongwen Hu}[orcid=0000-0003-2689-3196]
 \credit{Validation, Funding acquisition, Writing -- review and editing}
 
 \author[3,4]{Cesar Ivan Alvarez}[orcid=0000-0001-5629-0893]
-\credit{Conceptualization, Methodology, Writing -- review and editing}
+\credit{Resources, Methodology, Validation}
 
 \author[5]{Yuanyong Dian}[orcid=0000-0002-4957-3681]
 \credit{Validation, Writing -- review and editing}
 
 \author[1]{Ruixin Fang}[orcid=0000-0002-1429-632X]
 \ead{fangrx@whu.edu.cn}
-\credit{Supervision, Resources, Writing -- review and editing}
+\credit{Validation, Data curation, Software}
 
 \author[1]{Zhaocong Wu}[orcid=0000-0003-2435-5538]\cormark[1]
 \ead{zcwoo@whu.edu.cn}
-\credit{Conceptualization, Supervision, Funding acquisition}
+\credit{Conceptualization, Resources, Supervision, Funding acquisition}
 
 \affiliation[1]{organization={School of Remote Sensing and Information Engineering, Wuhan University},
   addressline={No. 299 Bayi Road, Wuchang District}, city={Wuhan}, postcode={430072},
@@ -91,20 +91,20 @@
 \end{abstract}
 
 \begin{highlights}
-  \item Decadal Sentinel-1 SAR reconstructs multi-rotation balsa harvest histories
-  \item Overlapping windows and central intervals renew baselines without split errors
-  \item Two-stage spatiotemporal aggregation bridges asynchronous pixel-to-stand scales
-  \item Windowed CuSum reaches 0.837 F1 and recovers 83.9\% of consecutive harvest pairs
-  \item Nearly 60\% of balsa stands harvested repeatedly with a 34-month median cycle
+  \item Decadal Sentinel-1 SAR reconstructs monthly multi-rotation balsa harvest histories
+  \item Local baseline adaptation enables recurrent harvest detection in evolving backgrounds
+  \item Spatiotemporal aggregation links staggered pixel detections to stand harvests
+  \item Windowed CuSum tops 14 detectors (0.837 F1) and recovers 83.9\% of harvest pairs
+  \item 59.6\% of Ecuadorian stands showed rotational harvesting (34-month median interval)
 \end{highlights}
 
 \begin{keywords}
-  Sentinel-1 SAR \sep
-  Windowed CuSum \sep
-  Spatial time series \sep
-  Rotational harvesting \sep
+  Synthetic aperture radar (SAR) \sep
+  Change-point detection \sep
+  Spatiotemporal aggregation \sep
   Short-rotation plantation \sep
-  Balsa (\textit{Ochroma pyramidale})
+  Stand turnover \sep
+  \textit{Ochroma pyramidale}
 \end{keywords}
 
 \maketitle

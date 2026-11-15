@@ -27,6 +27,25 @@ In PowerShell, from this directory:
 For a terminal in another directory, invoke the full script path with `&`.
 The script sets its own working directory. TeX Live tools must be on PATH.
 
+## Included template and dependencies
+
+CAS 2.4 (`cas-sc.cls`, `cas-dc.cls`, `cas-common.sty`,
+`cas-model2-names.bst`) and `thumbnails/` are included locally. The full
+upstream archive, README, manifest and provenance are retained in
+`../docs/third_party/els-cas-templates/` under the upstream LPPL terms.
+
+Use a TeX Live or MiKTeX installation with pdfLaTeX and BibTeX; `-Fast` also
+requires latexmk (and its Perl runtime). Standard packages include natbib,
+moreverb, wrapfig, setspace, placeins, threeparttable, multirow, lineno,
+booktabs, makecell, stfloats, xstring, footmisc and the usual graphics,
+AMS, geometry and hyperref packages. Install `stix` and `inconsolata` for
+the fonts used in the verified build. These standard distribution packages
+are not copied into the repository. Missing packages should be installed
+through the TeX distribution's package manager.
+
+Verified locally with MiKTeX 25.12 / pdfTeX 1.40.28. The build script works
+with either distribution; TeX Live is not required specifically.
+
 ## What was fixed on 2026-09-05
 
 Six cited keys were in `../manuscript/references.bib`, but missing from the

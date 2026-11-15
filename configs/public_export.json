@@ -250,7 +250,21 @@
     "results/summary/national_canton_quarterly_reports.csv": "results/summary/national_canton_quarterly_reports.csv",
     "results/summary/national_canton_ranking.csv": "results/summary/national_canton_ranking.csv",
     "results/summary/national_climate_interval_distributions.csv": "results/summary/national_climate_interval_distributions.csv",
-    "results/summary/national_climate_interval_summary.csv": "results/summary/national_climate_interval_summary.csv"
+    "results/summary/national_climate_interval_summary.csv": "results/summary/national_climate_interval_summary.csv",
+    "docs/third_party/els-cas-templates/els-cas-templates-2.4.zip": "docs/third_party/els-cas-templates/els-cas-templates-2.4.zip",
+    "docs/third_party/els-cas-templates/manifest.txt": "docs/third_party/els-cas-templates/manifest.txt",
+    "docs/third_party/els-cas-templates/PROVENANCE.txt": "docs/third_party/els-cas-templates/PROVENANCE.txt",
+    "docs/third_party/els-cas-templates/README": "docs/third_party/els-cas-templates/README",
+    "manuscript_JAG/thumbnails/cas-email.jpeg": "manuscript_JAG/thumbnails/cas-email.jpeg",
+    "manuscript_JAG/thumbnails/cas-facebook.jpeg": "manuscript_JAG/thumbnails/cas-facebook.jpeg",
+    "manuscript_JAG/thumbnails/cas-gplus.jpeg": "manuscript_JAG/thumbnails/cas-gplus.jpeg",
+    "manuscript_JAG/thumbnails/cas-linkedin.jpeg": "manuscript_JAG/thumbnails/cas-linkedin.jpeg",
+    "manuscript_JAG/thumbnails/cas-twitter.jpeg": "manuscript_JAG/thumbnails/cas-twitter.jpeg",
+    "manuscript_JAG/thumbnails/cas-url.jpeg": "manuscript_JAG/thumbnails/cas-url.jpeg",
+    "manuscript_JAG/cas-sc.cls": "manuscript_JAG/cas-sc.cls",
+    "manuscript_JAG/cas-dc.cls": "manuscript_JAG/cas-dc.cls",
+    "manuscript_JAG/cas-common.sty": "manuscript_JAG/cas-common.sty",
+    "manuscript_JAG/cas-model2-names.bst": "manuscript_JAG/cas-model2-names.bst"
   },
   "approved_pdfs": {
     "manuscript_JAG/figures/fig01_study_area.pdf": "f6f95c3f2cbfd6a3163d6bdf84adc0429878dc05292ec191af07d16afd18b4f1",
@@ -260,7 +274,16 @@
     "manuscript_JAG/figures/fig05_backscatter_signatures.pdf": "c561dcc492bd9f0c46b6f5401a5113c4ff4592517968576f25c608fe0fa51aca",
     "manuscript_JAG/figures/fig06_stand_harvest_histories.pdf": "90f58ffbc2a0d2063294c2c7a2be5e2b0bf660b5b10297ab70a2f62a32369ff6",
     "manuscript_JAG/figures/fig07_national_harvest_patterns.pdf": "d2f828b9bdc3d47d87b8784401b478a98d1d7404970900243163b041492bf197",
-    "manuscript_JAG/main.pdf": "fdb3fad717b3631d7b10152a8462d5c767e4998fb92e4131d3aca5950c845bbd",
+    "manuscript_JAG/main.pdf": "d809aec24439e04b75932d9a8c9d95506ff0c4391a93484917a20347a2088f1c",
     "manuscript_JAG/supplementary.pdf": "476f5605f55d91846afa22e885a547470d454fb7098b169594cb73130e3c8be8"
+  },
+  "approved_binaries": {
+    "docs/third_party/els-cas-templates/els-cas-templates-2.4.zip": "36d97da01c6bbd134f315bff6c3de553735e2550444a6ddd4f869ddc67a20757",
+    "manuscript_JAG/thumbnails/cas-email.jpeg": "51cadbff5919f51f76f6f9238b18c9b5d512ea9234cb6d7fef7b53d9767fa845",
+    "manuscript_JAG/thumbnails/cas-facebook.jpeg": "ee892a2efc41325af58c7aa5c9356249d68524e796ed2e2da391652a9d2e4294",
+    "manuscript_JAG/thumbnails/cas-gplus.jpeg": "7a903863812ac3b33d64c5f774ea549793d2657880874ca6e7d4243f5a51516b",
+    "manuscript_JAG/thumbnails/cas-linkedin.jpeg": "3fa7b9ead03ed5d1976316aa1d69157eeeaefae04fab568a4d704185755f7f9f",
+    "manuscript_JAG/thumbnails/cas-twitter.jpeg": "bf2765da8cc4cc58fef109fd0f864b4fc39d7ba8e8040c8633542076ccdc91ef",
+    "manuscript_JAG/thumbnails/cas-url.jpeg": "66e3c16ef98e082d61397c9644ccae92c227bae49fd7eba5bcad4a6623fd67d5"
   }
 }

@@ -62,11 +62,14 @@ from source still requires the private frozen inputs described in
 those inputs. The historical `scripts/figures/build_all.py` is not the current
 seven-figure renderer.
 
-The partial local CAS class/style bundle remains private. Obtain Elsevier's
-complete CAS template from the [official CTAN package](https://ctan.org/pkg/els-cas-templates)
-and retain its license/distribution metadata before compiling the TeX. The
-project's MIT license does not replace the template's license. A separately
-installed template may produce layout differences from the supplied author PDFs.
+The official CAS 2.4 classes, common style, bibliography style and thumbnail
+icons are distributed beside the manuscript. The complete unmodified
+[upstream archive and notices](third_party/els-cas-templates/PROVENANCE.txt)
+are retained under `docs/third_party/els-cas-templates/`. Their LPPL terms
+remain in force; the project's MIT license does not replace them. Approved
+archive/icon hashes are listed in `configs/public_export.json`; all other
+unapproved binary files remain excluded. See `manuscript_JAG/BUILDING.md`
+for standard TeX package dependencies.
 
 For licensing and data boundaries, see the
 [release policy](../provenance/PUBLIC_RELEASE_POLICY.md). The separate V1.0.0 data

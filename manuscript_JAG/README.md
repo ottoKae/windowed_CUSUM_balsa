@@ -23,9 +23,11 @@ historical audit records. It is excluded from the public repository, as are
 editable PowerPoint files and original imagery. The public selection contains
 the TeX, bibliography, compiled manuscript, supplement and seven final figures.
 
-The partial local CAS style bundle is not redistributed. To compile on another
-machine, obtain the official CAS templates as described in
-[the public release guide](../docs/PUBLIC_RELEASE.md).
+The official CAS 2.4 classes, common style, bibliography style and thumbnail
+icons are included beside the manuscript. The complete upstream source archive
+and license notices are retained in
+[docs/third_party/els-cas-templates](../docs/third_party/els-cas-templates/).
+Install the standard TeX dependencies listed in [BUILDING.md](BUILDING.md).
 
 Research data and figure sources remain in their existing project locations.
 Generated figure indexes are rebuilt from

@@ -1,0 +1,9 @@
+Elsevier CAS Bundle 2.4 (2024-05-04)
+Source: https://mirrors.ctan.org/macros/latex/contrib/els-cas-templates.zip
+Retrieved: 2026-11-15
+The complete upstream archive is retained unchanged, with its documentation,
+examples, manifest and license notices. The manuscript directory contains
+verbatim copies of the classes, common style, BibTeX style and thumbnail icons.
+The CAS files retain their upstream LPPL notices; the project MIT license
+does not replace them. See README and manifest.txt for upstream terms.
+SHA256: 36d97da01c6bbd134f315bff6c3de553735e2550444a6ddd4f869ddc67a20757

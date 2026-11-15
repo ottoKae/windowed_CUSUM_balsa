@@ -52,9 +52,15 @@ def collect_files(root: Path, config: dict) -> dict[str, Path]:
     return files
 
 
-def privacy_findings(files: dict[str, Path], path_exemptions=(), approved_pdfs=None) -> dict[str, list[str]]:
+def privacy_findings(files: dict[str, Path], path_exemptions=(), approved_pdfs=None, approved_binaries=None) -> dict[str, list[str]]:
     findings = {}
     for name, path in files.items():
+        # Explicit upstream template archives/icons only; changing bytes requires
+        # a new reviewed hash. Other binary files still fail the text scanner.
+        if name in (approved_binaries or {}):
+            if path.suffix.lower() not in {'.zip', '.jpeg'} or approved_binaries[name] != hashlib.sha256(path.read_bytes()).hexdigest():
+                findings[name] = ['Third-party binary not approved at this content hash']
+            continue
         # Only the author's reviewed publication PDFs bypass the text scanner.
         if path.suffix.lower() == '.pdf':
             if (approved_pdfs or {}).get(name) != hashlib.sha256(path.read_bytes()).hexdigest():
@@ -91,7 +97,7 @@ def export(root: Path, output: Path, config: dict) -> dict:
     if output.exists():
         raise FileExistsError("Refusing stale or nonempty export; choose a new output directory")
     files = collect_files(root, config)
-    findings = privacy_findings(files, config.get("absolute_path_exemptions", []), config.get("approved_pdfs", {}))
+    findings = privacy_findings(files, config.get("absolute_path_exemptions", []), config.get("approved_pdfs", {}), config.get("approved_binaries", {}))
     if findings:
         # Never print matched contents, credentials, or private notes.
         raise ValueError("Public export blocked; file names and categories only: " + json.dumps(findings))
@@ -128,7 +134,7 @@ def verify(directory: Path) -> dict:
         raise ValueError("Manifest hash mismatch: " + json.dumps(changed))
     config_path = directory / 'configs/public_export.json'
     config = json.loads(config_path.read_text(encoding='utf-8')) if config_path.exists() else {}
-    findings = privacy_findings(files, approved_pdfs=config.get('approved_pdfs', {}))
+    findings = privacy_findings(files, approved_pdfs=config.get('approved_pdfs', {}), approved_binaries=config.get('approved_binaries', {}))
     if findings:
         raise ValueError("Privacy findings (file names and categories only): " + json.dumps(findings))
     return {"file_count": len(files), "manifest_verified": True, "privacy_findings": findings}
