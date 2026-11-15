@@ -12,6 +12,7 @@
 \usepackage[section]{placeins}
 \usepackage{xcolor}
 \usepackage{setspace}
+\setlength{\footnotemargin}{0pt}
 
 \ExplSyntaxOn
 \cs_new_eq:NN \lr_cusum_original_make_tbl_caption:nn \__make_tbl_caption:nn
@@ -60,7 +61,6 @@
 \credit{Validation, Writing -- review and editing}
 
 \author[1]{Ruixin Fang}[orcid=0000-0002-1429-632X]
-\ead{fangrx@whu.edu.cn}
 \credit{Validation, Data curation, Software}
 
 \author[1]{Zhaocong Wu}[orcid=0000-0003-2435-5538]\cormark[1]
@@ -87,7 +87,7 @@
 \title[mode=title]{Mapping rotational harvesting from decadal Sentinel-1 time series with windowed CuSum: A case study of Ecuadorian balsa plantations}
 
 \begin{abstract}
-  Balsa (\textit{Ochroma pyramidale}) plantations produce lightweight core material for wind-turbine blades on short rotations, yet persistent tropical cloud cover obscures these harvest--regrowth cycles in optical imagery, hindering stand-turnover tracking. Here, we developed a retrospective framework combining \textit{windowed CuSum} with spatiotemporal aggregation to reconstruct multi-rotation harvest histories from decadal Sentinel-1 synthetic aperture radar (SAR) observations. First, terrain-corrected Sentinel-1 bursts are organized into track-consistent monthly data cubes to extract spatial time series at fixed 30~m pixels. Second, overlapping context windows renew local baselines across rotations, and central decision-interval admission paired with window-specific permutation testing isolates canopy-loss shifts. Third, spatiotemporal aggregation bridges pixel-to-stand scale mismatches from asynchronous felling, consolidating staggered pixel detections into discrete stand-level harvests and resolving intra-stand cutting progression. Reference-aligned analysis of paired observations showed median pre-to-post declines of 1.45~dB in VV and 1.40~dB in VH, despite substantial overlap in pooled backscatter distributions. Evaluated against 1,049 reference harvests from 459 stands in mainland Ecuador, windowed CuSum achieved the highest F1 (0.837; precision: 0.782, recall: 0.901) among 14 detector configurations, outperforming adapted ReCuSum (0.789) and CCDC (0.734) and raising consecutive harvest-pair recovery from 65.6\% to 83.9\%, with local windowing driving recall and screening securing precision. Applied across 3,364 evaluable stands, the framework identified 6,303 harvests (2017--2025), revealing repeated felling in 59.6\% of stands, a 34-month median turnover interval, concentration within five cantons (67.6\%), and a 2022 cutting surge. Decadal SAR time series thus advance tropical plantation monitoring to multi-rotation lifecycle reconstruction for sustainable forestry management.
+  Balsa (\textit{Ochroma pyramidale}) plantations supply lightweight material for wind-turbine blades, but tropical cloud cover obscures their short harvest--regrowth cycles in optical imagery. We developed a retrospective framework to reconstruct stand-level rotational harvest histories from decadal Sentinel-1 synthetic aperture radar (SAR) observations. Track-consistent monthly trajectories at fixed 30~m pixels support windowed CuSum detection, which combines locally renewed baselines, central decision intervals, and window-specific permutation testing. Spatiotemporal aggregation consolidates staggered detections into harvest events and resolves progression within events. Reference-aligned observations showed median post-harvest declines of 1.45~dB in VV and 1.40~dB in VH despite overlapping pooled backscatter distributions. Against 1,049 reference harvests from 459 Ecuadorian stands, windowed CuSum achieved the highest F1 (0.837; precision: 0.782, recall: 0.901) among 14 benchmark configurations. It outperformed adapted ReCuSum (0.789) and CCDC (0.734), raising adjacent harvest-pair recovery from 65.6\% for adapted ReCuSum to 83.9\%, with similar dating accuracy on shared events. Across 3,364 evaluable stands, the framework identified 6,303 harvests during 2017--2025. Repeated harvesting occurred in 59.6\% of stands, with a 34-month median inter-harvest interval. Five cantons accounted for 67.6\% of harvests, and annual activity peaked in 2022. These findings show how decadal SAR archives can recover recurrent canopy turnover and support plantation monitoring in persistently cloudy tropical regions.
 \end{abstract}
 
 \begin{highlights}

@@ -1,4 +1,4 @@
-\begin{thebibliography}{43}
+\begin{thebibliography}{45}
 \expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
 \providecommand{\url}[1]{\texttt{#1}}
 \providecommand{\href}[2]{#2}
@@ -11,6 +11,16 @@
 \providecommand{\Pubmed}[1]{\href{pmid:#1}{\path{#1}}}
 \providecommand{\bibinfo}[2]{#2}
 \ifx\xfnm\relax \def\xfnm[#1]{\unskip,\space#1}\fi
+%Type = Techreport
+\bibitem[{Albright et~al.(2022)Albright, Ray and Liu}]{AlbrightRayLiu2022}
+\bibinfo{author}{Albright, Z.C.}, \bibinfo{author}{Ray, R.},
+  \bibinfo{author}{Liu, Y.}, \bibinfo{year}{2022}.
+\newblock \bibinfo{title}{China-Latin America and the Caribbean Economic
+  Bulletin, 2022 Edition}.
+\newblock \bibinfo{type}{Economic Bulletin}. Boston University Global
+  Development Policy Center.
+\newblock \URLprefix
+  \url{https://www.bu.edu/gdp/files/2022/03/GCI-CH-LAC-Bulletin_2022_FIN.pdf}.
 %Type = Article
 \bibitem[{Alvarez-Mendoza et~al.(2019)Alvarez-Mendoza, Teodoro and
   Ramirez-Cando}]{AlvarezMendoza2019CirrusEcuador}
@@ -323,6 +333,16 @@
 \newblock \bibinfo{journal}{Environmental Research Letters}
   \bibinfo{volume}{16}, \bibinfo{pages}{024005}.
 \newblock \DOIprefix\doi{10.1088/1748-9326/abd0a8}.
+%Type = Techreport
+\bibitem[{Rodriguez~Zunino et~al.(2022)Rodriguez~Zunino, Norman and
+  Tenorio~Fenton}]{RodriguezZunino2022Balsa}
+\bibinfo{author}{Rodriguez~Zunino, A.}, \bibinfo{author}{Norman, M.},
+  \bibinfo{author}{Tenorio~Fenton, S.}, \bibinfo{year}{2022}.
+\newblock \bibinfo{title}{Gone With the Wind: China's Balsa Wood Consumption is
+  Exposing Flaws in Peru's Forest Regulations and Enforcement Regime}.
+\newblock \bibinfo{type}{Report}. Forest Trends.
+\newblock \URLprefix
+  \url{https://www.forest-trends.org/wp-content/uploads/2022/06/Balsa-Report-FINAL.pdf}.
 %Type = Article
 \bibitem[{Ruiz-Ramos et~al.(2020)Ruiz-Ramos, Marino, Boardman and
   Suarez}]{RuizRamos2020CUSUMSMC}
