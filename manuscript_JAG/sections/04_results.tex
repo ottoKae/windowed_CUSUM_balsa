@@ -2,11 +2,13 @@
 \section{Results}
 \label{sec:results}
 
-% --------------------------------------------------------
+%--------------------------------------------------------
 \subsection{Sentinel-1 backscatter responses to harvest events}
 \label{sec:s1_signatures}
 
-Across 978 reference harvest events meeting the paired VV--VH coverage requirements, backscatter decreased in both polarizations, although pre- and post-harvest distributions overlapped substantially (Fig.~\ref{fig:s1_population_signatures}(a)). Median VV backscatter decreased from $-6.00$~dB before harvesting (months $-12$ to $-3$) to $-7.51$~dB afterward (months $0$ to $+2$) over the same periods. The corresponding VH medians were $-12.54$ and $-13.98$~dB. Within-event paired changes were negative in 97.3\% of events for VV and 95.0\% for VH (Fig.~\ref{fig:s1_population_signatures}(b)). Median paired changes were $-1.45$~dB for VV (95\% CI: $-1.64$ to $-1.24$~dB) and $-1.40$~dB for VH (95\% CI: $-1.60$ to $-1.19$~dB).
+Sentinel-1 backscatter exhibited a consistent downward shift following harvest events across both VV and VH polarizations (Fig.~\ref{fig:s1_population_signatures}). Within individual events, backscatter decreased in 97.3\% (VV) and 95.0\% (VH) of cases, with median paired changes of $-1.45$~dB (95\% CI: $-1.64$ to $-1.24$~dB) and $-1.40$~dB ($-1.60$ to $-1.19$~dB), respectively. Despite substantial overlap in the pooled pre- and post-harvest distributions (Fig.~\ref{fig:s1_population_signatures}~(a)), this within-event paired analysis confirms a robust harvest signal (Fig.~\ref{fig:s1_population_signatures}~(b)).
+
+As shown in Fig.~\ref{fig:s1_population_signatures}~(c), the post-harvest recovery trajectory showed an initial decline, reaching minima at month $+2$ ($-1.80$~dB for VV; $-1.71$~dB for VH). Recovery remained partial throughout the first post-harvest year, with median departures from baseline remaining negative even at month $+12$ ($-0.94$~dB for VV; $-0.60$~dB for VH). Spatial-block bootstrap CIs confirm that these median departures stayed significantly below zero from month $0$ to $+12$, indicating prolonged signal recovery timescales following balsa harvest.
 
 \begin{figure*}[pos=!htbp]
     \centering
@@ -14,8 +16,6 @@ Across 978 reference harvest events meeting the paired VV--VH coverage requireme
     \caption{Sentinel-1 VV and VH backscatter responses across 978 reference harvests. (a) Pre-event ($-12$ to $-3$ months), after-event ($0$ to $+2$ months), and inventory-wide (all) monthly backscatter distributions (medians and IQRs). (b) Paired post-minus-pre differences within events (medians and 95\% CIs). (c) Event-aligned relative backscatter trajectories with IQRs (light shading) and 95\% spatial-block bootstrap CIs (dark shading).}
     \label{fig:s1_population_signatures}
 \end{figure*}
-
-Event-aligned trajectories showed an initial decline followed by gradual recovery toward pre-harvest baselines (Fig.~\ref{fig:s1_population_signatures}(c)). Median departures from baseline reached their minima at month $+2$, at $-1.80$~dB for VV and $-1.71$~dB for VH. Recovery remained incomplete at month $+12$: among the 950 events with observations at this offset, departures were $-0.94$~dB for VV and $-0.60$~dB for VH. Pointwise 95\% confidence intervals for the median departures remained below zero from month $0$ through month $+12$ in both polarizations.
 
 % --------------------------------------------------------
 \subsection{Component contributions and configuration sensitivity}
@@ -25,50 +25,51 @@ Event-aligned trajectories showed an initial decline followed by gradual recover
 \subsubsection{Contributions of local context and candidate screening}
 \label{sec:representation_component_ablation}
 
-Local context windows increased harvest recovery, while central decision-interval admission and permutation testing improved precision (Table~\ref{tab:component_ablation}). Replacing full-record CuSum with overlapping 36-month windows raised recall from $0.531$ to $0.952$ and adjacent-pair recovery from 18.0\% (106/590) to 93.4\% (551/590), but reduced precision from $0.810$ to $0.429$.
+The windowed CuSum detector benefited from a hierarchical screening approach in which contextual constraints and statistical filtering progressively improved reference-based precision (Table~\ref{tab:component_ablation}). Transitioning from full-record CuSum to 36-month local windows increased adjacent-harvest recovery from 18.0\% (106/590) to 93.4\% (551/590), though this improvement in recall initially lowered precision. Subsequent decision-interval admission and permutation-based screening successfully restored precision and improved the reference F1 score by 0.246, while retaining most of the recall gains achieved
+with local windows. The final configuration achieved a robust balance with a reference F1 score of 0.837. This approach effectively maintains sensitivity to harvest-induced shifts, ultimately recovering 83.9 percent of adjacent reference harvest pairs.
 
 \begin{table*}[pos=!htbp]
     \centering
     \small
     \setlength{\tabcolsep}{4pt}
-    \caption{Progressive component ablation of windowed CuSum across 459 reference stands (1,049 harvests). $N_{\mathrm{det}}$ and $M$ denote detected stand-level events and matched harvests; $\Delta F_{1,\mathrm{ref}}$ compares each row with its predecessor (95\% bootstrap CIs). Bold marks column maxima.}
+    \caption{Progressive component ablation of windowed CuSum across 459 reference stands (1,049 harvests). $N_{\mathrm{det}}$ and $M$ denote detected stand-level events and matched harvests. $R_{\mathrm{pair}}$ is the percentage of 590 adjacent reference harvest pairs for which both harvests were matched. $\Delta F_{1,\mathrm{ref}}$ reflects the incremental change in F1-score relative to the preceding configuration (95\% bootstrap CIs).}
     \label{tab:component_ablation}
-    \begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lrrrrrc@{}}
+    \begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lrrrrrrc@{}}
         \toprule
         Cumulative configuration &
         $N_{\mathrm{det}}$ &
         $M$ &
+        $R_{\mathrm{pair}}$ (\%) &
         $P_{\mathrm{ref}}$ &
         $R_{\mathrm{ref}}$ &
         $F_{1,\mathrm{ref}}$ &
         $\Delta F_{1,\mathrm{ref}}$ (95\% CI) \\
         \midrule
         Full-record CuSum
-        & 688 & 557 & \textbf{0.810} & 0.531 & 0.641 & -- \\
+        & 688 & 557 & 18.0 & \textbf{0.810} & 0.531 & 0.641 & -- \\
         + Local windows
-        & 2,327 & 999 & 0.429 & \textbf{0.952} & 0.592 & $-0.050$ [$-0.075$, $-0.022$] \\
+        & 2,327 & 999 & \textbf{93.4} & 0.429 & \textbf{0.952} & 0.592 & $-0.050$ [$-0.075$, $-0.022$] \\
         + Decision-interval admission
-        & 1,843 & 992 & 0.538 & 0.946 & 0.686 & $+0.094$ [$+0.081$, $+0.107$] \\
+        & 1,843 & 992 & 91.7 & 0.538 & 0.946 & 0.686 & $+0.094$ [$+0.081$, $+0.107$] \\
         + Negative-direction screening
-        & 1,843 & 992 & 0.538 & 0.946 & 0.686 & $\phantom{+}0.000$ [$\phantom{+}0.000$, $\phantom{+}0.000$] \\
+        & 1,843 & 992 & 91.7 & 0.538 & 0.946 & 0.686 & $\phantom{+}0.000$ [$\phantom{+}0.000$, $\phantom{+}0.000$] \\
         + Permutation screening
-        & 1,208 & 945 & 0.782 & 0.901 & \textbf{0.837} & $+0.151$ [$+0.134$, $+0.169$] \\
+        & 1,208 & 945 & 83.9 & 0.782 & 0.901 & \textbf{0.837} & $+0.151$ [$+0.134$, $+0.169$] \\
         \bottomrule
     \end{tabular*}
 \end{table*}
 
-Central decision-interval admission increased $F_{1,\mathrm{ref}}$ by $0.094$. Negative-direction screening left detections unchanged because all admitted candidates already represented downward shifts. Permutation testing further increased F1 by $0.151$, yielding a final precision of $0.782$, recall of $0.901$, and F1 of $0.837$. The complete configuration recovered 83.9\% (495/590) of adjacent reference pairs; detected events spanned a median of four months, with 6.4\% exceeding 12 months.
 
 % -----------------------------------------------------------
 \subsubsection{Configuration sensitivity of windowed CuSum}
 \label{sec:cusum_configuration_sensitivity}
 
-Window length and search schedule had modest effects on performance (Table~\ref{tab:cusum_configuration_sensitivity}). The 24-month window yielded the highest F1 ($0.848$), but its difference from the baseline was uncertain (95\% CI for $\Delta F_{1,\mathrm{ref}}$: $-0.004$ to $+0.025$) and it recovered fewer adjacent pairs (486/590 vs.\ 495/590). Longer windows progressively reduced recall. Halving the stride or both decision interval and stride produced F1 differences within $\pm0.004$, with confidence intervals spanning zero. Combining $W=24$ with $D=S=6$ yielded F1 of $0.843$.
+The windowed CuSum framework exhibited relatively stable F1 scores across the tested window lengths and search schedules (Table~\ref{tab:cusum_configuration_sensitivity}). While a 24-month window yielded the highest nominal reference F1 score of 0.848, the marginal gain over the 36-month baseline was not statistically significant, with the 95\% confidence interval including zero.
 
 \begin{table*}[pos=!htbp]
     \centering\small
     \setlength{\tabcolsep}{3pt}
-    \caption{Configuration sensitivity of windowed CuSum relative to the baseline (VV, $W=36$, $D=S=12$ months, $\alpha_{\mathrm{ts}}=0.025$). $\Delta F_{1,\mathrm{ref}}$ shows differences from baseline (95\% bootstrap CIs). Bold marks column maxima.}
+    \caption{Configuration sensitivity of windowed CuSum relative to the baseline (VV, $W=36$, $D=S=12$ months, $\alpha_{\mathrm{ts}}=0.025$, unrestricted permutation). $\Delta F_{1,\mathrm{ref}}$ shows differences from baseline (95\% bootstrap CIs).}
     \label{tab:cusum_configuration_sensitivity}
     \begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lrrrrrc@{}}
         \toprule
@@ -89,80 +90,76 @@ Window length and search schedule had modest effects on performance (Table~\ref{
         VH & 1,127 & 852 & 0.756 & 0.812 & 0.783 & $-0.054$ [$-0.072$, $-0.036$] \\
         VV--VH union & 1,430 & 976 & 0.683 & \textbf{0.930} & 0.787 & $-0.050$ [$-0.061$, $-0.038$] \\
         VV--VH intersection & 809 & 737 & \textbf{0.911} & 0.703 & 0.793 & $-0.044$ [$-0.064$, $-0.025$] \\
+        \midrule
+        \multicolumn{7}{@{}l}{\textit{Temporal null (calendar-block permutation)}} \\
+        Three-month blocks & 776 & 679 & 0.875 & 0.647 & 0.744 & $-0.093$ [$-0.114$, $-0.073$] \\
+        Four-month blocks & 465 & 416 & 0.895 & 0.397 & 0.550 & $-0.288$ [$-0.320$, $-0.257$] \\
+        Five-month blocks & 107 & 94 & 0.879 & 0.090 & 0.163 & $-0.675$ [$-0.712$, $-0.638$] \\
+        Six-month blocks & 23 & 16 & 0.696 & 0.015 & 0.030 & $-0.808$ [$-0.833$, $-0.780$] \\
         \bottomrule
     \end{tabular*}
 \end{table*}
 
-VV outperformed VH and both dual-polarization combinations: the union favoured recall, whereas the intersection favoured precision (Table~\ref{tab:cusum_configuration_sensitivity}). Across the tested acceptance thresholds, F1 ranged from $0.804$ to $0.847$; its peak at $\alpha_{\mathrm{ts}}=0.01$ did not clearly exceed the baseline (95\% CI for $\Delta F_{1,\mathrm{ref}}$: $-0.001$ to $+0.019$). In contrast, increasing calendar-block permutation length from three to six months reduced recall from $0.647$ to $0.015$, showing strong sensitivity to the temporal null model (Supplementary Information).
+Conversely, extending the window to 48 and 60 months reduced recall to 0.860 and 0.823, respectively. Search schedule adjustments, such as halving the stride or reducing both the decision interval and stride, changed F1 by less than 0.004 relative to the baseline, indicating limited sensitivity to the tested search schedules. Among polarization strategies, VV achieved the highest F1. Dual-polarization combinations either favoured recall at the expense of precision or vice versa, and neither yielded a net gain in F1. Finally, performance was more sensitive to the temporal null model. Recall declined from 0.901 under unrestricted permutation to 0.647, 0.397, 0.090, and 0.015 for calendar-block lengths of 3, 4, 5, and 6 months, respectively.
 
 % --------------------------------------------------------
 \subsection{Benchmark performance against alternative detectors}
 \label{sec:benchmark_null_sensitivity}
 
-Windowed CuSum achieved the highest F1 ($0.837$) among the 14 benchmark configurations (Table~\ref{tab:benchmark_comparison}). In the two primary contrasts, F1 exceeded raw monthly CuSum NRT by $0.253$ (97.5\% CI: $0.230$ to $0.275$) and original CCDC by $0.103$ (97.5\% CI: $0.076$ to $0.133$). Decrease-filtered NRT achieved the highest recall but lower precision, whereas BOCD achieved the highest precision but missed most reference harvests.
+Windowed CuSum outperformed raw monthly CuSum NRT by 0.253 and the original CCDC algorithm by 0.103 in F1. Decrease-filtered monthly CuSum NRT achieved the highest recall of 0.939, with precision of 0.503, whereas the BOCD prototype achieved the highest precision of 0.888, with recall of 0.197. While alternative detectors displayed specific strengths, they consistently failed to balance both metrics effectively, often sacrificing substantial recall or missing the majority of reference harvest events.
+
+The most competitive alternative, first-post ReCuSum, had a reference F1 score 0.048 lower than that of windowed CuSum (95\% CI, 0.032 to 0.065). However, windowed CuSum recovered 83.9\% (495/590) of adjacent reference harvest pairs, compared with 65.6\% (387/590) for first-post ReCuSum. These results indicate that the windowed CuSum framework provides a more reliable reconstruction of balsa harvest histories, particularly in complex rotational harvesting where detector consistency is paramount.
+% For the 804 reference harvests matched by both methods, mean absolute dating error differed by only 0.005 months (windowed CuSum minus first-post ReCuSum; 95\% CI, $-0.039$ to 0.048 months).
 
 \begin{table*}[pos=!htbp]
     \centering
     \small
     \setlength{\tabcolsep}{4pt}
-    \caption{Benchmark comparison of 14 detector configurations across 459 reference stands (1,049 harvests) under identical TDA rules. Bold marks column maxima.}
+    \caption{Benchmark comparison of 14 detector configurations across 459 reference stands (1,049 harvests) under identical TDA rules. $R_{\mathrm{pair}}$ is the percentage of 590 adjacent reference harvest pairs for which both harvests were matched.}
     \label{tab:benchmark_comparison}
-    \begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lrrrrr@{}}
+    \begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lrrrrrr@{}}
         \toprule
-        Detector configuration & $N_{\mathrm{det}}$ & $M$ & $P_{\mathrm{ref}}$ & $R_{\mathrm{ref}}$ & $F_{1,\mathrm{ref}}$ \\
+        Detector configuration & $N_{\mathrm{det}}$ & $M$ & $R_{\mathrm{pair}}$ (\%) & $P_{\mathrm{ref}}$ & $R_{\mathrm{ref}}$ & $F_{1,\mathrm{ref}}$ \\
         \midrule
-        Windowed CuSum (Ours) & 1,208 & 945 & 0.782 & 0.901 & \textbf{0.837} \\
-        Maximum monthly decline & 2,470 & 691 & 0.280 & 0.659 & 0.393 \\
-        Classical lower CuSum & 1,254 & 317 & 0.253 & 0.302 & 0.275 \\
-        BOCD prototype (VV+VH) & 233 & 207 & \textbf{0.888} & 0.197 & 0.323 \\
-        Monthly CuSum NRT (raw) & 2,159 & 938 & 0.434 & 0.894 & 0.585 \\
-        Monthly CuSum NRT (decrease-filtered) & 1,960 & 985 & 0.503 & \textbf{0.939} & 0.655 \\
-        ReCuSum (decrease-filtered) & 946 & 763 & 0.807 & 0.727 & 0.765 \\
-        ReCuSum (raw) & 1,688 & 716 & 0.424 & 0.683 & 0.523 \\
-        ReCuSum first-post adaptation & 1,024 & 818 & 0.799 & 0.780 & 0.789 \\
-        CCDC original configuration & 953 & 735 & 0.771 & 0.701 & 0.734 \\
-        CCDC expanded configuration & 825 & 659 & 0.799 & 0.628 & 0.703 \\
-        Structural breakpoints & 902 & 729 & 0.808 & 0.695 & 0.747 \\
-        BFAST Monitor adaptation & 773 & 207 & 0.268 & 0.197 & 0.227 \\
-        EWMACD adaptation & 1,135 & 473 & 0.417 & 0.451 & 0.433 \\
+        Windowed CuSum (Ours) & 1,208 & 945 & 83.9 & 0.782 & 0.901 & \textbf{0.837} \\
+        Maximum monthly decline & 2,470 & 691 & 40.2 & 0.280 & 0.659 & 0.393 \\
+        Classical lower CuSum & 1,254 & 317 & 12.9 & 0.253 & 0.302 & 0.275 \\
+        BOCD prototype (VV+VH) & 233 & 207 & 1.5 & \textbf{0.888} & 0.197 & 0.323 \\
+        Monthly CuSum NRT (raw) & 2,159 & 938 & 82.5 & 0.434 & 0.894 & 0.585 \\
+        Monthly CuSum NRT (decrease-filtered) & 1,960 & 985 & \textbf{90.3} & 0.503 & \textbf{0.939} & 0.655 \\
+        ReCuSum (decrease-filtered) & 946 & 763 & 57.3 & 0.807 & 0.727 & 0.765 \\
+        ReCuSum (raw) & 1,688 & 716 & 48.5 & 0.424 & 0.683 & 0.523 \\
+        ReCuSum first-post adaptation & 1,024 & 818 & 65.6 & 0.799 & 0.780 & 0.789 \\
+        CCDC original configuration & 953 & 735 & 57.5 & 0.771 & 0.701 & 0.734 \\
+        CCDC expanded configuration & 825 & 659 & 49.0 & 0.799 & 0.628 & 0.703 \\
+        Structural breakpoints & 902 & 729 & 55.3 & 0.808 & 0.695 & 0.747 \\
+        BFAST Monitor adaptation & 773 & 207 & 5.3 & 0.268 & 0.197 & 0.227 \\
+        EWMACD adaptation & 1,135 & 473 & 23.7 & 0.417 & 0.451 & 0.433 \\
         \bottomrule
     \end{tabular*}
 \end{table*}
-
-The strongest alternative was first-post ReCuSum ($F_{1,\mathrm{ref}}=0.789$), with a paired F1 advantage of $0.048$ for windowed CuSum (95\% CI: $0.032$ to $0.065$). Dating accuracy was similar across 804 shared matches: MAE was $0.803$ versus $0.799$ months (paired difference $0.005$ months; 95\% CI: $-0.039$ to $+0.048$). Windowed CuSum nevertheless recovered more adjacent harvest pairs: 83.9\% (495/590) versus 65.6\% (387/590).
 
 % --------------------------------------------------------
 \subsection{Mapping rotational harvesting across mainland Ecuador}
 \label{sec:harvest_mapping}
 
-% -----------------------------------------------------------
-\subsubsection{Stand-level harvest histories and intra-event progression}
-\label{sec:mapping_stand_histories}
+Applying our framework at a national scale revealed complex rotational harvest dynamics throughout 2017--2025 (Fig.~\ref{fig:harvest_mapping_national}). Stand-level reconstructions identified 6,303 harvest events across 2,931 stands, with repeated harvesting occurring in nearly 60 percent of evaluable sites. The national harvest distribution was heavily concentrated in five western cantons, which collectively accounted for 67.6\% of all detected events. Although median inter-harvest intervals were similar across climate zones at 34--35 months, the modal three-month intervals differed markedly (Fig.~\ref{fig:harvest_mapping_national}~(c)). These distributions show similar median inter-harvest intervals but different concentrations of short and long intervals across climate zones.
 
-Across 15 representative stands, TDA reconstructed 34 harvest events during 2017--2025, with one to three events per stand (Fig.~\ref{fig:harvest_mapping_stands}(a, b, d, e, g, h)).
-
-\begin{figure*}[pos=!htbp]
-    \centering
-    \includegraphics[width=\linewidth]{figures/fig06_stand_harvest_histories.pdf}
-    \caption{Stand-level harvest histories and intra-event progression across three balsa neighbourhoods (March 2025 PlanetScope basemaps). (a,d,g) Latest pixelwise detection months (2017--2025). (b,e,h) Monthly detected-pixel counts (bars) and TDA event spans (shading; latest vs.\ earlier events). (c,f,i) Intra-event timing groups (STP~1 and STP~2) within complete TDA events containing 2024 detections. Letters (A--E) link stands across panels in each row.}
-    \label{fig:harvest_mapping_stands}
-\end{figure*}
-
-STP resolved spatial harvesting progression within TDA events (Fig.~\ref{fig:harvest_mapping_stands}(c, f, i)). For example, Stand~22301 contained two sub-blocks of 10 and 16 pixels centred in March and July 2024, respectively. Nationwide, 70 of 2,125 size-eligible events were partitioned into 142 timing groups without increasing stand-level harvest counts.
-
-% -----------------------------------------------------------
-\subsubsection{National harvesting hotspots, temporal pulses, and recurrence intervals}
-\label{sec:mapping_national_recurrence}
-
-Across 3,364 evaluable stands, the framework identified 6,303 harvest events in 2,931 stands during 2017--2025 (Fig.~\ref{fig:harvest_mapping_national}). Of the 3,498 inventory polygons, 134 lacked 30~m grid-centre support. Repeated harvests occurred in 2,005 stands (59.6\% of evaluable stands).
+Our framework provides stand-level reports for forest management by linking pixelwise detections, harvest histories, and within-event groups (Fig.~\ref{fig:harvest_mapping_stands}). These reports capture repeated harvests and spatial differences in detection timing within each event, providing a spatially explicit record for reviewing past harvesting.
 
 \begin{figure*}[pos=!htbp]
     \centering
     \includegraphics[width=\linewidth,height=0.74\textheight,keepaspectratio]{figures/fig07_national_harvest_patterns.pdf}
-    \caption{National balsa harvest patterns in mainland Ecuador, 2017--2025. (a) Cumulative stand-level harvest counts by canton. (b) Modal inter-harvest intervals (3-month bins) in 10-km hexagons over K\"oppen--Geiger climate zones. (c) Inter-harvest interval distributions in Af, Am, and Aw climates (dashed lines: medians; purple bars: modal bins). (d) Quarterly stand-level harvest counts by canton.}
+    \caption{National balsa harvest patterns in mainland Ecuador, 2017--2025. (a) Stand-level harvest counts by canton. (b) Median inter-harvest intervals in 10-km hexagons. (c) Inter-harvest interval distributions across climate zones. (d) Quarterly national harvest trends. Numbers 1--5 link the five leading cantons in (a) and (d).}
     \label{fig:harvest_mapping_national}
 \end{figure*}
 
-Five western cantons---Santo Domingo, Valencia, Pangua, Quinind\'e, and Buena Fe---accounted for 67.6\% of detected harvests (Fig.~\ref{fig:harvest_mapping_national}(a)). Annual counts peaked at 1,037 in 2022, fell to 315 in 2023, and recovered to 781--795 in 2024--2025 (Fig.~\ref{fig:harvest_mapping_national}(d)).
 
-The 3,372 inter-harvest intervals had a national median of 34 months (IQR: 22--43) and a modal bin of 33--35 months (Fig.~\ref{fig:harvest_mapping_national}(b, c)). Tropical monsoon (Am) plantations contributed 84.8\% of intervals and shared the national median and mode. Tropical savannah (Aw; $n=345$) and tropical rainforest (Af; $n=150$) plantations both had medians of 35 months but wider dispersion, with contrasting modal bins of 45--47 and 3--5 months, respectively.
+\begin{figure*}[pos=!htbp]
+    \centering
+    \includegraphics[width=\linewidth]{figures/fig06_stand_harvest_histories.pdf}
+    \caption{Stand-level harvest histories and intra-event progression. (a,d,g) Latest pixelwise detection months. (b,e,h) Monthly detected-pixel counts and TDA event spans. (c,f,i) Intra-event timing groups (STP~1 and STP~2) showing spatial differences in detection timing within TDA events.}
+    \label{fig:harvest_mapping_stands}
+\end{figure*}
+
+

@@ -8,7 +8,12 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from matplotlib.colors import BoundaryNorm, ListedColormap
-from matplotlib.patches import Patch, Rectangle
+from matplotlib.patches import Patch, Rectangle, Circle, PathPatch
+from matplotlib.offsetbox import AnnotationBbox, DrawingArea
+from matplotlib.textpath import TextPath
+from matplotlib.font_manager import FontProperties
+from matplotlib.transforms import Affine2D
+from matplotlib.lines import Line2D
 import numpy as np
 import pandas as pd
 import rasterio
@@ -21,24 +26,24 @@ from build_national_recurrence_tda_classified import (
 )
 
 
-OUT = ROOT / "runs/figures/harvest_context_20261113_v17_final"
+OUT = ROOT / "runs/figures/harvest_context_20261116_v9_final"
 FROZEN = ROOT / "runs/figures/national_recurrence_tda_20261112_v4_overview/source_data"
 CONTEXT = ROOT / "runs/validation/harvest_context_20261112_v1"
 DATA = ROOT / "data/local/paper_v1/context/administrative_climate_20261112"
-WIDTH, HEIGHT = 180, 136
+WIDTH, HEIGHT = 180, 134
 CLIMATE_COLORS = {"Af": "#A9CEB9", "Am": "#B1D2E5", "Aw": "#EFD59B"}
 CANTON_COLORS = ["#D9A15C", "#C97877", "#B5AF64", "#7BA88B", "#A58CA5"]
 OTHER_COLOR = "#8FAFCA"
 CLIMATE_NAMES = {"Af": "Tropical rainforest", "Am": "Tropical monsoon", "Aw": "Tropical savannah"}
-TIED_COLOR = "#75797C"
+CLIMATE_TEXT_COLORS = {"Af": "#6CA68C", "Am": "#679CB9", "Aw": "#C7A467"}
 BIN_MONTHS = 3
 TOTAL_COLORS = ["#D3D6D8", "#FEE8A8", "#FEC44F", "#FE9929", "#E87519", "#B54E10", "#75300B"]
 TOTAL_LABELS = ["0", "1–10", "11–50", "51–200", "201–500", "501–1,000", ">1,000"]
 
 
-def main():
-    OUT.mkdir(parents=True, exist_ok=True)
-    sources = OUT / "source_data"
+def main(out=OUT, number_cantons=False):
+    out.mkdir(parents=True, exist_ok=True)
+    sources = out / "source_data"
     sources.mkdir(exist_ok=True)
     protected = [*sorted((ROOT / "manuscript_JAG").rglob("*.tex")),
                  PRODUCT / "event_reports.csv"]
@@ -58,6 +63,7 @@ def main():
     reports["display_group"] = reports.canton.map(names).fillna("Other cantons")
     order = ["Other cantons"] + list(names.values())
     bar_colors = [OTHER_COLOR] + CANTON_COLORS
+    canton_numbers = {name: i for i, name in enumerate(reversed(order[1:]), 1)}
     annual = reports.groupby(["year", "display_group"]).size().unstack(fill_value=0)
     annual = annual.reindex(index=range(2017, 2026), columns=order, fill_value=0)
     annual["National"] = annual.sum(axis=1)
@@ -111,11 +117,16 @@ def main():
     observed_counts = reports.groupby("sample_id").size().reindex(eligible.sample_id, fill_value=0)
     np.testing.assert_array_equal(observed_counts, eligible.octa_count)
     pairs = pairs.merge(assignments, left_on="sample_id", right_on="polygon_id", validate="many_to_one")
-    interval_modes = pd.DataFrame([{"hex_id": key, **mode_summary(group.interval_bin)}
-                                  for key, group in pairs.groupby("hex_id")])
-    interval_modes = interval_modes.rename(columns={c: f"interval_{c}" for c in interval_modes if c != "hex_id"})
-    display = display.merge(interval_modes, on="hex_id", how="left", validate="one_to_one")
-    display["interval_class"] = display.interval_mode
+    interval_summary = pairs.groupby("hex_id").agg(
+        interval_median=("interval_months", "median"),
+        interval_n_values=("interval_months", "size"),
+        interval_n_contributing_stands=("sample_id", "nunique")).reset_index()
+    assert len(interval_summary) == 171 and interval_summary.interval_n_values.sum() == 3372
+    display = display.merge(interval_summary, on="hex_id", how="left", validate="one_to_one")
+    medians = display.interval_median
+    display["interval_class"] = np.select(
+        [medians.lt(20), medians.lt(30), medians.lt(40), medians.le(50), medians.gt(50)],
+        [0, 1, 2, 3, 4], default=np.nan)
     grid = gpd.read_parquet(OLD_GRID / "ecuador_mainland_hex_10km_width_epsg6933.parquet")
     boundary = gpd.read_parquet(ADMIN / "analysis_context/ecuador_mainland.parquet").to_crs(4326)
     cells = grid.merge(display, on="hex_id", how="left", validate="one_to_one").to_crs(4326)
@@ -142,7 +153,7 @@ def main():
         climate = src.read(1)
         mask = geometry_mask(boundary.geometry, out_shape=climate.shape, transform=src.transform, invert=True)
         extent = (src.bounds.left, src.bounds.right, src.bounds.bottom, src.bounds.top)
-    # Background categories stay subordinate to the quantitative purple hexagons.
+    # Climate fills stay pale beneath the quantitative interval hexagons.
     climate_colors = ["#FFFFFF"] + [CLIMATE_COLORS[k] for k in ["Af", "Am", "Aw"]] + ["#E1E3E1"] * 27
 
     plt.rcParams.update({"font.family": "Arial", "font.size": 7, "axes.labelsize": 6.5,
@@ -158,7 +169,9 @@ def main():
     map_shift = map_y - 61
     panel_gap = ((61 + (81 - map_height) / 2 - 51) / 3 + 1) / 3
     quarter_y = map_y + (81 - map_height) / 2 - panel_gap - 40
-    interval_colors = plt.get_cmap("Purples")(np.linspace(.20, .94, len(edges) - 1))
+    # Skip the pale yellow centre so filled hexagons remain distinct from climate backgrounds.
+    interval_colors = plt.get_cmap("Spectral")([.77, .18, .02, .90, .99])
+    interval_labels = ["<20", "20–<30", "30–<40", "40–50", ">50"]
     for i, (field, colors) in enumerate([("report_class", TOTAL_COLORS), ("interval_class", interval_colors)]):
         left, width = [(5, 72), (80, 96)][i]
         ax = fig.add_axes([left / WIDTH, map_y / HEIGHT, width / WIDTH, 81 / HEIGHT])
@@ -172,6 +185,25 @@ def main():
             cantons.plot(ax=ax, color="white", edgecolor="#9DAAB2", lw=.22, zorder=10)
             cantons.loc[covered].plot(ax=ax, column=field, cmap=cmap, norm=norm,
                                      edgecolor="#8A9AA5", lw=.25, zorder=11)
+            if number_cantons:
+                label_positions = {"1210": (-80.2572, -.7757), "1211": (-78.69, -.76),
+                                   "0503": (-79.0591, -1.4361), "0804": (-79.498, .3178),
+                                   "2301": (-79.17, -.29)}
+                for row in cantons.loc[cantons.canton.isin(names)].itertuples():
+                    point = row.geometry.representative_point()
+                    x, y = label_positions[row.canton]
+                    ax.plot([point.x, x], [point.y, y], color=INK, lw=.55, zorder=69)
+                    badge = DrawingArea(10, 10, 0, 0)
+                    badge.add_artist(Circle((5, 5), 4.7, fc="white", ec=INK, lw=.45))
+                    digit = TextPath((0, 0), str(canton_numbers[names[row.canton]]),
+                                     size=7, prop=FontProperties(family="Arial", weight="bold"))
+                    bounds = digit.get_extents()
+                    # Centre the visible glyph, excluding font ascent/descent padding.
+                    digit = Affine2D().translate(5 - (bounds.x0 + bounds.x1) / 2,
+                                                 5 - (bounds.y0 + bounds.y1) / 2).transform_path(digit)
+                    badge.add_artist(PathPatch(digit, fc=INK, ec="none"))
+                    ax.add_artist(AnnotationBbox(badge, (x, y), frameon=False, pad=0,
+                                                box_alignment=(.5, .5), zorder=70))
             map_a = ax
             legend_a_frame = [53, 62.6 + map_shift, 23.7, 27.2]
             fig.add_artist(Rectangle((53 / WIDTH, (62.6 + map_shift) / HEIGHT), 23.7 / WIDTH, 27.2 / HEIGHT,
@@ -197,33 +229,59 @@ def main():
                       interpolation="nearest", alpha=.65, zorder=2.5)
             values = cells.loc[cells.interval_class.notna()]
             values.plot(ax=ax, column=field, cmap=cmap, norm=norm, edgecolor="none", zorder=20)
-            cells.loc[cells.interval_n_modes.gt(1)].plot(ax=ax, facecolor=TIED_COLOR, edgecolor="none", zorder=20)
             cells.boundary.plot(ax=ax, color="white", lw=.18, zorder=21)
             map_b = ax
             # Extra eastern context makes room for the inset without changing map scale.
             ax.set_xlim(-81.35, -81.35 + 6.4 * 96 / 72)
             ax.yaxis.tick_right()
             ax.set_xticks([-81, -79, -77, -75, -73], ["81°W", "79°W", "77°W", "75°W", "73°W"])
-            for label in ax.texts:
-                if label.get_text() == "COLOMBIA":
-                    label.set_x(-77.65)
-            legend_b_frame = [143, 123 + map_shift, 31, 16.3]
-            fig.add_artist(Rectangle((143 / WIDTH, (123 + map_shift) / HEIGHT), 31 / WIDTH, 16.3 / HEIGHT,
+            for label in list(ax.texts):
+                if label.get_text() in {"COLOMBIA", "PERU", "PACIFIC\nOCEAN"}:
+                    label.remove()
+            climate_annotations = []
+            climate_background = Rectangle(
+                (122 / WIDTH, (130.9 + map_shift) / HEIGHT), 27.3 / WIDTH, 8.3 / HEIGHT,
+                transform=fig.transFigure, facecolor="white", edgecolor="none", zorder=3)
+            fig.add_artist(climate_background)
+            climate_annotations.append(climate_background)
+            for row, (code, name) in enumerate(CLIMATE_NAMES.items()):
+                legend_y = 137.8 + map_shift - row * 2.8
+                symbol = Line2D([123.4 / WIDTH], [legend_y / HEIGHT],
+                                transform=fig.transFigure, marker="h", markersize=5.5,
+                                linestyle="none", markerfacecolor=CLIMATE_COLORS[code],
+                                markeredgecolor="#85928E", markeredgewidth=.35, alpha=.65, zorder=4)
+                fig.add_artist(symbol)
+                climate_annotations.append(symbol)
+                climate_annotations.append(fig.text(
+                    125.4 / WIDTH, legend_y / HEIGHT,
+                    f"{name} ({code})", fontsize=6, weight="bold", color=CLIMATE_TEXT_COLORS[code],
+                    ha="left", va="center", zorder=4))
+            legend_b_frame = [150, 105.5 + map_shift, 25, 33.8]
+            fig.add_artist(Rectangle((150 / WIDTH, (105.5 + map_shift) / HEIGHT), 25 / WIDTH, 33.8 / HEIGHT,
                                     transform=fig.transFigure, facecolor="white", edgecolor="#9DAAB2", lw=.4, zorder=1))
-            fig.text(172.5 / WIDTH, (137.8 + map_shift) / HEIGHT, "Harvest-event interval\nMode (3-month bins)",
-                     fontsize=6.5, va="top", ha="right")
-            cax = fig.add_axes([144.5 / WIDTH, (131.3 + map_shift) / HEIGHT, 28 / WIDTH, 1.6 / HEIGHT], zorder=2)
+            interval_title = fig.text(151 / WIDTH, (137.8 + map_shift) / HEIGHT,
+                                      "Harvest-event interval\nMedian (months)",
+                                      fontsize=6.2, va="top", ha="left")
+            cax = fig.add_axes([151 / WIDTH, (110 + map_shift) / HEIGHT, 3 / WIDTH, 22 / HEIGHT], zorder=2)
             cb = matplotlib.colorbar.ColorbarBase(cax, cmap=cmap,
-                    norm=BoundaryNorm(edges, len(colors)), orientation="horizontal",
-                    boundaries=edges, ticks=[0, 24, 48, 72, 96])
+                    norm=BoundaryNorm(np.arange(6), 5), boundaries=np.arange(6),
+                    ticks=np.arange(5) + .5, spacing="uniform", drawedges=True)
+            cb.ax.set_yticklabels(interval_labels)
             cb.ax.minorticks_off()
+            cb.dividers.set(color="white", linewidth=.6)
             cb.outline.set_linewidth(.35)
-            cb.ax.tick_params(length=1.5, pad=1, labelsize=6.5)
-            fig.legend(handles=[Patch(facecolor=TIED_COLOR, label="Multiple modal bins"),
-                                Patch(facecolor="none", edgecolor="#8E979E", lw=.5, label="No interval")],
-                       loc="upper left", bbox_to_anchor=(144 / WIDTH, (127.8 + map_shift) / HEIGHT), ncol=1,
+            cb.ax.tick_params(length=0, pad=3, labelsize=6.5)
+            fig.canvas.draw()
+            title_bottom = interval_title.get_window_extent().transformed(fig.transFigure.inverted()).y0
+            position = cax.get_position()
+            old_title_gap = title_bottom - position.y1
+            cax.set_position([position.x0, position.y0 + old_title_gap / 2,
+                              position.width, position.height])
+            interval_title_gap_mm = old_title_gap * HEIGHT / 2
+            fig.legend(handles=[Patch(facecolor="none", edgecolor="#8E979E", lw=.5, label="No interval")],
+                       loc="upper left", bbox_to_anchor=(151 / WIDTH, (108.5 + map_shift) / HEIGHT),
                        fontsize=6, frameon=False, handlelength=1, handletextpad=.4,
-                       labelspacing=.1, borderpad=0, borderaxespad=0)
+                       borderpad=0, borderaxespad=0)
         boundary.boundary.plot(ax=ax, color="black", linewidth=.9, zorder=60)
         for tick in ax.get_yticklabels():
             tick.set_rotation(90)
@@ -273,7 +331,10 @@ def main():
     ax.yaxis.grid(True, color="#E5E8EA", lw=.35); ax.set_axisbelow(True)
     legend_order = list(reversed(list(zip(order, bar_colors))))
     # Matplotlib fills columns; transpose handles to keep stack order when read by row.
-    legend_handles = [Patch(facecolor=legend_order[k][1], label=legend_order[k][0]) for k in [0, 3, 1, 4, 2, 5]]
+    legend_labels = {name: f"{canton_numbers[name]} {name}" if number_cantons and name in canton_numbers else name
+                     for name in order}
+    legend_handles = [Patch(facecolor=legend_order[k][1], label=legend_labels[legend_order[k][0]])
+                      for k in [0, 3, 1, 4, 2, 5]]
     legend = ax.legend(handles=legend_handles,
                        loc="upper left", bbox_to_anchor=(.012, .96), ncol=3,
                        frameon=True, facecolor="white", edgecolor="#667580", framealpha=1,
@@ -286,7 +347,7 @@ def main():
                             transform=fig.transFigure, facecolor="white", edgecolor="#667580", lw=.45, zorder=2))
     fig.text(175 / WIDTH, (94.4 + map_shift) / HEIGHT, "(c) Intervals (months)",
              fontsize=7, weight="bold", va="bottom", ha="right", zorder=4)
-    group_colors = {"Af": "#6CA68C", "Am": "#679CB9", "Aw": "#C7A467"}
+    group_colors = CLIMATE_TEXT_COLORS
     for row, group in enumerate(["Af", "Am", "Aw"]):
         bottom = 84.4 + map_shift - row * 8.5
         ax = fig.add_axes([142 / WIDTH, bottom / HEIGHT, 31 / WIDTH, 7.5 / HEIGHT], zorder=3)
@@ -311,6 +372,11 @@ def main():
         ax.grid(axis="y", color="#E3E7E9", lw=.25, zorder=0)
 
     fig.canvas.draw()
+    for label in climate_annotations:
+        text_box = label.get_window_extent()
+        corners = map_b.transData.inverted().transform(text_box.get_points())
+        assert not boundary.geometry.intersects(box(*corners.ravel())).any(), "Climate text must not cover mainland"
+        assert text_box.transformed(fig.transFigure.inverted()).x1 * WIDTH < 150
     inset_data_corners = map_b.transData.inverted().transform(
         fig.transFigure.transform([[137 / WIDTH, (63.4 + map_shift) / HEIGHT], [175 / WIDTH, (93.4 + map_shift) / HEIGHT]]))
     inset_box = box(*inset_data_corners.ravel())
@@ -319,6 +385,7 @@ def main():
                  for a in [map_a, map_b]]
     bx, by, bw, bh = map_rects[1]
     dx, dy, dw, dh = inset_frame
+    assert abs(legend_b_frame[0] + legend_b_frame[2] - (dx + dw)) < 1e-9
     assert bx <= dx and by <= dy and dx + dw <= bx + bw and dy + dh <= by + bh
     top_tick_pixels = max(label.get_window_extent().y1 for a in [map_a, map_b] for label in a.get_xticklabels())
     top_margin_pt = (fig.bbox.y1 - top_tick_pixels) / fig.dpi * 72
@@ -331,18 +398,21 @@ def main():
     minimum_font_pt = min(a.get_fontsize() for a in fig.findobj(matplotlib.text.Text) if a.get_visible() and a.get_text())
     assert minimum_font_pt >= 6
 
-    stem = OUT / "national_harvest_context"
+    stem = out / "national_harvest_context"
     fig.savefig(stem.with_suffix(".pdf"), dpi=600, metadata={"CreationDate": None, "ModDate": None})
     fig.savefig(stem.with_suffix(".svg"), dpi=600, metadata={"Date": None})
     fig.savefig(stem.with_suffix(".png"), dpi=600)
-    fig.savefig(OUT / "preview.png", dpi=300)
+    fig.savefig(out / "preview.png", dpi=300)
     writer = PdfWriter()
     page = writer.add_blank_page(width=210 * 72 / 25.4, height=297 * 72 / 25.4)
     page.merge_transformed_page(PdfReader(stem.with_suffix(".pdf")).pages[0],
                                 Transformation().translate(15 * 72 / 25.4, (297 - HEIGHT) / 2 * 72 / 25.4))
-    writer.write(OUT / "A4_actual_size_proof.pdf")
+    writer.write(out / "A4_actual_size_proof.pdf")
     plt.close(fig)
     annual.to_csv(sources / "annual_canton_reports.csv")
+    winners = pd.DataFrame({"canton": annual[order[1:]].idxmax(axis=1),
+                            "reports": annual[order[1:]].max(axis=1)})
+    winners.to_csv(sources / "annual_top5_leaders.csv")
     quarterly.rename_axis("quarter").to_csv(sources / "quarterly_canton_reports.csv")
     ranking.to_csv(sources / "canton_ranking.csv", index=False)
     pairs.to_csv(sources / "intervals_with_climate.csv", index=False)
@@ -359,14 +429,14 @@ def main():
     eligible.drop(columns="geometry").to_csv(sources / "evaluable_stand_counts.csv", index=False)
     for p in protected:
         assert hashlib.sha256(p.read_bytes()).hexdigest() == before[str(p)]
-    qa = {"status": "passed", "dimensions_mm": [WIDTH, HEIGHT], "hex_inventory": 287,
+    qa = {"canton_numbers": canton_numbers if number_cantons else {}, "status": "passed", "dimensions_mm": [WIDTH, HEIGHT], "hex_inventory": 287,
           "map_a_geometry": "Canton polygons only, no hexagons",
           "canton_admin_objects": len(cantons), "cantons_with_inventory": int(covered.sum()),
           "cantons_positive_reports": int(cantons.total_reports.gt(0).sum()),
           "cantons_zero_reports": int(cantons.total_reports.eq(0).sum()),
           "cantons_without_inventory": int((~covered).sum()),
           "mainland_hexes_drawn": len(cells), "hexes_without_interval_fill": int(cells.n_interval.fillna(0).eq(0).sum()),
-          "hex_display_clip": "Original fixed hexagons clipped only for display; identities and metrics unchanged",
+          "hex_display_clip": "Original fixed hexagons clipped for display; pooled adjacent-interval median per hex",
           "map_b_hex_edgecolor": "white", "map_b_provincial_boundaries": False,
           "geographic_zorder": {"countries": 1, "climate": 2.5, "provinces": 3, "country_border": 60,
                                 "hex_fill": 20, "hex_edges": 21, "labels": 40, "legends": 50},
@@ -380,9 +450,15 @@ def main():
           "map_b_interval_legend_position": "upper right",
           "map_b_mark_position": "inside upper left",
           "map_scale_start_longitude": -81.05,
-          "peru_labels_longitude_latitude": [[-77.9, -4.0], [-77.9, -4.0]],
+          "peru_labels_longitude_latitude": [[-77.9, -4.0]],
+          "panel_b_country_ocean_labels": False,
+          "panel_b_climate_names_position": "Upper-right of mainland, left of interval legend",
+          "panel_b_climate_legend_symbol": "Hexagon matching climate background colours",
+          "panel_b_climate_legend_row_spacing_mm": 2.8,
           "map_longitude_axis_position": "top",
           "map_legend_frames_mm": [legend_a_frame, legend_b_frame],
+          "interval_title_colorbar_gap_mm": interval_title_gap_mm,
+          "legend_b_right_aligned_with_panel_c": True,
           "map_legend_frames_overlap_mainland": False,
           "canton_color_classes": class_summary.reset_index().to_dict("records"),
           "panel_d_rect_mm": [5, quarter_y, 171, 40], "panel_d_calendar_strip_mm": 8,
@@ -406,10 +482,13 @@ def main():
           "climate_legend_names": CLIMATE_NAMES,
           "interval_definition": "right.first_response_month minus left.first_response_month, in calendar months",
           "interval_values_changed": int(pairs.interval_months.ne(pairs.representative_interval_months).sum()),
-          "interval_tied_mode_hexes": int(display.interval_n_modes.gt(1).sum()),
-          "mode_ties": "Multiple modal bins: two or more three-month bins share the highest frequency; shown dark grey",
-          "map_b_legend_title": "Harvest-event interval / Mode (3-month bins)",
-          "map_interval_weighting": f"Each adjacent interval once; modal {BIN_MONTHS}-month bin per hex",
+          "hexes_with_one_interval": int(interval_summary.interval_n_values.eq(1).sum()),
+          "hexes_with_fewer_than_five_intervals": int(interval_summary.interval_n_values.lt(5).sum()),
+          "map_b_legend_title": "Harvest-event interval / Median (months)",
+          "interval_display_classes": interval_labels,
+          "interval_display_colormap": "Spectral sampled at 0.77, 0.18, 0.02, 0.90, 0.99; 30–<40 months red",
+          "interval_display_value": "Median of all adjacent TDA first-detection-month differences within each hex; no rounding",
+          "map_interval_weighting": "Each adjacent interval once; no stand-level pre-aggregation",
           "interval_bin_months": BIN_MONTHS,
           "annual_date_definition": "Representative year, unchanged",
           "quarterly_date_definition": "Quarter containing representative_month",
@@ -423,28 +502,29 @@ def main():
           "protected_files_unchanged": True, "protected_sha256": before,
           "source_script_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
           "recomputed_detection_or_inference": False}
-    (OUT / "qa_summary.json").write_text(json.dumps(qa, indent=2, ensure_ascii=False), encoding="utf-8")
-    (OUT / "CAPTION_EN.md").write_text(
+    (out / "qa_summary.json").write_text(json.dumps(qa, indent=2, ensure_ascii=False), encoding="utf-8")
+    (out / "CAPTION_EN.md").write_text(
         "Detected balsa harvests across mainland Ecuador, 2017–2025. "
         "(a) TDA event totals by canton. "
-        "(b) Modal intervals between consecutive TDA first-detection months in 10-km hexagons (three-month bins), over Köppen–Geiger climate classes. "
+        "(b) Median intervals between consecutive TDA first-detection months in 10-km hexagons, over Köppen–Geiger climate classes. "
         "(c) Interval distributions for Af (rainforest), Am (monsoon), and Aw (savannah); dashed lines mark medians and shading marks modal bins. "
-        "(d) Quarterly TDA event counts by canton, assigned by representative month.\n",
+        "(d) Quarterly TDA event counts by canton, assigned by representative month. "
+        "Each adjacent interval contributes once to the median in (b). "
+        + ("Numbers 1–5 link cantons in (a) and (d).\n" if number_cantons else "\n"),
         encoding="utf-8")
-    (OUT / "README_ZH.md").write_text(
-        "# 全国 TDA 图 v17：最终面板编号与论文整合\n\n"
+    (out / "README_ZH.md").write_text(
+        "# 全国 TDA 图：Canton 编号与离散间隔色带预览\n\n"
         "本版 PDF/SVG/PNG 由 `scripts/figures/build_national_harvest_context_cantons.py` 生成；"
-        "沿用冻结产品，仅互换原(d)(c)标记；布局、配色与统计量保持v16。论文整合使用此版PDF、简洁caption及对应结果段落。\n\n"
+        "沿用冻结检出与TDA产品，保留Canton编号，(b)改为各hex内全部相邻TDA起始月差的中位数。(c)的分布曲线、众数与中位数保持不变。正式图与TeX尚未替换。\n\n"
         "- (a) 去掉 hex，按 Canton 统计 2017—2025 年 TDA 父报告总数。81 个有库存 Canton 中，"
         "72 个正数、9 个有效零值；138 个无库存行政对象不填成零。合计 6,303 条报告。"
         "图例恢复为用户指定的 Stand harvest count (2017–2025)，其统计量为Canton内TDA父报告总数。"
-        "(a)完整图例保持白底细边框；(b)标记保留图内左上角，图例标题增加Mode (3-month bins)，灰色项改为Multiple modal bins，与No interval分两行。两个背景框均通过不遮挡大陆的几何检查。"
+        "(a)完整图例保持白底细边框；(b)采用竖向五档色带，标题与色带左对齐，No interval单列。两个背景框均通过不遮挡大陆的几何检查。"
         "正值中位数仅8条、最高1358条，因此拆分原1—50档，采用1—10、11—50、51—200、201—500、501—1000、>1000六档，"
         "对应39、16、10、3、2、2个Canton。浅黄—橙—深棕色带按等宽离散档显示，零值灰色、无库存白色另列。"
         "不等宽数值区间的色块不是连续线性比例尺；分级台账见 source_data/canton_color_classes.csv。\n"
-        f"- (b) hex 内全部相邻父报告的起始检测月差按 [0,3)、[3,6)… 分箱取众数组；{int(display.interval_n_modes.gt(1).sum())} 个 hex 并列。"
-        "这与原图的林分中位数再取中位数不同，每个间隔贡献一次。\n"
-        "Multiple modal bins表示两个或更多三个月区间并列频数最高，无法指定唯一众数组；灰色不是缺少间隔数据，后者为No interval。\n"
+        "- (b) 每个hex汇集各林分的相邻TDA起始月差，直接取中位数，每个间隔贡献一次。不先计算各林分中位数，也不取整；偶数样本允许半个月结果。\n"
+        "按中位数分为<20、20–<30、30–<40、40–50、>50个月五档，50归入40–50，50.5归入>50。等宽色块表示离散类别。\n"
         "三个月分组刻画间隔长短，不等于旱雨季或日历季节；气候底图仍为长期类别。\n"
         "完整 3,066 个 hex 在绘图时裁至大陆；2,895 个无间隔单元保持透明，气候底图可见。"
         "hex 边线为白色，(b) 无省级边界；Af/Am/Aw 显示气候全名。(a)(b) 大陆国界黑色加粗，zorder=60，位于全部图层上方。\n"
@@ -455,7 +535,7 @@ def main():
         "季度逐年汇总与旧年度图在六个地区组上完全一致，总计 6,303。"
         "去掉年度折线与右轴，保留一个从零开始的左轴，去掉其标题，季度报告数含义写入caption。"
         "Other cantons浅蓝，奇数年浅灰底，年界黑线；(d)标记在图内右上角，纵轴数值逆时针旋转90°。图例保留图内左上角三列两行，下移1.2 mm并加0.45 pt细边框，按逐行阅读顺序对应堆叠柱从上到下。"
-        f"绘图区高度40 mm，画布180×136 mm；顶部留白从最高经度刻度文字计算，为{top_margin_pt:.3f} pt；(d)相对v15上移约3.20 mm，地图与季度图的轴框间距{panel_gap:.2f} mm，为v15的三分之一。底部日历栏至画布留白增加至{quarter_y - 8:.2f} mm。"
+        f"绘图区高度40 mm，画布{WIDTH}×{HEIGHT} mm；顶部留白从最高经度刻度文字计算，为{top_margin_pt:.3f} pt；地图与季度图的轴框间距{panel_gap:.2f} mm。底部日历栏至画布留白为{quarter_y - 8:.2f} mm。(b)使用Spectral五档色带，并压缩图例底部空白。"
         "季度和年份在底部8 mm高的封闭日历栏中：Q1—Q4上行、年份下行，年度界线延续至底边，无额外季度小格。\n"
         "- (c) 间隔 = 后一次 TDA 的 first_response_month − 前一次 TDA 的 first_response_month。"
         "仍为 3,372 对、2,005 林分；2,128 个间隔值改变，全国中位数 34 月、IQR 22—43 月。"
@@ -466,7 +546,7 @@ def main():
         "曲线行高由4.6增至7.5 mm，相邻行间隙1 mm；几何相交与轴框包含检查确认不遮大陆且不超出(b)。"
         "独立逐报告来源核验与短间隔明细见 ../harvest_context_20261112_v8_review/interval_audit/。\n\n"
         "季度柱按代表月统计；次数和间隔是不同统计量，年度总量保持一致。"
-        "完整格网的众数、并列集合及频数见 source_data/hex_display_classes.csv；"
+        "完整格网的中位数、贡献间隔数及贡献林分数见 source_data/hex_display_classes.csv；"
         "Canton 总数和库存支持见 source_data/canton_total_reports.csv；"
         "逐间隔新旧值见 source_data/intervals_with_climate.csv。\n\n"
         "(d)保留季度与年份双层信息，统一纳入年度分组栏。"
@@ -497,12 +577,11 @@ def draw_background(ax, boundary, countries):
     ax.text(-81.05 + lon_width / 2, -4.91, "100 km", fontsize=6.2, ha="center", va="bottom", zorder=40)
 
 
-def mode_summary(values):
-    frequencies = values.value_counts()
-    modes = sorted(int(v) for v in frequencies.loc[frequencies.eq(frequencies.max())].index)
-    return {"mode": modes[0] if len(modes) == 1 else np.nan, "modes": json.dumps(modes),
-            "n_modes": len(modes), "mode_frequency": int(frequencies.max()), "n_values": len(values)}
-
-
 if __name__ == "__main__":
-    main()
+    import argparse
+
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--output-dir", type=Path, default=OUT)
+    parser.add_argument("--number-cantons", action="store_true")
+    args = parser.parse_args()
+    main(out=args.output_dir, number_cantons=args.number_cantons)
